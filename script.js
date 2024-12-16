@@ -1,5 +1,5 @@
 // Lista de palabras
-const words = ["casa", "perro", "gato", "coche", "avión", "moneda", "ratón", "cielo", "montaña", "playa"];
+const words = ["CyC", "DAniel y Alma", "CyC", "YyE", "AyV", "CyC", "Sergio y Katina", "CyC", "Sensual +", "Gto y M", "José y Layla (Mym)", "INTRO", "K_ELDE", "TONIO (brazos, cuello+Disoc, Salir)", "JLAB (salir/end)", "K_ELDE", "JHERSY (salid pasos cambio mano)", "JHERSY_pasos", "JHERSY (Giro cambio manao)", "K_ELDE", "Iván y Sarai", "TONIO (cambio posición mano hombro"];
 
 // Variables
 let currentWord = "";
