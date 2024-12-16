@@ -1,53 +1,56 @@
+/* Estilos generales */
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 20px;
-    background-color: #f4f4f4;
-  }
-  
-  #game {
-    margin-top: 20px;
-  }
-  
-  button {
-    position: absolute;
-    bottom: 20px;
-    font-size: 16px;
-    padding: 10px 20px;
-  }
-  
-  button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed;
-  }
-  
-  #word {
-    font-size: 72px;
-    font-weight: bold;
-    text-align: center;
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-  
-  #result {
-    margin-top: 20px;
-    font-size: 18px;
-    color: blue;
-  }  
-
-#play {
-    left: 25%;
-    transform: translateX(-50%);
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
 }
 
-#next {
-    left: 50%;
-    transform: translateX(-50%);
+/* Centrar la palabra en el centro de la pantalla */
+#word {
+  font-size: 48px; /* Tamaño de la palabra */
+  font-weight: bold; /* Texto en negrita */
+  text-align: center; /* Centrado horizontal */
+  position: absolute; /* Posicionamiento absoluto */
+  top: 40%; /* Posición vertical centrada */
+  left: 50%; /* Posición horizontal centrada */
+  transform: translate(-50%, -50%); /* Ajuste perfecto al centro */
 }
 
-#finish {
-    left: 75%;
-    transform: translateX(-50%);
+/* Contenedor de botones en la parte inferior */
+#game {
+  position: absolute;
+  bottom: 20px; /* Posición en la parte inferior */
+  width: 100%;
+  display: flex;
+  justify-content: center; /* Centra los botones horizontalmente */
+  gap: 20px; /* Espacio entre botones */
+}
+
+/* Estilo general de los botones */
+button {
+  font-size: 18px;
+  padding: 10px 20px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3; /* Color al pasar el ratón */
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
