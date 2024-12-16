@@ -38,7 +38,7 @@ body {
   }  
 
 #play {
-    left: 30%;
+    left: 25%;
     transform: translateX(-50%);
 }
 
@@ -48,6 +48,6 @@ body {
 }
 
 #finish {
-    left: 70%;
+    left: 75%;
     transform: translateX(-50%);
 }
