@@ -10,10 +10,10 @@ body {
   }
   
   button {
-    margin: 5px;
-    padding: 10px 20px;
+    position: absolute;
+    bottom: 20px;
     font-size: 16px;
-    cursor: pointer;
+    padding: 10px 20px;
   }
   
   button:disabled {
@@ -25,8 +25,10 @@ body {
     font-size: 72px;
     font-weight: bold;
     text-align: center;
-    margin: 50px auto;
-    display: block;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   
   #result {
@@ -34,3 +36,18 @@ body {
     font-size: 18px;
     color: blue;
   }  
+
+#play {
+    left: 30%;
+    transform: translateX(-50%);
+}
+
+#next {
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#finish {
+    left: 70%;
+    transform: translateX(-50%);
+}
