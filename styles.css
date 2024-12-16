@@ -22,9 +22,11 @@ body {
   }
   
   #word {
-    font-size: 24px;
+    font-size: 48px;
     font-weight: bold;
-    margin: 20px 0;
+    text-align: center;
+    margin: 50px auto;
+    display: block;
   }
   
   #result {
