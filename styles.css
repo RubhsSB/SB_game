@@ -49,3 +49,5 @@ body {
 
 #finish {
     left: 75%;
+    transform: translateX(-50%);
+}
