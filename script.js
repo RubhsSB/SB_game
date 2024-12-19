@@ -18,24 +18,24 @@ const finishButton = document.getElementById("finish");
 const resultElement = document.getElementById("result");
 const counterElement = document.getElementById("counter");
 const timerElement = document.getElementById("timer");
+const easyButton = document.getElementById("easy");
+const hardButton = document.getElementById("hard");
 
 // Configurar el nivel del juego
-document.getElementById("easy").addEventListener("click", () => {
+easyButton.addEventListener("click", () => {
   gameMode = "easy";
   updateLevelButtons();
-  alert("Modo Fácil (E) seleccionado.");
 });
 
-document.getElementById("hard").addEventListener("click", () => {
+hardButton.addEventListener("click", () => {
   gameMode = "hard";
   updateLevelButtons();
-  alert("Modo Difícil (H) seleccionado.");
 });
 
 // Función para establecer el botón inicial
 function initializeLevelButtons() {
-  const easyButton = document.getElementById("easy");
   easyButton.classList.add("active"); // Botón E activo al inicio
+  hardButton.classList.remove("active"); // Botón H no seleccionado
 }
 
 // Llamada a la función para inicializar los botones
@@ -43,9 +43,6 @@ initializeLevelButtons();
 
 // Función para actualizar el estilo de los botones
 function updateLevelButtons() {
-  const easyButton = document.getElementById("easy");
-  const hardButton = document.getElementById("hard");
-
   if (gameMode === "easy") {
     easyButton.classList.add("active");
     hardButton.classList.remove("active");
