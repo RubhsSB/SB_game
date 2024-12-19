@@ -108,3 +108,45 @@ a button {
 a button:hover {
   background-color: #c82333;
 }
+
+/* Contenedor de botones para seleccionar el nivel */
+#level-selection {
+  position: absolute;
+  top: 10px;
+  right: 10px; /* Botones en la parte superior derecha */
+  display: flex;
+  gap: 10px; /* Espaciado entre los botones */
+}
+
+/* Botones de nivel */
+#level-selection button {
+  font-size: 16px;
+  padding: 5px 10px;
+  background-color: #17a2b8; /* Color azul claro */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#level-selection button:hover {
+  background-color: #138496; /* Azul más oscuro al pasar el ratón */
+}
+
+/* Diferenciar colores para los niveles */
+#easy {
+  background-color: #28a745; /* Verde para nivel fácil */
+}
+
+#easy:hover {
+  background-color: #218838; /* Verde más oscuro */
+}
+
+#hard {
+  background-color: #dc3545; /* Rojo para nivel difícil */
+}
+
+#hard:hover {
+  background-color: #c82333; /* Rojo más oscuro */
+}
