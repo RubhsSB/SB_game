@@ -8,7 +8,7 @@ let startTime = 0;
 let totalTime = 0;
 let wordCount = 0;
 let timerInterval;
-let gameMode = "easy"; // Nivel por defecto
+let gameMode = "easy"; // Nivel por defecto (E)
 
 // Elementos del DOM
 const wordElement = document.getElementById("word");
@@ -60,8 +60,7 @@ function resetWords() {
 // Función para obtener una palabra aleatoria según el nivel
 function getRandomWord() {
   if (gameMode === "easy") {
-    return words[Math.floor(Math.random() * words.length)];
-  } else if (gameMode === "hard") {
+    // Nivel E: No se repiten palabras
     if (wordsCopy.length === 0) {
       wordElement.textContent = "¡Fin del juego! No hay más palabras.";
       nextButton.disabled = true;
@@ -70,6 +69,9 @@ function getRandomWord() {
     }
     const randomIndex = Math.floor(Math.random() * wordsCopy.length);
     return wordsCopy.splice(randomIndex, 1)[0];
+  } else if (gameMode === "hard") {
+    // Nivel H: Las palabras pueden repetirse
+    return words[Math.floor(Math.random() * words.length)];
   }
 }
 
