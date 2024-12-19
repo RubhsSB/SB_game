@@ -108,6 +108,10 @@ button:disabled {
   transition: background-color 0.3s ease;
 }
 
+#level-selection button:hover {
+  background-color: #bbb; /* Gris más oscuro al pasar el ratón */
+}
+
 #level-selection button.active {
   background-color: #28a745;
 }
