@@ -8,6 +8,7 @@ let startTime = 0;
 let totalTime = 0;
 let wordCount = 0;
 let timerInterval;
+let gameMode = "easy"; // Nivel por defecto: Fácil
 
 // Elementos del DOM
 const wordElement = document.getElementById("word");
@@ -18,29 +19,45 @@ const resultElement = document.getElementById("result");
 const counterElement = document.getElementById("counter");
 const timerElement = document.getElementById("timer");
 
+// Configurar el nivel del juego
+document.getElementById("easy").addEventListener("click", () => {
+  gameMode = "easy";
+  alert("Modo Fácil (E) seleccionado.");
+});
+
+document.getElementById("hard").addEventListener("click", () => {
+  gameMode = "hard";
+  alert("Modo Difícil (H) seleccionado.");
+});
+
 // Función para iniciar el modo desafío
 function resetWords() {
   wordsCopy = [...words]; // Crear una copia de las palabras originales
 }
 
-// Función para obtener una palabra aleatoria sin repetir
+// Función para obtener una palabra aleatoria según el nivel
 function getRandomWord() {
-  if (wordsCopy.length === 0) {
-    wordElement.textContent = "¡Fin del juego! No hay más palabras.";
-    nextButton.disabled = true; // Desactiva el botón Next
-    finishButton.disabled = true;
-    return null; // Detiene el juego
+  if (gameMode === "easy") {
+    // Modo fácil: Las palabras pueden repetirse
+    return words[Math.floor(Math.random() * words.length)];
+  } else if (gameMode === "hard") {
+    // Modo difícil: Las palabras no se repiten
+    if (wordsCopy.length === 0) {
+      wordElement.textContent = "¡Fin del juego! No hay más palabras.";
+      nextButton.disabled = true; // Desactiva el botón Next
+      finishButton.disabled = true;
+      return null; // Detiene el juego
+    }
+    const randomIndex = Math.floor(Math.random() * wordsCopy.length);
+    const word = wordsCopy.splice(randomIndex, 1)[0]; // Elimina y devuelve una palabra
+    return word;
   }
-  
-  const randomIndex = Math.floor(Math.random() * wordsCopy.length);
-  const word = wordsCopy.splice(randomIndex, 1)[0]; // Elimina y devuelve una palabra
-  return word;
 }
 
-// Función para guardar y mostrar los 10 puntajes más altos con palabras jugadas
+// Función para guardar y mostrar los puntajes según el nivel
 function saveHighScore(averageTime, wordCount) {
-  // Obtener los puntajes guardados o crear un array vacío
-  let highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+  const key = gameMode === "easy" ? "easyHighScores" : "hardHighScores"; // Clave según el nivel
+  let highScores = JSON.parse(localStorage.getItem(key)) || [];
 
   // Agregar el nuevo puntaje como un objeto { promedio, palabras }
   highScores.push({ averageTime, wordCount });
@@ -52,22 +69,7 @@ function saveHighScore(averageTime, wordCount) {
   highScores = highScores.slice(0, 10);
 
   // Guardar los puntajes actualizados en localStorage
-  localStorage.setItem("highScores", JSON.stringify(highScores));
-
-  // Mostrar los puntajes en pantalla
-  displayHighScores(highScores);
-}
-
-// Función para mostrar los puntajes en pantalla
-function displayHighScores(scores) {
-  const resultElement = document.getElementById("result");
-
-  let scoreList = "🏆 **Top 10 Puntajes Más Altos:**<br>";
-  scores.forEach((score, index) => {
-    scoreList += `${index + 1}. Promedio: ${score.averageTime.toFixed(2)} segundos | Palabras: ${score.wordCount} <br>`;
-  });
-
-  resultElement.innerHTML = scoreList;
+  localStorage.setItem(key, JSON.stringify(highScores));
 }
 
 // Función para actualizar el temporizador
@@ -106,7 +108,7 @@ nextButton.addEventListener("click", () => {
   wordCount++;
   counterElement.textContent = `Palabras jugadas: ${wordCount}`; // Actualiza el contador
   stopTimer(); // Detiene el temporizador actual
-  
+
   currentWord = getRandomWord(); // Obtiene una nueva palabra
   if (currentWord) {
     wordElement.textContent = currentWord; // Muestra la nueva palabra
