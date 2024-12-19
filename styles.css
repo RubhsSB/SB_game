@@ -15,9 +15,9 @@ body {
 /* Botón R para acceder a resultados */
 #results-button {
   position: absolute;
-  top: 10px; /* Posición arriba */
-  left: 10px; /* Posición izquierda */
-  text-decoration: none; /* Elimina el subrayado */
+  top: 10px;
+  left: 10px;
+  text-decoration: none;
 }
 
 #results-button button {
@@ -67,13 +67,13 @@ button {
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: #28a745; /* Color verde */
+  background-color: #28a745;
   color: white;
   transition: background-color 0.3s ease;
 }
 
 button:hover {
-  background-color: #218838; /* Verde más oscuro al pasar el ratón */
+  background-color: #218838;
 }
 
 button:disabled {
@@ -88,41 +88,19 @@ button:disabled {
   color: #333;
 }
 
-/* Estilo adicional para la página de resultados */
-h1 {
-  color: #007bff;
-  font-size: 36px;
-  margin-bottom: 20px;
-}
-
-#results-container {
-  font-size: 20px;
-  text-align: center;
-  margin-top: 20px;
-}
-
-a button {
-  background-color: #dc3545; /* Botón rojo para "Volver" */
-}
-
-a button:hover {
-  background-color: #c82333;
-}
-
-/* Contenedor de botones para seleccionar el nivel */
+/* Nivel de dificultad */
 #level-selection {
   position: absolute;
   top: 10px;
-  right: 10px; /* Botones en la parte superior derecha */
+  right: 10px;
   display: flex;
-  gap: 10px; /* Espaciado entre los botones */
+  gap: 10px;
 }
 
-/* Botones de nivel */
 #level-selection button {
   font-size: 16px;
   padding: 5px 10px;
-  background-color: #17a2b8; /* Color azul claro */
+  background-color: #ccc;
   color: white;
   border: none;
   border-radius: 5px;
@@ -130,23 +108,10 @@ a button:hover {
   transition: background-color 0.3s ease;
 }
 
-#level-selection button:hover {
-  background-color: #138496; /* Azul más oscuro al pasar el ratón */
+#level-selection button.active {
+  background-color: #28a745;
 }
 
-/* Diferenciar colores para los niveles */
-#easy {
-  background-color: #28a745; /* Verde para nivel fácil */
-}
-
-#easy:hover {
-  background-color: #218838; /* Verde más oscuro */
-}
-
-#hard {
-  background-color: #dc3545; /* Rojo para nivel difícil */
-}
-
-#hard:hover {
-  background-color: #c82333; /* Rojo más oscuro */
+#level-selection button.active:hover {
+  background-color: #218838;
 }
