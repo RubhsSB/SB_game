@@ -1,14 +1,14 @@
 // Lista de palabras
-const words = ["CyC", "Daniel y Alma", "CyC", "YyE", "AyV", "CyC", "Sergio y Katina", "CyC", "Sensual +", "Gto y M", "José y Layla (Mym)", "INTRO", "K_ELDE", "TONIO (brazos, cuello+Disoc, Salir)", "JLAB (salir/end)", "K_ELDE", "JHERSY (salir pasos cambio mano)", "JHERSY pasos", "JHERSY (Giro cambio mano)", "K_ELDE", "Iván y Sarai", "TONIO (cambio posición mano hombro)", "JHERSY (salir/end)", "CyC", "Tonio (Codos / Angel / Andar)", "70'", "Yowke", "Pasitos Elw Adelante/Atrás", "Pasitos Elw Izq/Dcha", "Cambio posición con mano Izq (Marc/Sra)", "Daniel y Alma", "Francia", "Alex y Lais (jóvenes -3+1)", "VyA", "DyY", "JyE", "CyC", "70'", "CyC", "M y Gta", "DyY", "DyY", "ENGAÑO", "P y L", "Yowke", "DyY", "ENGAÑO", "MOLINO juego", "TONIO (enrrollo + saco/peinado)", "SENSUAL Lados", "PATADA", "MATI y SOFI", "MOLINO insta", "E y G", "C y T", "CyC", "GOLPE Elw", "JyE", "INTRO", "E y G", "VALENT", "V y A", "FLECHA", "CyC", "CyC", "CyC", "GERO y MIGLE (cambio pos 360º)", "Cuello (en 6)", "C y T", "E y G", "BRAZOS frame", "JOVENES 70'+ Cuello", "5 cintura abajo", "David", "C y T sens", "C y T sens", "DISOCIACION de PECHO (Enrollada)", "E y G", "CyC", "GAB", "CyC", "C y T", "KENZ y JULY Lanzo brazo atrás", "JyE", "Básico + Salto", "CyC", "E y G", "Pablo y Nat (jóvenes)" , "Otto", "CyC", "ASCENSOR", "JLAB", "JAVI y BELÉN", "JORGE y SANDRA", "JyE", "COLOMBIAN", "DISOCIACION de PECHO (en SOMBRA)" , "CyC", "GIRO 70 Cambio Posición C yT", "GIRO ATRÁS ONDA CyC", "CyC", "CyC", "JLAB", "CyC", "YEIFREN", "CyC", "D y Y", "SENSUAL +", "D y Y", "70´Adelante", "J y E", "A y Yur", "Lado MAMBO", "GAB", "J y E Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", "C y T", "Brazo Lanzo DEBAJO", "JLAB", "DOTORE (Mym)", "ARGETIN", "CANGURO", "P y L Pasos", "ENGAÑO", "CyC", "J y E", "GUITARRA", "SINCOPADO", "Pasos CARLOS"];
+const words = ["CyC", "Daniel y Alma", "YyE", "AyV", "Sergio y Katina", "Sensual +", "Gto y M", "José y Layla (Mym)", "INTRO", "K_ELDE"];
 
 // Variables
-let wordsCopy = []; // Copia de las palabras
+let wordsCopy = [];
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
 let wordCount = 0;
 let timerInterval;
-let gameMode = "easy"; // Nivel por defecto: Fácil
+let gameMode = "easy"; // Nivel por defecto
 
 // Elementos del DOM
 const wordElement = document.getElementById("word");
@@ -22,13 +22,38 @@ const timerElement = document.getElementById("timer");
 // Configurar el nivel del juego
 document.getElementById("easy").addEventListener("click", () => {
   gameMode = "easy";
+  updateLevelButtons();
   alert("Modo Fácil (E) seleccionado.");
 });
 
 document.getElementById("hard").addEventListener("click", () => {
   gameMode = "hard";
+  updateLevelButtons();
   alert("Modo Difícil (H) seleccionado.");
 });
+
+// Función para establecer el botón inicial
+function initializeLevelButtons() {
+  const easyButton = document.getElementById("easy");
+  easyButton.classList.add("active"); // Botón E activo al inicio
+}
+
+// Llamada a la función para inicializar los botones
+initializeLevelButtons();
+
+// Función para actualizar el estilo de los botones
+function updateLevelButtons() {
+  const easyButton = document.getElementById("easy");
+  const hardButton = document.getElementById("hard");
+
+  if (gameMode === "easy") {
+    easyButton.classList.add("active");
+    hardButton.classList.remove("active");
+  } else if (gameMode === "hard") {
+    hardButton.classList.add("active");
+    easyButton.classList.remove("active");
+  }
+}
 
 // Función para iniciar el modo desafío
 function resetWords() {
@@ -38,41 +63,30 @@ function resetWords() {
 // Función para obtener una palabra aleatoria según el nivel
 function getRandomWord() {
   if (gameMode === "easy") {
-    // Modo fácil: Las palabras pueden repetirse
     return words[Math.floor(Math.random() * words.length)];
   } else if (gameMode === "hard") {
-    // Modo difícil: Las palabras no se repiten
     if (wordsCopy.length === 0) {
       wordElement.textContent = "¡Fin del juego! No hay más palabras.";
-      nextButton.disabled = true; // Desactiva el botón Next
+      nextButton.disabled = true;
       finishButton.disabled = true;
-      return null; // Detiene el juego
+      return null;
     }
     const randomIndex = Math.floor(Math.random() * wordsCopy.length);
-    const word = wordsCopy.splice(randomIndex, 1)[0]; // Elimina y devuelve una palabra
-    return word;
+    return wordsCopy.splice(randomIndex, 1)[0];
   }
 }
 
-// Función para guardar y mostrar los puntajes según el nivel
+// Función para guardar los puntajes
 function saveHighScore(averageTime, wordCount) {
-  const key = gameMode === "easy" ? "easyHighScores" : "hardHighScores"; // Clave según el nivel
+  const key = gameMode === "easy" ? "easyHighScores" : "hardHighScores";
   let highScores = JSON.parse(localStorage.getItem(key)) || [];
-
-  // Agregar el nuevo puntaje como un objeto { promedio, palabras }
   highScores.push({ averageTime, wordCount });
-
-  // Ordenar los puntajes de menor a mayor promedio
   highScores.sort((a, b) => a.averageTime - b.averageTime);
-
-  // Mantener solo los 10 mejores puntajes
   highScores = highScores.slice(0, 10);
-
-  // Guardar los puntajes actualizados en localStorage
   localStorage.setItem(key, JSON.stringify(highScores));
 }
 
-// Función para actualizar el temporizador
+// Temporizador
 function startTimer() {
   timerInterval = setInterval(() => {
     const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -80,14 +94,13 @@ function startTimer() {
   }, 100);
 }
 
-// Función para detener el temporizador
 function stopTimer() {
   clearInterval(timerInterval);
 }
 
-// Evento para iniciar el juego
+// Eventos del juego
 playButton.addEventListener("click", () => {
-  resetWords(); // Reinicia la copia de palabras
+  resetWords();
   currentWord = getRandomWord();
   wordElement.textContent = currentWord;
   startTime = Date.now();
@@ -101,30 +114,25 @@ playButton.addEventListener("click", () => {
   startTimer();
 });
 
-// Evento para cambiar a la siguiente palabra
 nextButton.addEventListener("click", () => {
   const endTime = Date.now();
-  totalTime += (endTime - startTime) / 1000; // Acumula el tiempo total
+  totalTime += (endTime - startTime) / 1000;
   wordCount++;
-  counterElement.textContent = `Palabras jugadas: ${wordCount}`; // Actualiza el contador
-  stopTimer(); // Detiene el temporizador actual
-
-  currentWord = getRandomWord(); // Obtiene una nueva palabra
+  counterElement.textContent = `Palabras jugadas: ${wordCount}`;
+  stopTimer();
+  currentWord = getRandomWord();
   if (currentWord) {
-    wordElement.textContent = currentWord; // Muestra la nueva palabra
+    wordElement.textContent = currentWord;
     startTime = Date.now();
-    startTimer(); // Reinicia el temporizador
+    startTimer();
   }
 });
 
-// Evento para finalizar el juego
 finishButton.addEventListener("click", () => {
-  stopTimer(); // Detiene el temporizador
+  stopTimer();
   if (wordCount > 0) {
     const averageTime = totalTime / wordCount;
     resultElement.textContent = `Promedio: ${averageTime.toFixed(2)} segundos por palabra.`;
-
-    // Guardar el puntaje actual con promedio y palabras
     saveHighScore(averageTime, wordCount);
   } else {
     resultElement.textContent = "No has jugado todavía.";
