@@ -14,18 +14,36 @@
   <script>
     // Mostrar los resultados guardados en localStorage
     const resultsContainer = document.getElementById("results-container");
-    const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
 
-    if (highScores.length > 0) {
-      let scoreList = "<ol>";
-      highScores.forEach(score => {
-        scoreList += `<li>Promedio: ${score.averageTime.toFixed(2)} segundos | Palabras: ${score.wordCount}</li>`;
+    // Recuperar resultados según el nivel (Easy o Hard)
+    const easyScores = JSON.parse(localStorage.getItem("easyHighScores")) || [];
+    const hardScores = JSON.parse(localStorage.getItem("hardHighScores")) || [];
+
+    // Construir HTML para los puntajes
+    let scoreHTML = "";
+
+    if (easyScores.length > 0) {
+      scoreHTML += "<h2>🔵 Nivel Fácil (E)</h2><ol>";
+      easyScores.forEach(score => {
+        scoreHTML += `<li>Promedio: ${score.averageTime.toFixed(2)} segundos | Palabras: ${score.wordCount}</li>`;
       });
-      scoreList += "</ol>";
-      resultsContainer.innerHTML = scoreList;
+      scoreHTML += "</ol>";
     } else {
-      resultsContainer.innerHTML = "<p>No hay puntajes guardados aún.</p>";
+      scoreHTML += "<h2>🔵 Nivel Fácil (E)</h2><p>No hay puntajes guardados aún.</p>";
     }
+
+    if (hardScores.length > 0) {
+      scoreHTML += "<h2>🔴 Nivel Difícil (H)</h2><ol>";
+      hardScores.forEach(score => {
+        scoreHTML += `<li>Promedio: ${score.averageTime.toFixed(2)} segundos | Palabras: ${score.wordCount}</li>`;
+      });
+      scoreHTML += "</ol>";
+    } else {
+      scoreHTML += "<h2>🔴 Nivel Difícil (H)</h2><p>No hay puntajes guardados aún.</p>";
+    }
+
+    // Mostrar resultados
+    resultsContainer.innerHTML = scoreHTML;
   </script>
 </body>
 </html>
