@@ -1,17 +1,18 @@
 // Listas de palabras
 const words = [
   "CyC (Host cambio posición)", "Daniel y Alma", "CyC (Host círculo Dcha)", "CyT Sensual", "JyE (diagonal Cintura)", "EyG (abro  y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CYC (lanzo atrás en 3)", "JHERSY - Molino",
-  "JHERSY - Preparar pos Cerrada", "Sergio y Katina (Bassmnt)", "EyG (Cats giro 2 manos)", "Alberto y María (Cats)", "YyE", "JHERSY (preparo sensual + mano Follow)",
-  "JHERSY (preparo sensual + lanzo en 4 y salgo)", "DIAGONAL salida", "AyV", "CyC (Segovia)", "Sergio y Katina (Host)", "Sensual +", "Gto y M",
+  "JHERSY - Preparar pos Cerrada", "SERGIO y KATINA (Círculo y tiro atrás - Bassmnt)", "EyG (Cats giro 2 manos)", "Alberto y María (Cats)", "YyE", "JHERSY (preparo sensual + mano Follow)",
+  "JHERSY (preparo sensual + lanzo en 4 y salgo)", "DIAGONAL salida", "AyV", "CyC (Segovia)", "Sergio y Katina (Host)", "Sensual +", "GtoyM",
   "José y Layla (Mymo)", "INTRO Carlos", "INTRO Carlos","INTRO Carlos", "K_ELDE Intro", "K_ELDE mano en 5",  "TONIO (brazos, cuello+Disoc, Salir)", "JLAB (salir/end)", "Iván y Sarai", 
-  "TONIO (cambio posición mano hombro)", "K_ELDE brazos Izq", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", "JHERSY (Giro cambio mano)", "K_ELDE brazos Dcha", 
-  "Iván y Sarai", "TONIO (cambio posición mano hombro)", "JHERSY (salir/end)", "CyC", "Tonio (Codos / Angel / Andar)", "70'", "Yowke", "Pasitos Elw Adelante/Atrás", "Pasitos Elw Izq/Dcha", "Cambio posición con mano Izq (Marc/Sra)", "Daniel y Alma", 
-  "Francia", "Alex y Lais (jóvenes -3+1)", "VyA", "DyY", "JyE", "CyC", "70'", "CyC", "M y Gta", "DyY", "DyY", "ENGAÑO", "PyL", "Yowke", "DyY", "ENGAÑO", "MOLINO juego", "TONIO (enrrollo + saco/peinado)", "SENSUAL Lados", "PATADA", "MATI y SOFI", 
-  "MOLINO insta", "EyG", "TyC", "CyC", "GOLPE Elw", "JyE", "INTRO", "EyG", "VALENT", "VyA", "FLECHA", "CyC", "CyC", "CyC", "GERO y MIGLE (cambio pos 360º)", "Cuello (en 6)", "CyT", "EyG", "BRAZOS frame", "JOVENES 70'+ Cuello", "5 cintura abajo", 
-  "David", "CyT sens", "CyT sens", "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC", "GAB", "CyC", "CyT", "KENZ y JULY Lanzo brazo atrás", "JyE", "Básico + Salto", "CyC", "EyG", "Pablo y Nat (jóvenes)", "Otto", "CyC", "ASCENSOR", "JLAB", 
-  "JAVI y BELÉN", "JORGE y SANDRA", "JyE", "COLOMBIAN", "DISOCIACION de PECHO (en SOMBRA)" , "CyC", "GIRO 70 Cambio Posición CyT", "GIRO ATRÁS ONDA CyC", "CyC", "CyC", "JLAB", "CyC", "YEIFREN", "CyC", "DyY", "SENSUAL +", "DyY", "70´Adelante", 
-  "JyE", "A y Yur", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", "CyT", "Brazo Lanzo DEBAJO", "JLAB", "DOTORE (Mym)", "ARGETIN", "CANGURO", "PyL Pasos", "ENGAÑO", "CyC", "JyE", "GUITARRA", 
+ "K_ELDE brazos Izq", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", "JHERSY (Giro cambio mano)", "K_ELDE brazos Dcha", 
+  "Iván y Sarai", "TONIO (cambio posición mano hombro)", "JHERSY (salir/end)", "CyC", "Tonio (Codos / Angel / Andar)", "70'", "Yowke", "Pasitos Elw Adelante/Atrás", "Pasitos Elw Izq/Dcha", "Cambio posición con mano Izq (Marc/Sra)", 
+  "FRANCIA", "Alex y Lais (jóvenes -3+1)", "VyA", "DyY Separo en 4 y al hombro - SanSebastián", "JyE (preparo salida en 8)", "CyC Mambo Manos Hombro", "70'", "CyC", "M y Gta", "DyY Bajo cabeza - Cats", "DyY (Giro mano escápula - Bassment)", "ENGAÑO", "PyL", "Yowke", "DyY Freno + contra + brazo Izq al hombro", "ENGAÑO", "MOLINO juego", "TONIO (enrrollo + saco/peinado)", "SENSUAL Lados", "PATADA", "MATI y SOFI", 
+  "MOLINO insta", "EyG", "CvT", "CyC Freno en2 y alargo 3-4", "GOLPE Elw", "JyE Diagonal + Giro", "INTRO", "EyG", "VALENT", "VyA", "FLECHA", "CyC", "CyC", "CyC", "GERO y MIGLE (cambio pos 360º)", "Cuello (en 6)", "CyT (3 giros con Cuello", "EyG", "BRAZOS frame", "JOVENES 70'+ Cuello", "5 cintura abajo", 
+  "David", "CyT sens Péndulo", "CyT sens Onda", "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC en 4 de espaldas", "GAB", "CyC", "CyT (Cambio + 70´", "KENZ y JULY Lanzo brazo atrás", "JyE Ando atrás", "Básico + Salto", "CyC", "EyG", "Pablo y Nat (jóvenes)", "Otto", "CyC", "ASCENSOR", "JLAB Muñeco brazos", 
+  "JAVI y BELÉN", "JORGE y SANDRA", "JyE Enrollo x 2", "COLOMBIAN", "DISOCIACION de PECHO (en SOMBRA)" , "CyC", "GIRO 70 Cambio Posición CyT", "GIRO ATRÁS ONDA CyC", "CyC", "CyC", "JLAB Doble giro + 70´", "CyC", "YEIFREN", "CyC", "DyY (onda + Círculo)", "SENSUAL +", "DyY (Giro + Freno en 6)", "70´Adelante", 
+  "JyE", "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", "CyT", "Brazo Lanzo DEBAJO", "JLAB", "DOTORE (Mym)", "ARGETIN", "CANGURO", "PyL Pasos", "ENGAÑO", "CyC", "JyE", "GUITARRA", 
   "SINCOPADO", "Pasos CARLOS"
+  "STEPHAN y NEVI (freno en 3 y horiz)", "SERGIO y KATINA (molino en 1 - Casa Campo)",
 ];
 const wordsCustom = [
   "CyC (Host cambio posición)", "Daniel y Alma", "CyC (Host círculo Dcha)", "CyT Sensual", "JyE (diagonal Cintura)", "EyG (abro  y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CYC (lanzo atrás en 3)", "JHERSY - Molino",
