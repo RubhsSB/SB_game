@@ -11,8 +11,7 @@ const words = [
   "David", "CyT sens Péndulo", "CyT sens Onda", "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC en 4 de espaldas", "GAB", "CyC", "CyT (Cambio + 70´", "KENZ y JULY Lanzo brazo atrás", "JyE Ando atrás", "Básico + Salto", "CyC", "EyG", "Pablo y Nat (jóvenes)", "Otto", "CyC", "ASCENSOR", "JLAB Muñeco brazos", 
   "JAVI y BELÉN", "JORGE y SANDRA", "JyE Enrollo x 2", "COLOMBIAN", "DISOCIACION de PECHO (en SOMBRA)" , "CyC", "GIRO 70 Cambio Posición CyT", "GIRO ATRÁS ONDA CyC", "CyC", "CyC", "JLAB Doble giro + 70´", "CyC", "YEIFREN", "CyC", "DyY (onda + Círculo)", "SENSUAL +", "DyY (Giro + Freno en 6)", "70´Adelante", 
   "JyE", "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", "CyT", "Brazo Lanzo DEBAJO", "JLAB", "DOTORE (Mym)", "ARGETIN", "CANGURO", "PyL Pasos", "ENGAÑO", "CyC", "JyE", "GUITARRA", 
-  "SINCOPADO", "Pasos CARLOS"
-  "STEPHAN y NEVI (freno en 3 y horiz)", "SERGIO y KATINA (molino en 1 - Casa Campo)"
+  "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "SERGIO y KATINA (molino en 1 - Casa Campo)"
 ];
 const wordsCustom = [
   "CyC (Host cambio posición)", "Daniel y Alma", "CyC (Host círculo Dcha)", "CyT Sensual", "JyE (diagonal Cintura)", "EyG (abro  y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CYC (lanzo atrás en 3)", "JHERSY - Molino",
