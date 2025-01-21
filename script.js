@@ -55,9 +55,9 @@ customButton.addEventListener("click", () => {
   updateLevelButtons();
 });
 
-// Función para inicializar los botones de nivel
+// Inicializa los botones de nivel
 function initializeLevelButtons() {
-  easyButton.classList.add("active"); // Nivel predeterminado: Easy
+  easyButton.classList.add("active");
   hardButton.classList.remove("active");
   customButton.classList.remove("active");
 }
@@ -65,7 +65,7 @@ function initializeLevelButtons() {
 // Llamada inicial para configurar los botones
 initializeLevelButtons();
 
-// Función para actualizar el estilo de los botones
+// Actualiza el estilo de los botones de nivel
 function updateLevelButtons() {
   easyButton.classList.remove("active");
   hardButton.classList.remove("active");
@@ -80,15 +80,18 @@ function updateLevelButtons() {
   }
 }
 
-// Función para iniciar el modo desafío
+// Inicializa las palabras del modo actual
 function resetWords() {
-  wordsCopy = gameMode === "easy" ? [...words] : [];
+  if (gameMode === "easy") {
+    wordsCopy = [...words];
+  } else if (gameMode === "custom") {
+    wordsCopy = [...wordsCustom];
+  }
 }
 
-// Función para obtener una palabra aleatoria según el nivel
+// Obtiene una palabra aleatoria según el nivel
 function getRandomWord() {
-  if (gameMode === "easy") {
-    // Nivel Easy: No se repiten palabras
+  if (gameMode === "easy" || gameMode === "custom") {
     if (wordsCopy.length === 0) {
       wordElement.textContent = "¡Fin del juego! No hay más palabras.";
       nextButton.disabled = true;
@@ -98,15 +101,11 @@ function getRandomWord() {
     const randomIndex = Math.floor(Math.random() * wordsCopy.length);
     return wordsCopy.splice(randomIndex, 1)[0];
   } else if (gameMode === "hard") {
-    // Nivel Hard: Las palabras pueden repetirse
     return words[Math.floor(Math.random() * words.length)];
-  } else if (gameMode === "custom") {
-    // Nivel Custom: Solo palabras seleccionadas
-    return wordsCustom[Math.floor(Math.random() * wordsCustom.length)];
   }
 }
 
-// Función para guardar los puntajes
+// Guarda los puntajes
 function saveHighScore(averageTime, wordCount) {
   const key =
     gameMode === "easy"
