@@ -22,6 +22,7 @@ const wordsCustom = [
 
 // Variables
 let wordsCopy = [];
+let recentWordsCustom = []; // Últimas 3 palabras en modo Custom
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
@@ -55,9 +56,9 @@ customButton.addEventListener("click", () => {
   updateLevelButtons();
 });
 
-// Inicializa los botones de nivel
+// Función para inicializar los botones de nivel
 function initializeLevelButtons() {
-  easyButton.classList.add("active");
+  easyButton.classList.add("active"); // Nivel predeterminado: Easy
   hardButton.classList.remove("active");
   customButton.classList.remove("active");
 }
@@ -65,7 +66,7 @@ function initializeLevelButtons() {
 // Llamada inicial para configurar los botones
 initializeLevelButtons();
 
-// Actualiza el estilo de los botones de nivel
+// Función para actualizar el estilo de los botones
 function updateLevelButtons() {
   easyButton.classList.remove("active");
   hardButton.classList.remove("active");
@@ -80,18 +81,15 @@ function updateLevelButtons() {
   }
 }
 
-// Inicializa las palabras del modo actual
+// Función para iniciar el modo desafío
 function resetWords() {
-  if (gameMode === "easy") {
-    wordsCopy = [...words];
-  } else if (gameMode === "custom") {
-    wordsCopy = [...wordsCustom];
-  }
+  wordsCopy = gameMode === "custom" ? [...wordsCustom] : [...words];
+  recentWordsCustom = []; // Reiniciar lista de últimas palabras en Custom
 }
 
-// Obtiene una palabra aleatoria según el nivel
+// Función para obtener una palabra aleatoria según el nivel
 function getRandomWord() {
-  if (gameMode === "easy" || gameMode === "custom") {
+  if (gameMode === "easy") {
     if (wordsCopy.length === 0) {
       wordElement.textContent = "¡Fin del juego! No hay más palabras.";
       nextButton.disabled = true;
@@ -102,10 +100,26 @@ function getRandomWord() {
     return wordsCopy.splice(randomIndex, 1)[0];
   } else if (gameMode === "hard") {
     return words[Math.floor(Math.random() * words.length)];
+  } else if (gameMode === "custom") {
+    // Nivel Custom: Evitar repeticiones en las últimas 3 palabras
+    let validWords = wordsCustom.filter(word => !recentWordsCustom.includes(word));
+    if (validWords.length === 0) {
+      validWords = [...wordsCustom];
+    }
+    const randomIndex = Math.floor(Math.random() * validWords.length);
+    const selectedWord = validWords[randomIndex];
+
+    // Actualizar recentWordsCustom
+    recentWordsCustom.push(selectedWord);
+    if (recentWordsCustom.length > 3) {
+      recentWordsCustom.shift(); // Mantener solo las últimas 3 palabras
+    }
+
+    return selectedWord;
   }
 }
 
-// Guarda los puntajes
+// Función para guardar los puntajes
 function saveHighScore(averageTime, wordCount) {
   const key =
     gameMode === "easy"
@@ -159,6 +173,10 @@ nextButton.addEventListener("click", () => {
     wordElement.textContent = currentWord;
     startTime = Date.now();
     startTimer();
+  } else {
+    wordElement.textContent = "¡Fin del juego! No hay más palabras.";
+    nextButton.disabled = true;
+    finishButton.disabled = true;
   }
 });
 
