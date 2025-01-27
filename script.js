@@ -9,15 +9,15 @@ const words = [
  "FRANCIA", "Alex y Lais (jóvenes -3+1)", "VyA (Cambio mano + Freno en 6)", "DyY Separo en 4 y al hombro - SanSebastián", "JyE (preparo salida en 8)", "CyC Mambo Manos Hombro", "70'", "CyC (70´ + mano hombro para sombra)", 
  "M y Gta", "DyY Bajo cabeza - Cats", "DyY (Giro mano escápula - Bassment)", "ENGAÑO", "PyL", "Yowke", "DyY Freno + contra + brazo Izq al hombro", "ENGAÑO", "MOLINO juego", "TONIO (enrrollo + saco/peinado)", "SENSUAL Lados", 
  "PATADA", "MATI y SOFI (Lanzo brazo atrás)", "MOLINO insta", "EyG (Giro LED cintura)", "CvT", "CyC Freno en 2 y alargo 3-4", "GOLPE Elw", "JyE Diagonal + Giro", "INTRO", "EyG (Lanzo y Diagonal)", "VALENT", 
- "VyA (Freno hombro en 2)", "FLECHA", "CyC (Giro en Diagonal + abrazo cuellos)", "CyC (Olas Izq + Molino Follow", "CyC (Giro en diagonal)", "CyC (Diagonal + paseo)", "GERO y MIGLE (cambio pos 360º)", 
+ "VyA (Freno hombro en 2)", "FLECHA", "CyC (Giro en Diagonal + abrazo cuellos)", "CyC (Olas Izq + Molino Follow)", "CyC (Giro en diagonal)", "CyC (Diagonal + paseo)", "GERO y MIGLE (cambio pos 360º)", 
  "Cuello (en 6)", "CyT (3 giros con Cuello)", "EyG (Rompo y abajo - SanSebastián)", "BRAZOS frame", "JOVENES 70'+ Cuello", "5 cintura abajo", "VyA", "David", "CyT sens Péndulo", "CyT sens Onda", 
  "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC en 4 de espaldas", "GAB", "CyC (andar atrás)", "CyT (Cambio + 70´)", "KENZ y JULY Lanzo brazo atrás", "JyE Ando atrás", "Básico + Salto", 
  "CyC (Giro en diagonal + peino + abajo)", "EyG", "PABLO y NAT (jóvenes)", "OTTO", "CyC", "ASCENSOR", "JLAB Muñeco brazos", "JAVI y BELÉN (Host)", "JORGE y SANDRA", "JyE Enrollo x 2", "COLOMBIAN", 
- "DISOCIACION de PECHO (en SOMBRA)", "CyC", "CyT GIRO 70 Cambio Posición", "CyC (!/2 Diagonal + giro atrás + paseo)", "CyC", "CyC", "JLAB Doble giro + 70´", "CyC", "YEIFREN", "CyC (Brazos Izq y Dcho hombros)", 
+ "DISOCIACION de PECHO (en SOMBRA)", "CyC", "CyT GIRO 70 Cambio Posición", "CyC (1/2 Diagonal + giro atrás + paseo)", "CyC", "CyC", "JLAB Doble giro + 70´", "CyC", "YEIFREN", "CyC (Brazos Izq y Dcho hombros)", 
  "DyY (onda + Círculo)", "SENSUAL +", "DyY (Giro + Freno en 6)", "70´Adelante", "JyE", "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", 
  "CyT (mano cuello LED en 8)", "Brazo Lanzo DEBAJO", "JLAB (Sensual/Giros)", "DOTORE (Mym)", "ARGETIN", "CANGURO", "PyL Pasos", "ENGAÑO", "CyC", "JyE", "GUITARRA", "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", 
  "SERGIO y KATINA (molino en 1 Casa Campo)", "EyG Giro Espalda con Espalda", "DyY (Giro en 8 + Lanzo izq)", "CyT (Balanceo)", "CyT (Péndulo)", "CyT (sensual meter pierna)", "CyT (Tumbar Follow)", "DyY (Cats Giro en 5 + Brazos)", 
- "IVAN Y SARAI (3 sensual + Cadera)", "Diagonal - JHersey", "Diagonal - JHersey", "CyC (Giro en Diagonal + abrazo cuellos)"
+ "IVAN Y SARAI (3 sensual + Cadera)", "Diagonal JHersey", "Diagonal JHersey", "CyC (Giro en Diagonal + abrazo cuellos)"
 ];
 const wordsCustom = [
  "CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
@@ -27,7 +27,7 @@ const wordsCustom = [
  "CyC Mambo Manos Hombro", "70'", "DyY Bajo cabeza - Cats", "DyY (Giro mano escápula - Bassment)", "ENGAÑO", "DyY Freno + contra + brazo Izq al hombro", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", "Cuello (en 6)", "CyT (3 giros con Cuello)", 
  "5 cintura abajo", "CyT sens Péndulo", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE Ando atrás", "PABLO y NAT (jóvenes)", "OTTO", "ASCENSOR", "JLAB Muñeco brazos", "JORGE y SANDRA", "JyE Enrollo x 2", "COLOMBIAN", 
  "DISOCIACION de PECHO (en SOMBRA)", "JLAB Doble giro + 70´", "DyY (onda + Círculo)", "SENSUAL +", "70´Adelante", "JyE", "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "CANGURO", "GUITARRA", 
- "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "CyC (Diagonal + paseo)", "Diagonal - JHersey"
+ "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "CyC (Diagonal + paseo)", "Diagonal JHersey"
 ];
 
 // Variables
