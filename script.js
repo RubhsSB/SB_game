@@ -33,7 +33,7 @@ const wordsCustom = [
 
 // Variables
 let wordsCopy = [];
-let recentWordsCustom = []; // Últimas 3 palabras en modo Custom
+let recentWordsCustom = []; // Últimas 15 palabras en modo Custom
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
@@ -112,7 +112,7 @@ function getRandomWord() {
   } else if (gameMode === "hard") {
     return words[Math.floor(Math.random() * words.length)];
   } else if (gameMode === "custom") {
-    // Nivel Custom: Evitar repeticiones en las últimas 3 palabras
+    // Nivel Custom: Evitar repeticiones en las últimas 15 palabras
     let validWords = wordsCustom.filter(word => !recentWordsCustom.includes(word));
     if (validWords.length === 0) {
       validWords = [...wordsCustom];
@@ -122,8 +122,8 @@ function getRandomWord() {
 
     // Actualizar recentWordsCustom
     recentWordsCustom.push(selectedWord);
-    if (recentWordsCustom.length > 3) {
-      recentWordsCustom.shift(); // Mantener solo las últimas 3 palabras
+    if (recentWordsCustom.length > 15) {
+      recentWordsCustom.shift(); // Mantener solo las últimas 15 palabras
     }
 
     return selectedWord;
