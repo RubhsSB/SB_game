@@ -114,9 +114,10 @@ function getRandomWord() {
   } else if (gameMode === "custom") {
     // Nivel Custom: Evitar repeticiones en las últimas 15 palabras
     let validWords = wordsCustom.filter(word => !recentWordsCustom.includes(word));
-    if (validWords.length === 0) {
-      validWords = [...wordsCustom];
-    }
+   if (validWords.length === 0) {
+    recentWordsCustom.shift(); // Elimina la palabra más antigua y vuelve a filtrar
+    validWords = wordsCustom.filter(word => !recentWordsCustom.includes(word));
+     }
     const randomIndex = Math.floor(Math.random() * validWords.length);
     const selectedWord = validWords[randomIndex];
 
