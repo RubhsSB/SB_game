@@ -16,8 +16,8 @@ const words = [
  "DyY (Onda + Círculo)", "SENSUAL +", "DyY (Giro + Freno en 6)", "70´Adelante", "JyE", "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", 
  "CyT (mano cuello LED en 8)", "Brazo Lanzo DEBAJO", "JLAB (Sensual/Giros)", "DOTORE (Mym)", "ARGETIN", "CANGURO", "PyL Pasos", "ENGAÑO", "CyC", "JyE", "GUITARRA", "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", 
  "SERGIO y KATINA (molino en 1 Casa Campo)", "EyG Giro Espalda con Espalda", "DyY (Giro en 8 + Lanzo izq)", "CyT (Balanceo)", "CyT (Péndulo)", "CyT (sensual meter pierna)", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", 
- "IVAN Y SARAI (3 sensual + Cadera)", "Diagonal JHersey", "Diagonal JHersey", "CyC (Giro en Diagonal + abrazo cuello)", "EyG (5 gira Foll + 7 gira Led)", "EyG (1/2 Sensual + disoc Follo)", "Básico (Grande + Pequeño)", 
- "Básico (Grande/Pequeño + Hombros + Caderas)", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "CyC (Host - Peino Follow + Me peino)", "CyC (Mymo)"
+ "IVAN Y SARAI (3 sensual + Cadera)", "Diagonal JHersey", "Diagonal JHersey", "CyC (Giro en Diagonal + abrazo cuello)", "EyG (5 gira Foll + 7 gira Led)", "EyG (1/2 Sensual + disoc Follow)", "Básico (Grande + Pequeño)", 
+ "Básico (Grande/Pequeño + Hombros + Caderas)", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "CyC (Host - Peino Follow + Me peino)", "CyC (Mymo)", "Giros", "Giros"
 ];
 const wordsCustom = [
 "CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
@@ -27,8 +27,8 @@ const wordsCustom = [
  "CyC (Mambo Manos Hombro)", "70'", "DyY (Bajo cabeza - Cats)", "DyY (Giro mano escápula - Bassment)", "ENGAÑO", "DyY (Freno + contra + brazo Izq al hombro)", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", "Cuello (en 6)", "CyT (3 giros con Cuello)", 
  "5 cintura abajo", "CyT sens Péndulo", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE Ando atrás", "PABLO y NAT (jóvenes)", "OTTO", "ASCENSOR", "JLAB Muñeco brazos", "JORGE y SANDRA", "JyE Enrollo x 2", "COLOMBIAN", 
  "DISOCIACION de PECHO (en SOMBRA)", "JLAB Doble giro + 70´", "DyY (Onda + Círculo)", "SENSUAL +", "70´Adelante", "JyE", "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "CANGURO", "GUITARRA", 
- "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "CyC (Diagonal + paseo)", "Diagonal JHersey", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", "IVAN Y SARAI (3 sensual + Cadera)", "EyG (1/2 Sensual + disoc Follo)", 
- "Básico (Grande/Pequeño + Hombros + Caderas)", "D e Inés", "Brazo Lanzo DEBAJO", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "CyC (Host - Peino Follow + Me peino)"
+ "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "CyC (Diagonal + paseo)", "Diagonal JHersey", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", "IVAN Y SARAI (3 sensual + Cadera)", "EyG (1/2 Sensual + disoc Follow)", 
+ "Básico (Grande/Pequeño + Hombros + Caderas)", "D e Inés", "Brazo Lanzo DEBAJO", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "CyC (Host - Peino Follow + Me peino)", "Giros", "Giros"
 ];
 
 // Variables
