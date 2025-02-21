@@ -18,8 +18,8 @@ const words = [
  "SERGIO y KATINA (molino en 1 Casa Campo)", "EyG Giro Espalda con Espalda", "DyY (Follow Gira en 8 + Lanzo izq)", "CyT (Balanceo)", "CyT (Péndulo)", "CyT (sensual meter pierna)", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", 
  "IVAN Y SARAI (3 sensual + Cadera)", "Diagonal JHersey", "Diagonal JHersey", "CyC (Giro en Diagonal + abrazo cuello)", "EyG (5 gira Foll + 7 gira Led)", "EyG (1/2 Sensual + disoc Follow)", "Básico (Grande + Pequeño)", 
  "Básico (Grande/Pequeño + Hombros + Caderas)", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "CyC (Host - Peino Follow + Me peino)", "CyC (Mymo)", "Giros", "Giros", "DyY (Arriba para Diagonal + Contra en 5)", "CyC (Host 70´+ sombra Follow)",
- "EyG (Cambio posición + Giro + Lanzo)",  "DyY (Led giro atrás en 1 + Onda + Sobra)", "CyC (Host - Diagonal con pasos)", "Salida Instagram Giro espalda Led", "Giro Foll en 5 + Giro Led en 7", 
- "JHersey - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual"
+ "EyG (Cambio posición + Giro + Lanzo)",  "DyY (Led giro atrás en 1 + Onda + Sombra)", "CyC (Host - Diagonal con pasos)", "Salida Instagram Giro espalda Led", "Giro Foll en 5 + Giro Led en 7", 
+ "JHersey - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual",  "DyY (OndaS - Tiempo normal)", "DyY (OndaS - Tiempo Follow)", "DyY (OndaS - en Sombra Follow)",  "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)"
 ];
 const wordsCustom = [
 "CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
@@ -31,8 +31,9 @@ const wordsCustom = [
  "DISOCIACION de PECHO (en SOMBRA)", "JLAB Doble giro + 70´", "DyY (Onda + Círculo)", "SENSUAL +", "70´Adelante", "JyE", "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE Giro CUELLO", "DISOCIACION de PECHO (pos CERRADA)", "CANGURO", "GUITARRA", 
  "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "CyC (Diagonal + paseo)", "Diagonal JHersey", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", "IVAN Y SARAI (3 sensual + Cadera)", "EyG (1/2 Sensual + disoc Follow)", 
  "Básico (Grande/Pequeño + Hombros + Caderas)", "D e Inés", "Brazo Lanzo DEBAJO", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "CyC (Host - Peino Follow + Me peino)", "Giros", "Giros", "CyC (Giro en Diagonal + abrazo cuello)", 
-"SERGIO y KATINA (molino en 1 Casa Campo)", "DyY (Arriba para Diagonal + Contra en 5)", "EyG (Cambio posición + Giro + Lanzo)",  "DyY (Led giro atrás en 1 + Onda + Sobra)", "CyC (Host - Diagonal con pasos)", "Salida Instagram Giro espalda Led", 
- "Giro Foll en 5 + Giro Led en 7", "JHersey - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual"
+"SERGIO y KATINA (molino en 1 Casa Campo)", "DyY (Arriba para Diagonal + Contra en 5)", "EyG (Cambio posición + Giro + Lanzo)",  "DyY (Led giro atrás en 1 + Onda + Sombra)", "CyC (Host - Diagonal con pasos)", "Salida Instagram Giro espalda Led", 
+ "Giro Foll en 5 + Giro Led en 7", "JHersey - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual", "DyY (OndaS - Tiempo normal)", "DyY (OndaS - Tiempo Follow)", "DyY (OndaS - en Sombra Follow)", 
+ "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)"
 ];
 
 // Variables
