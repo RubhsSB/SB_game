@@ -37,11 +37,11 @@ const wordsCustom = [
  "Giro Foll en 5 + Giro Led en 7", "JHersey - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual", "DyY (Onda S prep decha - Tiempo normal)", "DyY (Onda S prep decha- Tiempo Follow)", "DyY (Onda S prep decha - en Sombra Follow)",
  "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)", "VyA (2 Preparo y abro + 4 Giro Follow - Segovia)", "CyC (½ Diagonal + Preparo en 6 + saco Follow + Lid sombra Segovia)",  "DyY (Lanzo + peino + sombra - Segovia)", 
  "CyC (Rompo y atrás + desplazo Follow - Segovia)", "DyY (5 Enrollo + Onla lenta + Salgo en 4 + contra Follow en 5 y 6 y mano escápula - Segovia)", "CyC (Diagonal freno Follow en 3 + piso punta atrás - Segovia)", "DyY (Onda en Sombra Follow prep decha)"
-];
+]
 
 // Variables
 let wordsCopy = [];
-let recentWordsCustom = []; // Últimas 20 palabras en modo Custom
+let recentWords = []; // Últimas 15 palabras en Easy y Custom
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
@@ -104,15 +104,14 @@ function shuffleArray(array) {
 function resetWords() {
   if (gameMode === "easy") {
     wordsCopy = [...words];
-    shuffleArray(wordsCopy); // Barajar las palabras en modo Easy
   } else if (gameMode === "custom") {
     wordsCopy = [...wordsCustom];
-    shuffleArray(wordsCopy); // Barajar las palabras en modo Custom
-    recentWordsCustom = []; // Reiniciar la lista de las últimas palabras
   }
+  shuffleArray(wordsCopy);
+  recentWords = []; // Reiniciar la lista de las últimas palabras
 }
 
-// Función para obtener una palabra aleatoria según el nivel
+// Función para obtener una palabra aleatoria evitando repeticiones recientes
 function getRandomWord() {
   if (wordsCopy.length === 0) {
     wordElement.textContent = "¡Fin del juego! No hay más palabras.";
@@ -121,24 +120,24 @@ function getRandomWord() {
     return null;
   }
 
-  if (gameMode === "easy") {
-    return wordsCopy.splice(0, 1)[0]; // Tomar la primera palabra barajada
-  } else if (gameMode === "custom") {
-    let validWords = wordsCopy.filter(word => !recentWordsCustom.includes(word));
+  let validWords = wordsCopy.filter(word => !recentWords.includes(word));
 
-    if (validWords.length === 0) {
-      validWords = [...wordsCopy]; // Si ya no hay palabras nuevas, permitimos repetir
-    }
-
-    const selectedWord = validWords.splice(0, 1)[0];
-
-    recentWordsCustom.push(selectedWord);
-    if (recentWordsCustom.length > 20) {
-      recentWordsCustom.shift();
-    }
-
-    return selectedWord;
+  // Si todas las palabras han sido usadas en las últimas 15, permitimos repetir pero reordenamos
+  if (validWords.length === 0) {
+    shuffleArray(wordsCopy); // Mezclar de nuevo
+    validWords = [...wordsCopy];
   }
+
+  // Seleccionar aleatoriamente de las palabras disponibles
+  const selectedWord = validWords.shift(); // Tomar la primera tras barajar
+
+  // Actualizar el historial de palabras recientes
+  recentWords.push(selectedWord);
+  if (recentWords.length > 15) {
+    recentWords.shift();
+  }
+
+  return selectedWord;
 }
 
 // Función para guardar los puntajes
