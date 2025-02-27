@@ -41,7 +41,7 @@ const wordsCustom = [
 
 // Variables
 let wordsCopy = [];
-let recentWords = []; // Palabras usadas recientemente
+let recentWords = []; // Historial de últimas 20 palabras usadas
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
@@ -108,9 +108,10 @@ function resetWords() {
     wordsCopy = [...wordsCustom];
   }
   
-  shuffleArray(wordsCopy); // Mezclar palabras varias veces
-  shuffleArray(wordsCopy);
-  shuffleArray(wordsCopy);
+  // Mezclar varias veces para asegurar aleatoriedad
+  for (let i = 0; i < 5; i++) {
+    shuffleArray(wordsCopy);
+  }
   
   recentWords = []; // Reiniciar historial de palabras recientes
 }
@@ -134,13 +135,13 @@ function getRandomWord() {
   const randomIndex = Math.floor(Math.random() * validWords.length);
   const selectedWord = validWords[randomIndex];
 
-  // Eliminar palabra de la lista para no repetir
+  // Eliminar palabra de la lista para no repetir hasta el final del ciclo
   wordsCopy = wordsCopy.filter(word => word !== selectedWord);
 
   // Registrar en el historial de palabras recientes
   recentWords.push(selectedWord);
-  if (recentWords.length > 15) {
-    recentWords.shift(); // Mantener solo las últimas 15
+  if (recentWords.length > 20) {
+    recentWords.shift(); // Mantener solo las últimas 20 palabras
   }
 
   return selectedWord;
