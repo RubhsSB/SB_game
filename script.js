@@ -41,7 +41,7 @@ const wordsCustom = [
 
 // Variables
 let wordsCopy = [];
-let recentWords = []; // Últimas 15 palabras en Easy y Custom
+let recentWords = []; // Palabras usadas recientemente
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
@@ -92,7 +92,7 @@ function updateLevelButtons() {
   }
 }
 
-// Función para barajar un array (Fisher-Yates Shuffle)
+// Función para barajar un array usando Fisher-Yates (mezcla profunda)
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -100,41 +100,47 @@ function shuffleArray(array) {
   }
 }
 
-// Función para iniciar el modo desafío con palabras barajadas
+// Función para iniciar el modo desafío con palabras aleatorias
 function resetWords() {
   if (gameMode === "easy") {
     wordsCopy = [...words];
   } else if (gameMode === "custom") {
     wordsCopy = [...wordsCustom];
   }
+  
+  shuffleArray(wordsCopy); // Mezclar palabras varias veces
   shuffleArray(wordsCopy);
-  recentWords = []; // Reiniciar la lista de las últimas palabras
+  shuffleArray(wordsCopy);
+  
+  recentWords = []; // Reiniciar historial de palabras recientes
 }
 
-// Función para obtener una palabra aleatoria evitando repeticiones recientes
+// Función para obtener una palabra aleatoria evitando repeticiones
 function getRandomWord() {
   if (wordsCopy.length === 0) {
-    wordElement.textContent = "¡Fin del juego! No hay más palabras.";
-    nextButton.disabled = true;
-    finishButton.disabled = true;
-    return null;
+    resetWords(); // Reiniciar lista de palabras cuando todas se han usado
   }
 
   let validWords = wordsCopy.filter(word => !recentWords.includes(word));
 
-  // Si todas las palabras han sido usadas en las últimas 15, permitimos repetir pero reordenamos
+  // Si no hay palabras disponibles, permitimos repetir y remezclamos
   if (validWords.length === 0) {
-    shuffleArray(wordsCopy); // Mezclar de nuevo
+    shuffleArray(wordsCopy);
     validWords = [...wordsCopy];
+    recentWords = []; // Reiniciamos historial de recientes
   }
 
-  // Seleccionar aleatoriamente de las palabras disponibles
-  const selectedWord = validWords.shift(); // Tomar la primera tras barajar
+  // Seleccionar palabra aleatoria de las disponibles
+  const randomIndex = Math.floor(Math.random() * validWords.length);
+  const selectedWord = validWords[randomIndex];
 
-  // Actualizar el historial de palabras recientes
+  // Eliminar palabra de la lista para no repetir
+  wordsCopy = wordsCopy.filter(word => word !== selectedWord);
+
+  // Registrar en el historial de palabras recientes
   recentWords.push(selectedWord);
   if (recentWords.length > 15) {
-    recentWords.shift();
+    recentWords.shift(); // Mantener solo las últimas 15
   }
 
   return selectedWord;
