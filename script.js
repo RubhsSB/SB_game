@@ -22,7 +22,7 @@ const words = [
  "JHersey - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual",  "DyY (Onda S prep decha - Tiempo normal)", "DyY (Onda S prep decha- Tiempo Follow)", "DyY (Onda S prep decha - en Sombra Follow)", 
  "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)",  "VyA (2 Preparo y abro + 4 Giro Follow - Segovia)", "CyC (½ Diagonal + Preparo en 6 + saco Follow + Lid sombra Segovia)", "DyY (Lanzo + peino + sombra - Segovia)", 
  "CyC (Rompo y atrás + desplazo Follow - Segovia)", "DyY (5 Enrollo + Onla lenta + Salgo en 4 + contra Follow en 5 y 6 y mano escápula - Segovia)", "CyC (Diagonal freno Follow en 3 + piso punta atrás - Segovia)", "DyY (Onda en Sombra Follow prep decha)",
- "Carlos - Cintura Péndulo", "JHersey - Enrollo Follw suelo mano Ext"
+ "Carlos - Cintura Péndulo", "JHersey - Enrollo Follw suelto mano Ext"
 ];
 const wordsCustom = [
 "CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
@@ -38,7 +38,7 @@ const wordsCustom = [
  "Giro Foll en 5 + Giro Led en 7", "JHersey - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual", "DyY (Onda S prep decha - Tiempo normal)", "DyY (Onda S prep decha- Tiempo Follow)", "DyY (Onda S prep decha - en Sombra Follow)",
  "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)", "VyA (2 Preparo y abro + 4 Giro Follow - Segovia)", "CyC (½ Diagonal + Preparo en 6 + saco Follow + Lid sombra Segovia)",  "DyY (Lanzo + peino + sombra - Segovia)", 
  "CyC (Rompo y atrás + desplazo Follow - Segovia)", "DyY (5 Enrollo + Onla lenta + Salgo en 4 + contra Follow en 5 y 6 y mano escápula - Segovia)", "CyC (Diagonal freno Follow en 3 + piso punta atrás - Segovia)", "DyY (Onda en Sombra Follow prep decha)",
- "Carlos - Cintura Péndulo", "JHersey - Enrollo Follw suelo mano Ext"
+ "Carlos - Cintura Péndulo", "JHersey - Enrollo Follw suelto mano Ext"
 ]
 
 // Variables
