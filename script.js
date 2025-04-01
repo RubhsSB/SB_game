@@ -24,7 +24,8 @@ const words = [
  "CyC (Rompo y atrás + desplazo Follow - Segovia)", "DyY (5 Enrollo + Onla lenta + Salgo en 4 + contra Follow en 5 y 6 y mano escápula - Segovia)", "CyC (Diagonal freno Follow en 3 + piso punta atrás - Segovia)", 
  "DyY (Onda en Sombra Follow prep decha)", "Carlos - Cintura Péndulo", "JHersey - Enrollo Follow suelto mano Ext", "JHersey - Giro Follow en 5 y semi giro Leader en 7", "JHersey - Onda delante-atrás", 
  "DyY - Cats - abro en 1 + Giro Follow + Giro Leader", "DyY abro en 4 - medio cuadrado" , "EyG - Palanca en 1 + sombra", "JHersey - Helice", "SENSUAL Lados", "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", 
- "YyE (70´ Cats)", "JHersey - Onda ando cambio de mano", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en + Estiro brazo + Giro cuello + Contra giro en 5)"
+ "YyE (70´ Cats)", "JHersey - Onda ando cambio de mano", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en + Estiro brazo + Giro cuello + Contra giro en 5)", 
+ "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)"
 ];
 const wordsCustom = [
 "CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
@@ -42,7 +43,8 @@ const wordsCustom = [
  "CyC (Rompo y atrás + desplazo Follow - Segovia)", "DyY (5 Enrollo + Onla lenta + Salgo en 4 + contra Follow en 5 y 6 y mano escápula - Segovia)", "CyC (Diagonal freno Follow en 3 + piso punta atrás - Segovia)", 
  "DyY (Onda en Sombra Follow prep decha)", "Carlos - Cintura Péndulo", "JHersey - Enrollo Follow suelto mano Ext", "JHersey - Giro Follow en 5 y semi giro Leader en 7", "JHersey - Onda delante-atrás", 
  "DyY - Cats - abro en 1 + Giro Follow + Giro Leader", "DyY abro en 4 - medio cuadrado" , "EyG - Palanca en 1 + sombra", "JHersey - Helice", "SENSUAL Lados", "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (70´ Cats)",
- "JHersey - Onda ando cambio de mano", "CyT (GIRO 70 Cambio Posición)", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en + Estiro brazo + Giro cuello + Contra giro en 5)"
+ "JHersey - Onda ando cambio de mano", "CyT (GIRO 70 Cambio Posición)", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en + Estiro brazo + Giro cuello + Contra giro en 5)", 
+ "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)"
 ]
 
 // Variables
