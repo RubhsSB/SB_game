@@ -47,15 +47,19 @@ const wordsCustom = [
  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)"
 ]
 
+// Familia de palabras permitidas
+const familyPrefixes = ["JHersey", "CyC", "CyT", "EyG", "JyE", "DyY"];
+
 // Variables
 let wordsCopy = [];
-let recentWords = []; // Historial de últimas 20 palabras usadas
+let recentWords = [];
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
 let wordCount = 0;
 let timerInterval;
-let gameMode = "easy"; // Nivel predeterminado
+let gameMode = "easy";
+let selectedFamily = "CyC"; // por defecto
 
 // Elementos del DOM
 const wordElement = document.getElementById("word");
@@ -67,97 +71,74 @@ const counterElement = document.getElementById("counter");
 const timerElement = document.getElementById("timer");
 const easyButton = document.getElementById("easy");
 const customButton = document.getElementById("custom");
+const familyButton = document.getElementById("family");
+const familySelector = document.getElementById("family-selector");
 
-// Configurar el nivel del juego
-easyButton.addEventListener("click", () => {
-  gameMode = "easy";
-  updateLevelButtons();
+// Configurar niveles
+[easyButton, customButton, familyButton].forEach(btn => {
+  btn.addEventListener("click", () => {
+    gameMode = btn.id;
+    updateLevelButtons();
+  });
 });
 
-customButton.addEventListener("click", () => {
-  gameMode = "custom";
-  updateLevelButtons();
-});
-
-// Función para inicializar los botones de nivel
 function initializeLevelButtons() {
   easyButton.classList.add("active");
   customButton.classList.remove("active");
+  familyButton.classList.remove("active");
+  familySelector.style.display = "none";
 }
-
-// Llamada inicial para configurar los botones
 initializeLevelButtons();
 
-// Función para actualizar el estilo de los botones
 function updateLevelButtons() {
-  easyButton.classList.remove("active");
-  customButton.classList.remove("active");
+  [easyButton, customButton, familyButton].forEach(btn => btn.classList.remove("active"));
 
-  if (gameMode === "easy") {
-    easyButton.classList.add("active");
-  } else if (gameMode === "custom") {
-    customButton.classList.add("active");
-  }
+  if (gameMode === "easy") easyButton.classList.add("active");
+  else if (gameMode === "custom") customButton.classList.add("active");
+  else if (gameMode === "family") familyButton.classList.add("active");
+
+  familySelector.style.display = gameMode === "family" ? "inline-block" : "none";
 }
 
-// Función para barajar un array usando Fisher-Yates (mezcla profunda)
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
+  return array;
 }
 
-// Función para iniciar el modo desafío con palabras aleatorias
 function resetWords() {
   if (gameMode === "easy") {
-    wordsCopy = [...words];
+    wordsCopy = shuffleArray([...words]);
   } else if (gameMode === "custom") {
-    wordsCopy = [...wordsCustom];
+    wordsCopy = shuffleArray([...wordsCustom]);
+  } else if (gameMode === "family") {
+    selectedFamily = familySelector.value;
+    wordsCopy = shuffleArray(words.filter(word => word.startsWith(selectedFamily)));
   }
-  
-  // Mezclar varias veces para asegurar aleatoriedad
-  for (let i = 0; i < 5; i++) {
-    shuffleArray(wordsCopy);
-  }
-  
-  recentWords = []; // Reiniciar historial de palabras recientes
+  recentWords = [];
 }
 
-// Función para obtener una palabra aleatoria evitando repeticiones
 function getRandomWord() {
-  if (wordsCopy.length === 0) {
-    resetWords(); // Reiniciar lista de palabras cuando todas se han usado
-  }
+  if (wordsCopy.length === 0) resetWords();
 
   let validWords = wordsCopy.filter(word => !recentWords.includes(word));
-
-  // Si no hay palabras disponibles, permitimos repetir y remezclamos
   if (validWords.length === 0) {
     shuffleArray(wordsCopy);
     validWords = [...wordsCopy];
-    recentWords = []; // Reiniciamos historial de recientes
+    recentWords = [];
   }
-
-  // Seleccionar palabra aleatoria de las disponibles
   const randomIndex = Math.floor(Math.random() * validWords.length);
   const selectedWord = validWords[randomIndex];
-
-  // Eliminar palabra de la lista para no repetir hasta el final del ciclo
   wordsCopy = wordsCopy.filter(word => word !== selectedWord);
-
-  // Registrar en el historial de palabras recientes
   recentWords.push(selectedWord);
-  if (recentWords.length > 20) {
-    recentWords.shift(); // Mantener solo las últimas 20 palabras
-  }
-
+  if (recentWords.length > 20) recentWords.shift();
   return selectedWord;
 }
 
-// Función para guardar los puntajes
 function saveHighScore(averageTime, wordCount) {
-  const key = gameMode === "easy" ? "easyHighScores" : "customHighScores";
+  const key = gameMode === "easy" ? "easyHighScores" : gameMode === "custom" ? "customHighScores" : "familyHighScores";
   let highScores = JSON.parse(localStorage.getItem(key)) || [];
   highScores.push({ averageTime, wordCount });
   highScores.sort((a, b) => a.averageTime - b.averageTime);
@@ -165,7 +146,6 @@ function saveHighScore(averageTime, wordCount) {
   localStorage.setItem(key, JSON.stringify(highScores));
 }
 
-// Temporizador
 function startTimer() {
   timerInterval = setInterval(() => {
     const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -177,7 +157,6 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
-// Eventos del juego
 playButton.addEventListener("click", () => {
   resetWords();
   currentWord = getRandomWord();
@@ -200,15 +179,9 @@ nextButton.addEventListener("click", () => {
   counterElement.textContent = `Palabras jugadas: ${wordCount}`;
   stopTimer();
   currentWord = getRandomWord();
-  if (currentWord) {
-    wordElement.textContent = currentWord;
-    startTime = Date.now();
-    startTimer();
-  } else {
-    wordElement.textContent = "¡Fin del juego! No hay más palabras.";
-    nextButton.disabled = true;
-    finishButton.disabled = true;
-  }
+  wordElement.textContent = currentWord;
+  startTime = Date.now();
+  startTimer();
 });
 
 finishButton.addEventListener("click", () => {
