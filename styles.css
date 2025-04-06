@@ -10,10 +10,10 @@ body {
   align-items: center;
   flex-direction: column;
   position: relative;
-  overflow-x: hidden;
+  text-align: center;
 }
 
-/* Botón R para acceder a resultados */
+/* Botón R */
 #results-button {
   position: absolute;
   top: 10px;
@@ -23,53 +23,52 @@ body {
 
 #results-button button {
   font-size: 16px;
-  padding: 8px 14px;
+  padding: 5px 10px;
   background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
 #results-button button:hover {
   background-color: #0056b3;
 }
 
-/* Contenedor principal del juego */
+/* Contenedor del juego */
 #game {
-  text-align: center;
   max-width: 90vw;
+  padding: 20px;
 }
 
-/* Palabra centrada y grande */
+/* Palabra mostrada */
 #word {
-  font-size: 72px;
+  font-size: 48px;
   font-weight: bold;
   margin: 20px 0;
-  word-break: break-word;
+  word-wrap: break-word;
 }
 
-/* Contador de palabras */
+/* Contadores */
 #counter,
 #timer {
-  font-size: 20px;
+  font-size: 18px;
   margin: 10px 0;
 }
 
-/* Botones del juego */
+/* Botones de acción */
 button {
   font-size: 18px;
   padding: 10px 20px;
-  margin: 10px;
+  margin: 8px;
   cursor: pointer;
   border: none;
   border-radius: 5px;
   background-color: #28a745;
   color: white;
   transition: background-color 0.3s ease;
+  min-width: 120px;
   min-height: 48px;
-  min-width: 48px;
 }
 
 button:hover {
@@ -81,14 +80,14 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Resultado del juego */
+/* Resultado final */
 #result {
-  font-size: 20px;
-  margin: 20px 0;
+  font-size: 18px;
+  margin-top: 20px;
   color: #333;
 }
 
-/* Nivel de dificultad */
+/* Botones de nivel */
 #level-selection {
   position: absolute;
   top: 10px;
@@ -96,6 +95,7 @@ button:disabled {
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 #level-selection button {
@@ -103,14 +103,6 @@ button:disabled {
   padding: 6px 12px;
   background-color: #ccc;
   color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#level-selection button:hover {
-  background-color: #bbb;
 }
 
 #level-selection button.active {
@@ -121,42 +113,45 @@ button:disabled {
   background-color: #218838;
 }
 
-/* Selector de familias */
+/* Selector de familia */
 #family-selector-container {
   margin-top: 10px;
 }
 
 #family-selector {
-  padding: 8px 12px;
+  padding: 6px 12px;
   font-size: 16px;
   border-radius: 5px;
   border: 1px solid #ccc;
 }
 
-/* Responsive: adaptar en pantallas pequeñas */
-@media (max-width: 600px) {
+/* Responsive para móvil */
+@media (max-width: 480px) {
   #word {
-    font-size: 42px;
+    font-size: 36px;
   }
 
   button {
-    width: 100%;
-    max-width: 90vw;
-    font-size: 18px;
+    width: 90vw;
+    max-width: 100%;
   }
 
   #level-selection {
-    top: auto;
+    top: unset;
     bottom: 10px;
-    right: 10px;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+    position: fixed;
+    background-color: #f4f4f4;
+    padding: 5px;
+    gap: 5px;
+    z-index: 1000;
   }
 
   #results-button {
-    top: auto;
-    bottom: 10px;
+    top: 10px;
     left: 10px;
+  }
+
+  #family-selector-container {
+    max-width: 90vw;
   }
 }
