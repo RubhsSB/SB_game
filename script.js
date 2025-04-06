@@ -1,6 +1,6 @@
 // Listas de palabras
 const words = [
-"CyC (Host cambio posición)", "Daniel y Alma", "CyC (Host círculo Dcha)", "CyT Sensual", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)", "JHERSY - Molino",
+  "CyC (Host cambio posición)", "Daniel y Alma", "CyC (Host círculo Dcha)", "CyT Sensual", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)", "JHERSY - Molino",
  "JHERSY - Preparar pos Cerrada", "SERGIO y KATINA (Círculo y tiro atrás - Bassmnt)", "EyG (Cats giro 2 manos)", "ALBERTO y MARÍA (Giro espalda-Cats)", "JHERSY (preparo sensual + mano Follow)",
  "JHERSY (preparo sensual + lanzo en 4 y salgo)", "DIAGONAL salida", "AyV", "CyC (Segovia)", "Sergio y Katina (Host)", "Sensual +", "GtoyM", "José y Layla (Mymo)", "INTRO Carlos", "INTRO Carlos", "INTRO Carlos", 
  "K_ELDE Intro", "K_ELDE mano en 5",  "TONIO (brazos, cuello+Disoc, Salir)", "JLAB (salir/end)", "K_ELDE brazos Izq", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", 
@@ -27,6 +27,7 @@ const words = [
  "YyE (70´ Cats)", "JHersey - Onda ando cambio de mano", "EyG (Palanca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5 + Estiro brazo + Giro cuello + Contra giro en 5)", 
  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)"
 ];
+
 const wordsCustom = [
 "CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
  "SERGIO y KATINA (Círculo y tiro atrás - Bassmnt)", "EyG (Cats giro 2 manos)", "ALBERTO y MARÍA (Giro espalda-Cats)", "JHERSY (preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", 
@@ -71,45 +72,49 @@ const easyButton = document.getElementById("easy");
 const hardButton = document.getElementById("hard");
 const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
-const familySelect = document.getElementById("family");
+const familySelect = document.getElementById("family-selector");
 
-// Configurar el nivel del juego
-easyButton.addEventListener("click", () => {
-  gameMode = "easy";
-  updateLevelButtons();
-  document.getElementById("family-selector").style.display = "none";
-});
-
-hardButton.addEventListener("click", () => {
-  gameMode = "hard";
-  updateLevelButtons();
-  document.getElementById("family-selector").style.display = "none";
-});
-
-customButton.addEventListener("click", () => {
-  gameMode = "custom";
-  updateLevelButtons();
-  document.getElementById("family-selector").style.display = "none";
-});
-
-familyButton.addEventListener("click", () => {
-  gameMode = "family";
-  updateLevelButtons();
-  document.getElementById("family-selector").style.display = "block";
-});
-
+// Configurar niveles
 function updateLevelButtons() {
-  easyButton.classList.remove("active");
-  hardButton.classList.remove("active");
-  customButton.classList.remove("active");
-  familyButton.classList.remove("active");
-
+  [easyButton, hardButton, customButton, familyButton].forEach(btn => btn.classList.remove("active"));
   if (gameMode === "easy") easyButton.classList.add("active");
   if (gameMode === "hard") hardButton.classList.add("active");
   if (gameMode === "custom") customButton.classList.add("active");
   if (gameMode === "family") familyButton.classList.add("active");
+
+  const familyContainer = document.getElementById("family-selector-container");
+  familyContainer.style.display = gameMode === "family" ? "block" : "none";
 }
 
+// Eventos de botones de nivel
+easyButton.addEventListener("click", () => {
+  gameMode = "easy";
+  updateLevelButtons();
+});
+hardButton.addEventListener("click", () => {
+  gameMode = "hard";
+  updateLevelButtons();
+});
+customButton.addEventListener("click", () => {
+  gameMode = "custom";
+  updateLevelButtons();
+});
+familyButton.addEventListener("click", () => {
+  gameMode = "family";
+  updateLevelButtons();
+
+  // Rellenar selector si está vacío
+  if (familySelect.options.length === 0) {
+    familyPrefixes.forEach(prefix => {
+      const option = document.createElement("option");
+      option.value = prefix;
+      option.textContent = prefix;
+      familySelect.appendChild(option);
+    });
+  }
+});
+
+// Barajar palabras
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -126,57 +131,49 @@ function resetWords() {
     const selectedPrefix = familySelect.value;
     wordsCopy = words.filter(word => word.startsWith(selectedPrefix));
   } else if (gameMode === "hard") {
-    // Para hard no necesitamos una copia, se usa words directamente
-    wordsCopy = [];
+    wordsCopy = []; // Hard usa words directamente
   }
-
   shuffleArray(wordsCopy);
   recentWords = [];
 }
 
 function getRandomWord() {
   if (gameMode === "hard") {
-    const index = Math.floor(Math.random() * words.length);
-    return words[index];
+    return words[Math.floor(Math.random() * words.length)];
   }
 
-  if (wordsCopy.length === 0) {
-    resetWords();
-  }
-
+  if (wordsCopy.length === 0) resetWords();
   let validWords = wordsCopy.filter(word => !recentWords.includes(word));
+
   if (validWords.length === 0) {
     shuffleArray(wordsCopy);
     validWords = [...wordsCopy];
     recentWords = [];
   }
 
-  const index = Math.floor(Math.random() * validWords.length);
-  const word = validWords[index];
-
+  const word = validWords[Math.floor(Math.random() * validWords.length)];
   wordsCopy = wordsCopy.filter(w => w !== word);
   recentWords.push(word);
   if (recentWords.length > 20) recentWords.shift();
-
   return word;
 }
 
-function saveHighScore(averageTime, wordCount) {
+function saveHighScore(avg, count) {
   const key = gameMode === "easy" ? "easyHighScores"
-            : gameMode === "hard" ? "hardHighScores"
-            : gameMode === "custom" ? "customHighScores"
-            : "familyHighScores";
+    : gameMode === "hard" ? "hardHighScores"
+    : gameMode === "custom" ? "customHighScores"
+    : "familyHighScores";
+
   let scores = JSON.parse(localStorage.getItem(key)) || [];
-  scores.push({ averageTime, wordCount });
+  scores.push({ averageTime: avg, wordCount: count });
   scores.sort((a, b) => a.averageTime - b.averageTime);
-  scores = scores.slice(0, 10);
-  localStorage.setItem(key, JSON.stringify(scores));
+  localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
 }
 
 function startTimer() {
   timerInterval = setInterval(() => {
-    const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
-    timerElement.textContent = `Tiempo: ${currentTime} segundos`;
+    const current = ((Date.now() - startTime) / 1000).toFixed(1);
+    timerElement.textContent = `Tiempo: ${current} segundos`;
   }, 100);
 }
 
