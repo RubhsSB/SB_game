@@ -76,7 +76,7 @@ const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
 const familySelect = document.getElementById("family-selector");
 
-// ⬇️ Pegas aquí ⬇️
+// Rellenar selector de familias
 familyPrefixes.forEach(prefix => {
   const option = document.createElement("option");
   option.value = prefix;
@@ -226,7 +226,6 @@ let touchEndX = 0;
 
 function checkSwipe() {
   if (touchEndX < touchStartX - 50) {
-    // Swipe izquierdo = siguiente palabra
     if (!nextButton.disabled) nextButton.click();
   }
 }
@@ -239,3 +238,4 @@ document.addEventListener("touchend", e => {
   touchEndX = e.changedTouches[0].screenX;
   checkSwipe();
 });
+
