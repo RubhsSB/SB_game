@@ -47,8 +47,7 @@ const wordsCustom = [
  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)"
 ]
 
-// Familia de palabras permitidas
-const familyPrefixes = ["JHersey", "CyC", "CyT", "EyG", "JyE", "DyY"];
+const familyPrefixes = ["JHersey", "CyC", "EyG", "CyT", "JyE", "DyY"];
 
 // Variables
 let wordsCopy = [];
@@ -59,7 +58,7 @@ let totalTime = 0;
 let wordCount = 0;
 let timerInterval;
 let gameMode = "easy";
-let selectedFamily = "CyC"; // por defecto
+let selectedPrefix = "";
 
 // Elementos del DOM
 const wordElement = document.getElementById("word");
@@ -73,53 +72,89 @@ const easyButton = document.getElementById("easy");
 const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
 const familySelector = document.getElementById("family-selector");
+const familySelectorContainer = document.getElementById("family-selector-container");
 
 // Configurar niveles
-[easyButton, customButton, familyButton].forEach(btn => {
-  btn.addEventListener("click", () => {
-    gameMode = btn.id;
-    updateLevelButtons();
-  });
+easyButton.addEventListener("click", () => {
+  gameMode = "easy";
+  selectedPrefix = "";
+  updateLevelButtons();
+});
+customButton.addEventListener("click", () => {
+  gameMode = "custom";
+  selectedPrefix = "";
+  updateLevelButtons();
+});
+familyButton.addEventListener("click", () => {
+  gameMode = "family";
+  selectedPrefix = familySelector.value;
+  updateLevelButtons();
 });
 
+// Inicializar botones
 function initializeLevelButtons() {
   easyButton.classList.add("active");
   customButton.classList.remove("active");
   familyButton.classList.remove("active");
-  familySelector.style.display = "none";
+  fillFamilySelector();
 }
 initializeLevelButtons();
 
+// Actualizar estilos
 function updateLevelButtons() {
-  [easyButton, customButton, familyButton].forEach(btn => btn.classList.remove("active"));
+  easyButton.classList.remove("active");
+  customButton.classList.remove("active");
+  familyButton.classList.remove("active");
+  familySelectorContainer.style.display = "none";
 
-  if (gameMode === "easy") easyButton.classList.add("active");
-  else if (gameMode === "custom") customButton.classList.add("active");
-  else if (gameMode === "family") familyButton.classList.add("active");
-
-  familySelector.style.display = gameMode === "family" ? "inline-block" : "none";
+  if (gameMode === "easy") {
+    easyButton.classList.add("active");
+  } else if (gameMode === "custom") {
+    customButton.classList.add("active");
+  } else if (gameMode === "family") {
+    familyButton.classList.add("active");
+    familySelectorContainer.style.display = "block";
+  }
 }
 
+// Rellenar selector de familias
+function fillFamilySelector() {
+  familySelector.innerHTML = "";
+  familyPrefixes.forEach(prefix => {
+    const option = document.createElement("option");
+    option.value = prefix;
+    option.textContent = prefix;
+    familySelector.appendChild(option);
+  });
+  selectedPrefix = familySelector.value;
+}
+familySelector.addEventListener("change", () => {
+  selectedPrefix = familySelector.value;
+});
+
+// Barajar un array
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [array[i], array[j]] = [array[j], array[i]];
   }
-  return array;
 }
 
+// Reset palabras
 function resetWords() {
   if (gameMode === "easy") {
-    wordsCopy = shuffleArray([...words]);
+    wordsCopy = [...words];
   } else if (gameMode === "custom") {
-    wordsCopy = shuffleArray([...wordsCustom]);
+    wordsCopy = [...wordsCustom];
   } else if (gameMode === "family") {
-    selectedFamily = familySelector.value;
-    wordsCopy = shuffleArray(words.filter(word => word.startsWith(selectedFamily)));
+    wordsCopy = words.filter(word => word.startsWith(selectedPrefix));
   }
+
+  for (let i = 0; i < 3; i++) shuffleArray(wordsCopy);
   recentWords = [];
 }
 
+// Obtener palabra aleatoria
 function getRandomWord() {
   if (wordsCopy.length === 0) resetWords();
 
@@ -129,16 +164,26 @@ function getRandomWord() {
     validWords = [...wordsCopy];
     recentWords = [];
   }
+
   const randomIndex = Math.floor(Math.random() * validWords.length);
   const selectedWord = validWords[randomIndex];
   wordsCopy = wordsCopy.filter(word => word !== selectedWord);
+
   recentWords.push(selectedWord);
   if (recentWords.length > 20) recentWords.shift();
+
   return selectedWord;
 }
 
+// Guardar puntuación
 function saveHighScore(averageTime, wordCount) {
-  const key = gameMode === "easy" ? "easyHighScores" : gameMode === "custom" ? "customHighScores" : "familyHighScores";
+  const key =
+    gameMode === "easy"
+      ? "easyHighScores"
+      : gameMode === "custom"
+      ? "customHighScores"
+      : "familyHighScores";
+
   let highScores = JSON.parse(localStorage.getItem(key)) || [];
   highScores.push({ averageTime, wordCount });
   highScores.sort((a, b) => a.averageTime - b.averageTime);
@@ -146,17 +191,18 @@ function saveHighScore(averageTime, wordCount) {
   localStorage.setItem(key, JSON.stringify(highScores));
 }
 
+// Temporizador
 function startTimer() {
   timerInterval = setInterval(() => {
     const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
     timerElement.textContent = `Tiempo: ${currentTime} segundos`;
   }, 100);
 }
-
 function stopTimer() {
   clearInterval(timerInterval);
 }
 
+// Eventos
 playButton.addEventListener("click", () => {
   resetWords();
   currentWord = getRandomWord();
