@@ -1,141 +1,46 @@
-/* Estilos generales */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  position: relative;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Juego de Palabras</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
 
-/* Botón R para acceder a resultados */
-#results-button {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  text-decoration: none;
-}
+  <!-- Botón R para acceder a resultados -->
+  <a href="resultados.html" id="results-button">
+    <button>R</button>
+  </a>
 
-#results-button button {
-  font-size: 16px;
-  padding: 5px 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
+  <!-- Botones para seleccionar el nivel -->
+  <div id="level-selection">
+    <button id="easy" class="active">E</button>
+    <button id="hard">H</button>
+    <button id="custom">C</button>
+    <button id="family">F</button>
+  </div>
 
-#results-button button:hover {
-  background-color: #0056b3;
-}
+  <!-- Selector de familias solo visible en modo Family -->
+  <div id="family-selector-container" style="display: none; margin-top: 10px;">
+    <label for="family-selector">Selecciona una familia:</label>
+    <select id="family-selector">
+      <!-- Se rellena dinámicamente con JS -->
+    </select>
+  </div>
 
-/* Contenedor principal del juego */
-#game {
-  text-align: center;
-}
+  <!-- Contenido principal del juego -->
+  <div id="game">
+    <p id="word">Presiona "Play" para comenzar</p>
+    <p id="counter">Palabras jugadas: 0</p>
+    <p id="timer">Tiempo: 0 segundos</p>
+    <button id="play">Play</button>
+    <button id="next" disabled>Next</button>
+    <button id="finish" disabled>Finalizar</button>
+    <p id="result"></p>
+  </div>
 
-/* Palabra centrada y grande */
-#word {
-  font-size: 72px;
-  font-weight: bold;
-  margin: 20px 0;
-}
-
-/* Contador de palabras */
-#counter {
-  font-size: 20px;
-  margin: 10px 0;
-}
-
-/* Temporizador */
-#timer {
-  font-size: 20px;
-  margin: 10px 0;
-}
-
-/* Botones del juego */
-button {
-  font-size: 18px;
-  padding: 10px 20px;
-  margin: 10px;
-  cursor: pointer;
-  border: none;
-  border-radius: 5px;
-  background-color: #28a745;
-  color: white;
-  transition: background-color 0.3s ease;
-}
-
-button:hover {
-  background-color: #218838;
-}
-
-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-/* Resultado del juego */
-#result {
-  font-size: 20px;
-  margin: 20px 0;
-  color: #333;
-}
-
-/* Nivel de dificultad */
-#level-selection {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  gap: 10px;
-}
-
-#level-selection button {
-  font-size: 16px;
-  padding: 5px 10px;
-  background-color: #ccc;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#level-selection button:hover {
-  background-color: #bbb; /* Gris más oscuro al pasar el ratón */
-}
-
-#level-selection button.active {
-  background-color: #28a745;
-}
-
-#level-selection button.active:hover {
-  background-color: #218838;
-}
-
-/* Selector de familias para el nivel F */
-#family-selector-container {
-  margin-top: 10px;
-  display: none; /* Se muestra solo si gameMode === 'family' */
-}
-
-#family-selector {
-  font-size: 16px;
-  padding: 8px 12px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  background-color: white;
-  color: #333;
-}
-
-/* Clase oculta (por si decides usarla desde JS) */
-.hidden {
-  display: none;
-}
+  <!-- Script principal -->
+  <script src="script.js"></script>
+</body>
+</html>
