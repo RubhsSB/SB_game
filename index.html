@@ -1,25 +1,34 @@
+<!-- ✅ INDEX.HTML -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Juego de Palabras</title>
+  <title>SALSA Game</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <!-- Botón R para acceder a resultados -->
+  <div id="header">
+    <h1>SALSA Game</h1>
+  </div>
+
   <a href="resultados.html" id="results-button">
     <button>R</button>
   </a>
 
-  <!-- Botones para seleccionar el nivel -->
   <div id="level-selection">
     <button id="easy">E</button>
     <button id="hard">H</button>
     <button id="custom">C</button>
+    <button id="family">F</button>
   </div>
 
-  <!-- Contenido principal del juego -->
+  <!-- Desplegable para el modo F (Family) -->
+  <div id="family-selector" style="display:none; margin-top: 10px;">
+    <label for="familySelect">Selecciona una familia:</label>
+    <select id="familySelect"></select>
+  </div>
+
   <div id="game">
     <p id="word">Presiona "Play" para comenzar</p>
     <p id="counter">Palabras jugadas: 0</p>
@@ -30,7 +39,6 @@
     <p id="result"></p>
   </div>
 
-  <!-- Conexión al script JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
