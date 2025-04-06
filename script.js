@@ -26,7 +26,7 @@ const words = [
  "DyY - Cats - abro en 1 + Giro Follow + Giro Leader", "DyY abro en 4 - medio cuadrado" , "EyG - Palanca en 1 + sombra", "JHERSEY - Helice", "SENSUAL Lados", "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", 
  "YyE (70´ Cats)", "JHERSEY - Onda ando cambio de mano", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5 + Estiro brazo 8 + Giro cuello + Contra giro en 5)", 
  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSEY - Salir Onda - Follow abajo en 4", "JHERSEY - Diagonal Sombra - Prepa Follow en 5 + sale en 6", "JHERSEY - Diagonal me paro en 5-8", "JHERSEY - Frame Follow 5-8 mano dch escápula", 
-  "JHERSEY - Intro", "JHERSEY - Peino 2 manos", "JHERSEY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSEY - Pasos libres", "JHERSEY - Onda brazo Dcho atrás"
+  "JHERSEY - Intro", "JHERSEY - Peino 2 manos", "JHERSEY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSEY - Pasos libres", "JHERSEY - Lado con lado brazo Dcho Onda atrás"
 ];
 
 const wordsCustom = [
@@ -47,7 +47,7 @@ const wordsCustom = [
  "DyY - Cats - abro en 1 + Giro Follow + Giro Leader", "DyY abro en 4 - medio cuadrado" , "EyG - Palanca en 1 + sombra", "JHERSEY - Helice", "SENSUAL Lados", "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (70´ Cats)",
  "JHERSEY - Onda ando cambio de mano", "CyT (GIRO 70 Cambio Posición)", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5+ Estiro brazo 8 + Giro cuello + Contra giro en 5)", 
  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSEY - Salir Onda - Follow abajo en 4", "JHERSEY - Diagonal Sombra - Prepa Follow en 5 + sale en 6", "JHERSEY - Diagonal me paro en 5-8", "JHERSEY - Frame Follow 5-8 mano dch escápula", 
-  "JHERSEY - Intro", "JHERSEY - Peino 2 manos", "JHERSEY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSEY - Pasos libres", "JHERSEY - Onda brazo Dcho atrás"
+  "JHERSEY - Intro", "JHERSEY - Peino 2 manos", "JHERSEY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSEY - Pasos libres", "JHERSEY - Lado con lado brazo Dcho Onda atrás"
 ]
 
 const familyPrefixes = ["JHERSEY", "CyC", "EyG", "CyT", "JyE", "DyY"];
