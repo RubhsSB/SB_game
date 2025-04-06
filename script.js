@@ -143,11 +143,15 @@ function getRandomWord() {
   }
 
   const index = Math.floor(Math.random() * validWords.length);
-  const word = validWords[index];
-  wordsCopy = wordsCopy.filter(w => w !== word);
-  recentWords.push(word);
-  if (recentWords.length > 20) recentWords.shift();
-  return word;
+const word = validWords[index];
+wordsCopy = wordsCopy.filter(w => w !== word);
+recentWords.push(word);
+
+// 🔁 Historial ajustado según el modo
+const maxRecent = gameMode === "family" ? 5 : 20;
+if (recentWords.length > maxRecent) recentWords.shift();
+
+return word;
 }
 
 // Guardar resultado
