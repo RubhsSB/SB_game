@@ -30,7 +30,7 @@ const words = [
 ];
 
 const wordsCustom = [
-"CyC" (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
+"CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY - Preparar pos Cerrada", 
  "SERGIO y KATINA (Círculo y tiro atrás - Bassmnt)", "EyG (Cats giro 2 manos)", "ALBERTO y MARÍA (Giro espalda-Cats)", "JHERSY (preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", 
  "GtoyM", "K_ELDE Intro", "K_ELDE mano en 5", "JLAB (salir/end)", "IVAN y SARAI (Cuadrado Host)", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", 
  "JHERSY pasos", "JHERSY (Giro cambio mano)", "JHERSY (salir/end)", "Cambio posición con mano Izq (Marc/Sra)", "FRANCIA", "Alex y Lais (jóvenes -3+1)", "DyY (SanSebastián - Separo en 4 y al hombro)", "JyE (preparo salida en 8)", 
