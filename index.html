@@ -15,7 +15,7 @@
 
   <!-- Botones para seleccionar el nivel -->
   <div id="level-selection">
-    <button id="easy">E</button>
+    <button id="easy" class="active">E</button>
     <button id="hard">H</button>
     <button id="custom">C</button>
     <button id="family">F</button>
@@ -24,9 +24,7 @@
   <!-- Selector de familias solo visible en modo Family -->
   <div id="family-selector-container" style="display: none; margin-top: 10px;">
     <label for="family-selector">Selecciona una familia:</label>
-    <select id="family-selector">
-      <!-- Se rellenará dinámicamente desde JS -->
-    </select>
+    <select id="family-selector"></select>
   </div>
 
   <!-- Contenido principal del juego -->
