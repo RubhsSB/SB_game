@@ -76,6 +76,14 @@ const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
 const familySelect = document.getElementById("family-selector");
 
+// ⬇️ Pegas aquí ⬇️
+familyPrefixes.forEach(prefix => {
+  const option = document.createElement("option");
+  option.value = prefix;
+  option.textContent = prefix;
+  familySelect.appendChild(option);
+});
+
 // Nivel por defecto
 window.addEventListener("load", () => {
   gameMode = "easy";
