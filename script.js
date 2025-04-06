@@ -60,9 +60,9 @@ let startTime = 0;
 let totalTime = 0;
 let wordCount = 0;
 let timerInterval;
-let gameMode = "easy"; // Por defecto
+let gameMode = "easy";
 
-// Elementos del DOM
+// DOM
 const wordElement = document.getElementById("word");
 const playButton = document.getElementById("play");
 const nextButton = document.getElementById("next");
@@ -74,64 +74,33 @@ const easyButton = document.getElementById("easy");
 const hardButton = document.getElementById("hard");
 const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
-const familySelector = document.getElementById("family-selector");
+const familySelect = document.getElementById("family-selector");
 
-// Configurar los botones
+// Nivel por defecto
+window.addEventListener("load", () => {
+  gameMode = "easy";
+  updateLevelButtons();
+  document.getElementById("family-selector-container").style.display = "none";
+});
+
+// Botones nivel
+[easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
+  btn.addEventListener("click", () => {
+    gameMode = ["easy", "hard", "custom", "family"][i];
+    updateLevelButtons();
+    document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
+  });
+});
+
 function updateLevelButtons() {
-  easyButton.classList.remove("active");
-  hardButton.classList.remove("active");
-  customButton.classList.remove("active");
-  familyButton.classList.remove("active");
-
+  [easyButton, hardButton, customButton, familyButton].forEach(btn => btn.classList.remove("active"));
   if (gameMode === "easy") easyButton.classList.add("active");
   if (gameMode === "hard") hardButton.classList.add("active");
   if (gameMode === "custom") customButton.classList.add("active");
   if (gameMode === "family") familyButton.classList.add("active");
-
-  document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
 }
 
-function initializeLevelButtons() {
-  gameMode = "easy";
-  updateLevelButtons();
-}
-
-initializeLevelButtons();
-
-// Cargar las opciones del selector de familia
-function populateFamilySelector() {
-  familyPrefixes.forEach(prefix => {
-    const option = document.createElement("option");
-    option.value = prefix;
-    option.textContent = prefix;
-    familySelector.appendChild(option);
-  });
-}
-
-populateFamilySelector();
-
-// Asignar eventos a los botones de modo
-
-easyButton.addEventListener("click", () => {
-  gameMode = "easy";
-  updateLevelButtons();
-});
-
-hardButton.addEventListener("click", () => {
-  gameMode = "hard";
-  updateLevelButtons();
-});
-
-customButton.addEventListener("click", () => {
-  gameMode = "custom";
-  updateLevelButtons();
-});
-
-familyButton.addEventListener("click", () => {
-  gameMode = "family";
-  updateLevelButtons();
-});
-
+// Shuffle
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -139,33 +108,26 @@ function shuffleArray(array) {
   }
 }
 
+// Reset
 function resetWords() {
-  if (gameMode === "easy") {
-    wordsCopy = [...words];
-  } else if (gameMode === "custom") {
-    wordsCopy = [...wordsCustom];
-  } else if (gameMode === "family") {
-    const selectedPrefix = familySelector.value;
-    wordsCopy = words.filter(word => word.startsWith(selectedPrefix));
-  } else if (gameMode === "hard") {
-    wordsCopy = [];
-  }
+  if (gameMode === "easy") wordsCopy = [...words];
+  else if (gameMode === "custom") wordsCopy = [...wordsCustom];
+  else if (gameMode === "family") {
+    const prefix = familySelect.value;
+    wordsCopy = words.filter(w => w.startsWith(prefix));
+  } else if (gameMode === "hard") wordsCopy = [];
 
   shuffleArray(wordsCopy);
   recentWords = [];
 }
 
+// Obtener palabra
 function getRandomWord() {
-  if (gameMode === "hard") {
-    return words[Math.floor(Math.random() * words.length)];
-  }
+  if (gameMode === "hard") return words[Math.floor(Math.random() * words.length)];
 
-  if (wordsCopy.length === 0) {
-    resetWords();
-  }
+  if (wordsCopy.length === 0) resetWords();
 
-  let validWords = wordsCopy.filter(word => !recentWords.includes(word));
-
+  let validWords = wordsCopy.filter(w => !recentWords.includes(w));
   if (validWords.length === 0) {
     shuffleArray(wordsCopy);
     validWords = [...wordsCopy];
@@ -180,11 +142,12 @@ function getRandomWord() {
   return word;
 }
 
+// Guardar resultado
 function saveHighScore(averageTime, wordCount) {
   const key = gameMode === "easy" ? "easyHighScores"
-    : gameMode === "hard" ? "hardHighScores"
-    : gameMode === "custom" ? "customHighScores"
-    : "familyHighScores";
+            : gameMode === "hard" ? "hardHighScores"
+            : gameMode === "custom" ? "customHighScores"
+            : "familyHighScores";
   let scores = JSON.parse(localStorage.getItem(key)) || [];
   scores.push({ averageTime, wordCount });
   scores.sort((a, b) => a.averageTime - b.averageTime);
@@ -192,6 +155,7 @@ function saveHighScore(averageTime, wordCount) {
   localStorage.setItem(key, JSON.stringify(scores));
 }
 
+// Temporizador
 function startTimer() {
   timerInterval = setInterval(() => {
     const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -203,6 +167,7 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
+// Eventos
 playButton.addEventListener("click", () => {
   resetWords();
   currentWord = getRandomWord();
@@ -245,4 +210,24 @@ finishButton.addEventListener("click", () => {
   wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
   counterElement.textContent = `Palabras jugadas: 0`;
   timerElement.textContent = `Tiempo: 0 segundos`;
+});
+
+// Swipe (solo móvil)
+let touchStartX = 0;
+let touchEndX = 0;
+
+function checkSwipe() {
+  if (touchEndX < touchStartX - 50) {
+    // Swipe izquierdo = siguiente palabra
+    if (!nextButton.disabled) nextButton.click();
+  }
+}
+
+document.addEventListener("touchstart", e => {
+  touchStartX = e.changedTouches[0].screenX;
+});
+
+document.addEventListener("touchend", e => {
+  touchEndX = e.changedTouches[0].screenX;
+  checkSwipe();
 });
