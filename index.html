@@ -1,172 +1,45 @@
-// Listas de palabras
-const words = [
-  "CyC (Host cambio pos)", "CyT Sensual", "JyE (diagonal)", "EyG (abro)", "CyC (giro)"
-];
-const wordsCustom = [
-  "CyC (Host cambio pos)", "CyC (giro)", "EyG (abro)", "JyE (diagonal)"
-];
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Juego de Palabras</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
 
-// Variables
-let wordsCopy = [];
-let recentWords = [];
-let currentWord = "";
-let startTime = 0;
-let totalTime = 0;
-let wordCount = 0;
-let timerInterval;
-let gameMode = "easy";
-let selectedFamily = "CyC";
+  <!-- Botón R para acceder a resultados -->
+  <a href="resultados.html" id="results-button">
+    <button>R</button>
+  </a>
 
-// DOM Elements
-const wordElement = document.getElementById("word");
-const playButton = document.getElementById("play");
-const nextButton = document.getElementById("next");
-const finishButton = document.getElementById("finish");
-const resultElement = document.getElementById("result");
-const counterElement = document.getElementById("counter");
-const timerElement = document.getElementById("timer");
-const easyButton = document.getElementById("easy");
-const customButton = document.getElementById("custom");
-const familyButton = document.getElementById("family");
-const familySelector = document.getElementById("family-selector");
+  <!-- Botones para seleccionar el nivel -->
+  <div id="level-selection">
+    <button id="easy">E</button>
+    <button id="custom">C</button>
+    <button id="family">F</button>
+  </div>
 
-// Botones de nivel
-function updateLevelButtons() {
-  easyButton.classList.remove("active");
-  customButton.classList.remove("active");
-  familyButton.classList.remove("active");
-  familySelector.style.display = "none";
+  <!-- Selector de familias solo visible en modo Family -->
+  <div id="family-selector-container" style="display: none; margin-top: 10px;">
+    <label for="family-selector">Selecciona una familia:</label>
+    <select id="family-selector">
+      <!-- Se rellenará dinámicamente desde JS -->
+    </select>
+  </div>
 
-  if (gameMode === "easy") {
-    easyButton.classList.add("active");
-  } else if (gameMode === "custom") {
-    customButton.classList.add("active");
-  } else if (gameMode === "family") {
-    familyButton.classList.add("active");
-    familySelector.style.display = "inline";
-  }
-}
+  <!-- Contenido principal del juego -->
+  <div id="game">
+    <p id="word">Presiona "Play" para comenzar</p>
+    <p id="counter">Palabras jugadas: 0</p>
+    <p id="timer">Tiempo: 0 segundos</p>
+    <button id="play">Play</button>
+    <button id="next" disabled>Next</button>
+    <button id="finish" disabled>Finalizar</button>
+    <p id="result"></p>
+  </div>
 
-function initializeLevelButtons() {
-  easyButton.classList.add("active");
-  customButton.classList.remove("active");
-  familyButton.classList.remove("active");
-}
-
-// Event Listeners
-
-easyButton.addEventListener("click", () => {
-  gameMode = "easy";
-  updateLevelButtons();
-});
-customButton.addEventListener("click", () => {
-  gameMode = "custom";
-  updateLevelButtons();
-});
-familyButton.addEventListener("click", () => {
-  gameMode = "family";
-  updateLevelButtons();
-});
-familySelector.addEventListener("change", (e) => {
-  selectedFamily = e.target.value;
-});
-
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
-
-function resetWords() {
-  if (gameMode === "easy") {
-    wordsCopy = [...words];
-  } else if (gameMode === "custom") {
-    wordsCopy = [...wordsCustom];
-  } else if (gameMode === "family") {
-    wordsCopy = words.filter(word => word.startsWith(selectedFamily));
-  }
-  for (let i = 0; i < 3; i++) shuffleArray(wordsCopy);
-  recentWords = [];
-}
-
-function getRandomWord() {
-  if (wordsCopy.length === 0) resetWords();
-
-  let validWords = wordsCopy.filter(w => !recentWords.includes(w));
-  if (validWords.length === 0) {
-    shuffleArray(wordsCopy);
-    validWords = [...wordsCopy];
-    recentWords = [];
-  }
-
-  const index = Math.floor(Math.random() * validWords.length);
-  const selected = validWords[index];
-  wordsCopy = wordsCopy.filter(w => w !== selected);
-  recentWords.push(selected);
-  if (recentWords.length > 20) recentWords.shift();
-  return selected;
-}
-
-function saveHighScore(avg, count) {
-  const key = gameMode === "easy" ? "easyHighScores" : gameMode === "custom" ? "customHighScores" : "familyHighScores";
-  let scores = JSON.parse(localStorage.getItem(key)) || [];
-  scores.push({ averageTime: avg, wordCount: count });
-  scores.sort((a, b) => a.averageTime - b.averageTime);
-  scores = scores.slice(0, 10);
-  localStorage.setItem(key, JSON.stringify(scores));
-}
-
-function startTimer() {
-  timerInterval = setInterval(() => {
-    const current = ((Date.now() - startTime) / 1000).toFixed(1);
-    timerElement.textContent = `Tiempo: ${current} segundos`;
-  }, 100);
-}
-
-function stopTimer() {
-  clearInterval(timerInterval);
-}
-
-playButton.addEventListener("click", () => {
-  resetWords();
-  currentWord = getRandomWord();
-  wordElement.textContent = currentWord;
-  startTime = Date.now();
-  wordCount = 0;
-  totalTime = 0;
-  counterElement.textContent = `Palabras jugadas: ${wordCount}`;
-  timerElement.textContent = `Tiempo: 0 segundos`;
-  playButton.disabled = true;
-  nextButton.disabled = false;
-  finishButton.disabled = false;
-  startTimer();
-});
-
-nextButton.addEventListener("click", () => {
-  totalTime += (Date.now() - startTime) / 1000;
-  wordCount++;
-  counterElement.textContent = `Palabras jugadas: ${wordCount}`;
-  stopTimer();
-  currentWord = getRandomWord();
-  wordElement.textContent = currentWord;
-  startTime = Date.now();
-  startTimer();
-});
-
-finishButton.addEventListener("click", () => {
-  stopTimer();
-  if (wordCount > 0) {
-    const avg = totalTime / wordCount;
-    resultElement.textContent = `Promedio: ${avg.toFixed(2)} segundos por palabra.`;
-    saveHighScore(avg, wordCount);
-  } else {
-    resultElement.textContent = "No has jugado todavía.";
-  }
-  playButton.disabled = false;
-  nextButton.disabled = true;
-  finishButton.disabled = true;
-  wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
-  counterElement.textContent = `Palabras jugadas: 0`;
-  timerElement.textContent = `Tiempo: 0 segundos`;
-});
+  <!-- Conexión al script JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
