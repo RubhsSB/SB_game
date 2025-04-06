@@ -58,7 +58,7 @@ let startTime = 0;
 let totalTime = 0;
 let wordCount = 0;
 let timerInterval;
-let gameMode = "easy";
+let gameMode = "easy"; // Por defecto
 
 // Elementos del DOM
 const wordElement = document.getElementById("word");
@@ -72,49 +72,64 @@ const easyButton = document.getElementById("easy");
 const hardButton = document.getElementById("hard");
 const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
-const familySelect = document.getElementById("family-selector");
+const familySelector = document.getElementById("family-selector");
 
-// Configurar niveles
+// Configurar los botones
 function updateLevelButtons() {
-  [easyButton, hardButton, customButton, familyButton].forEach(btn => btn.classList.remove("active"));
+  easyButton.classList.remove("active");
+  hardButton.classList.remove("active");
+  customButton.classList.remove("active");
+  familyButton.classList.remove("active");
+
   if (gameMode === "easy") easyButton.classList.add("active");
   if (gameMode === "hard") hardButton.classList.add("active");
   if (gameMode === "custom") customButton.classList.add("active");
   if (gameMode === "family") familyButton.classList.add("active");
 
-  const familyContainer = document.getElementById("family-selector-container");
-  familyContainer.style.display = gameMode === "family" ? "block" : "none";
+  document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
 }
 
-// Eventos de botones de nivel
+function initializeLevelButtons() {
+  gameMode = "easy";
+  updateLevelButtons();
+}
+
+initializeLevelButtons();
+
+// Cargar las opciones del selector de familia
+function populateFamilySelector() {
+  familyPrefixes.forEach(prefix => {
+    const option = document.createElement("option");
+    option.value = prefix;
+    option.textContent = prefix;
+    familySelector.appendChild(option);
+  });
+}
+
+populateFamilySelector();
+
+// Asignar eventos a los botones de modo
+
 easyButton.addEventListener("click", () => {
   gameMode = "easy";
   updateLevelButtons();
 });
+
 hardButton.addEventListener("click", () => {
   gameMode = "hard";
   updateLevelButtons();
 });
+
 customButton.addEventListener("click", () => {
   gameMode = "custom";
   updateLevelButtons();
 });
+
 familyButton.addEventListener("click", () => {
   gameMode = "family";
   updateLevelButtons();
-
-  // Rellenar selector si está vacío
-  if (familySelect.options.length === 0) {
-    familyPrefixes.forEach(prefix => {
-      const option = document.createElement("option");
-      option.value = prefix;
-      option.textContent = prefix;
-      familySelect.appendChild(option);
-    });
-  }
 });
 
-// Barajar palabras
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -128,11 +143,12 @@ function resetWords() {
   } else if (gameMode === "custom") {
     wordsCopy = [...wordsCustom];
   } else if (gameMode === "family") {
-    const selectedPrefix = familySelect.value;
+    const selectedPrefix = familySelector.value;
     wordsCopy = words.filter(word => word.startsWith(selectedPrefix));
   } else if (gameMode === "hard") {
-    wordsCopy = []; // Hard usa words directamente
+    wordsCopy = [];
   }
+
   shuffleArray(wordsCopy);
   recentWords = [];
 }
@@ -142,7 +158,10 @@ function getRandomWord() {
     return words[Math.floor(Math.random() * words.length)];
   }
 
-  if (wordsCopy.length === 0) resetWords();
+  if (wordsCopy.length === 0) {
+    resetWords();
+  }
+
   let validWords = wordsCopy.filter(word => !recentWords.includes(word));
 
   if (validWords.length === 0) {
@@ -151,29 +170,30 @@ function getRandomWord() {
     recentWords = [];
   }
 
-  const word = validWords[Math.floor(Math.random() * validWords.length)];
+  const index = Math.floor(Math.random() * validWords.length);
+  const word = validWords[index];
   wordsCopy = wordsCopy.filter(w => w !== word);
   recentWords.push(word);
   if (recentWords.length > 20) recentWords.shift();
   return word;
 }
 
-function saveHighScore(avg, count) {
+function saveHighScore(averageTime, wordCount) {
   const key = gameMode === "easy" ? "easyHighScores"
     : gameMode === "hard" ? "hardHighScores"
     : gameMode === "custom" ? "customHighScores"
     : "familyHighScores";
-
   let scores = JSON.parse(localStorage.getItem(key)) || [];
-  scores.push({ averageTime: avg, wordCount: count });
+  scores.push({ averageTime, wordCount });
   scores.sort((a, b) => a.averageTime - b.averageTime);
-  localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
+  scores = scores.slice(0, 10);
+  localStorage.setItem(key, JSON.stringify(scores));
 }
 
 function startTimer() {
   timerInterval = setInterval(() => {
-    const current = ((Date.now() - startTime) / 1000).toFixed(1);
-    timerElement.textContent = `Tiempo: ${current} segundos`;
+    const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
+    timerElement.textContent = `Tiempo: ${currentTime} segundos`;
   }, 100);
 }
 
