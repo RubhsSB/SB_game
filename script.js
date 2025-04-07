@@ -76,28 +76,39 @@ const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
 const familySelect = document.getElementById("family-selector");
 
-// Rellenar selector de familias
-familyPrefixes.forEach(prefix => {
-  const option = document.createElement("option");
-  option.value = prefix;
-  option.textContent = prefix;
-  familySelect.appendChild(option);
-});
-
-// Nivel por defecto
+// Nivel por defecto al cargar
 window.addEventListener("load", () => {
   gameMode = "easy";
   updateLevelButtons();
   document.getElementById("family-selector-container").style.display = "none";
+
+  // Rellenar selector de familias
+  familyPrefixes.forEach(prefix => {
+    const option = document.createElement("option");
+    option.value = option.textContent = prefix;
+    familySelect.appendChild(option);
+  });
 });
 
-// Botones nivel
+// Botones de nivel
 [easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
   btn.addEventListener("click", () => {
     gameMode = ["easy", "hard", "custom", "family"][i];
     updateLevelButtons();
     document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
   });
+});
+
+// Cambio dinámico de familia durante la partida
+familySelect.addEventListener("change", () => {
+  if (gameMode === "family") {
+    resetWords();
+    if (!playButton.disabled) {
+      currentWord = getRandomWord();
+      wordElement.textContent = currentWord;
+      startTime = Date.now();
+    }
+  }
 });
 
 function updateLevelButtons() {
@@ -108,7 +119,6 @@ function updateLevelButtons() {
   if (gameMode === "family") familyButton.classList.add("active");
 }
 
-// Shuffle
 function shuffleArray(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
@@ -116,7 +126,6 @@ function shuffleArray(array) {
   }
 }
 
-// Reset
 function resetWords() {
   if (gameMode === "easy") wordsCopy = [...words];
   else if (gameMode === "custom") wordsCopy = [...wordsCustom];
@@ -129,32 +138,43 @@ function resetWords() {
   recentWords = [];
 }
 
-// Obtener palabra
 function getRandomWord() {
-  if (gameMode === "hard") return words[Math.floor(Math.random() * words.length)];
+  let validWords;
 
-  if (wordsCopy.length === 0) resetWords();
-
-  let validWords = wordsCopy.filter(w => !recentWords.includes(w));
-  if (validWords.length === 0) {
-    shuffleArray(wordsCopy);
-    validWords = [...wordsCopy];
-    recentWords = [];
+  if (gameMode === "hard") {
+    return words[Math.floor(Math.random() * words.length)];
+  } else if (gameMode === "family") {
+    const selectedPrefix = familySelect.value;
+    validWords = words.filter(w => w.startsWith(selectedPrefix) && !recentWords.includes(w));
+    if (validWords.length === 0) {
+      validWords = words.filter(w => w.startsWith(selectedPrefix));
+      recentWords = [];
+    }
+  } else {
+    validWords = wordsCopy.filter(w => !recentWords.includes(w));
+    if (validWords.length === 0) {
+      shuffleArray(wordsCopy);
+      validWords = [...wordsCopy];
+      recentWords = [];
+    }
   }
 
   const index = Math.floor(Math.random() * validWords.length);
-const word = validWords[index];
-wordsCopy = wordsCopy.filter(w => w !== word);
-recentWords.push(word);
+  const word = validWords[index];
 
-// 🔁 Historial ajustado según el modo
-const maxRecent = gameMode === "family" ? 5 : 20;
-if (recentWords.length > maxRecent) recentWords.shift();
+  // Control de repeticiones (no para hard)
+  if (gameMode !== "hard") {
+    recentWords.push(word);
+    if (recentWords.length > 5) recentWords.shift(); // Puedes ajustar la cantidad
+  }
 
-return word;
+  if (gameMode !== "hard") {
+    wordsCopy = wordsCopy.filter(w => w !== word);
+  }
+
+  return word;
 }
 
-// Guardar resultado
 function saveHighScore(averageTime, wordCount) {
   const key = gameMode === "easy" ? "easyHighScores"
             : gameMode === "hard" ? "hardHighScores"
@@ -167,7 +187,6 @@ function saveHighScore(averageTime, wordCount) {
   localStorage.setItem(key, JSON.stringify(scores));
 }
 
-// Temporizador
 function startTimer() {
   timerInterval = setInterval(() => {
     const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
@@ -179,7 +198,7 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
-// Eventos
+// Eventos principales
 playButton.addEventListener("click", () => {
   resetWords();
   currentWord = getRandomWord();
@@ -224,7 +243,7 @@ finishButton.addEventListener("click", () => {
   timerElement.textContent = `Tiempo: 0 segundos`;
 });
 
-// Swipe (solo móvil)
+// Swipe para móviles
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -242,4 +261,3 @@ document.addEventListener("touchend", e => {
   touchEndX = e.changedTouches[0].screenX;
   checkSwipe();
 });
-
