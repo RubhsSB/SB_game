@@ -10,7 +10,7 @@ const words = [
  "DyY (Freno + contra + brazo Izq al hombro)", "ENGAÑO", "MOLINO juego", "TONIO (enrrollo + saco/peinado)", "SENSUAL Lados", "PATADA", "MATI y SOFI (Lanzo brazo atrás)", "MOLINO Insta", "EyG (Giro LED cintura)", "CvT", 
  "CyC (Freno en 2 y alargo 3-4)", "Elw Golpe", "JyE (Diagonal + Giro)", "INTRO", "EyG (Lanzo y Diagonal)", "VALENT", "VyA (Freno hombro en 2)", "FLECHA", "CyC (Giro en Diagonal + abrazo cuello)", "CyC (Olas Izq + Molino Follow)", 
  "CyC (Giro en diagonal)", "CyC (Diagonal + paseo)", "GERO y MIGLE (Cambio pos 360º)", "Cuello (en 6)", "CyT (3 giros con Cuello)", "EyG (SanSebastián - Rompo y abajo)", "BRAZOS Frame", "JOVENES 70'+ Cuello", "5 cintura abajo", 
- "VyA", "David", "CyT (sens Péndulo)", "CyT (sens Onda)", "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC (en 4 de espaldas)", "GAB", "CyC (andar atrás)", "CyT (Cambio + 70´)", "KENZ y JULY (Lanzo brazo atrás)", "JyE (Ando atrás" + "Básico + Salto"), 
+ "VyA", "David", "CyT (sens Péndulo)", "CyT (sens Onda)", "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC (en 4 de espaldas)", "GAB", "CyC (andar atrás)", "CyT (Cambio + 70´)", "KENZ y JULY (Lanzo brazo atrás)", "JyE (Ando atrás)", 
  "CyC (Giro en diagonal + peino + abajo)", "EyG (5 gira Foll + 7 gira Led)", "PABLO y NAT (jóvenes)", "OTTO", "CyC (½ Diagonal + Lanzo en sombra Led)", "ASCENSOR", "JLAB (Muñeco brazos)", "JAVI y BELÉN (Host)", "JORGE y SANDRA", 
  "JyE (Enrollo x 2)", "COLOMBIAN", "DISOCIACION de PECHO (en SOMBRA)", "CyC", "CyT (GIRO 70 Cambio Posición)", "CyC (1/2 Diagonal + giro atrás + paseo)", "CyC", "CyC", "JLAB (Doble giro + 70´)", "CyC", "YEIFREN", "CyC (Brazos Izq y Dcho hombros)", 
  "DyY (Onda + Círculo)", "SENSUAL +", "DyY (Giro + Freno en 6)", "70´Adelante", "JyE", "AyYUR (Palanca)", "Lado MAMBO", "GAB", "JyE (Giro CUELLO)", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", 
@@ -22,8 +22,8 @@ const words = [
  "JHERSY - Giro Follw en 5 + Giro brazo al cuello + Giro Follow en 5 + Preparar Sensual",  "DyY (Onda prep decha - Tiempo normal)", "DyY (Onda prep decha- Tiempo Follow)", "DyY (Onda prep decha - en Sombra Follow)", 
  "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)",  "VyA (2 Preparo y abro + 4 Giro Follow - Segovia)", "CyC (½ Diagonal + Preparo en 6 + saco Follow + Lid sombra Segovia)", "DyY (Lanzo + peino + sombra - Segovia)", 
  "CyC (Rompo y atrás + desplazo Follow - Segovia)", "DyY (Enrollo en 5 - Segovia)", "CyC (Diagonal freno Follow en 3 - Segovia)", "DyY (Onda en Sombra Follow prep decha)", "Carlos (Cintura Péndulo)", "JHERSY (Enrollo Follow suelto mano Ext)",
- "JHERSY (Giro Follow en 5 y semi giro Leader en 7"), "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "DyY (abro en 4 - medio cuadrado)" , "EyG (Palanca en 1 + sombra)", "JHERSY (Helice)", "SENSUAL Lados", 
- "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (70´ Cats)", "JHERSY (Onda ando cambio de mano)", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", 
+ "JHERSY (Giro Follow en 5 y semi giro Leader en 7)", "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "DyY (abro en 4 - medio cuadrado)" , "EyG (Palanca en 1 + sombra)", "JHERSY (Helice)", "SENSUAL Lados", 
+ "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (70´ Cats)", "JHERSY (Onda ando cambio de mano)", "EyG (Palanca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", 
  "EyG (Follow Giro en 5 + Estiro brazo 8 + Giro cuello + Contra giro en 5)", "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY (Salir Onda Follow abajo en 4)", "JHERSY (Diagonal Sombra Prepa Follow en 5 + sale en 6)",
  "JHERSY (Diagonal me paro en 5-8)", "JHERSY (Frame Follow 5-8 mano dch escápula)", "JHERSY (Intro)", "JHERSY (Peino 2 manos)", "JHERSY (Enrollo pasos lentos 1-6 + 7-8 atrás)", "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", 
  "MyS (Espalda con espalda - preparo en 2 + giro en 3)", "MyS (Onda + en 5 Giro Follow sobre mi)"
@@ -44,11 +44,11 @@ const wordsCustom = [
  "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)", "VyA (2 Preparo y abro + 4 Giro Follow - Segovia)", "CyC (½ Diagonal + Preparo en 6 + saco Follow + Lid sombra Segovia)", "DyY (Lanzo + peino + sombra - Segovia)", 
  "CyC (Segovia - Rompo y atrás)", "DyY (Segovia - Enrollo en 5 + Onla lenta)", "CyC (Segovia - Diagonal freno Follow en 3)", "DyY (Onda en Sombra Follow prep decha)", "Carlos (Cintura Péndulo)", "JHERSY (Enrollo Follow suelto mano Ext)", 
  "JHERSY (Giro Follow en 5 y semi giro Leader en 7)", "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "DyY (Abro en 4 - medio cuadrado)" , "EyG (Palanca en 1 + sombra)", "JHERSY (Helice)", "SENSUAL Lados", 
- "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (70´ Cats)", "JHERSY (Onda ando cambio de mano)", "CyT (GIRO 70 Cambio Posición)", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", 
+ "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (70´ Cats)", "JHERSY (Onda ando cambio de mano)", "CyT (GIRO 70 Cambio Posición)", "EyG (Palanca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", 
  "EyG (Follow Giro en 5+ Estiro brazo 8 + Giro cuello + Contra giro en 5)", "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY (Salir Onda - Follow abajo en 4)", "JHERSY (Diagonal Sombra - Prepa Follow en 5 + sale en 6)", 
  "JHERSY (Diagonal me paro en 5-8)", "JHERSY (Frame Follow 5-8 mano dch escápula)", "JHERSY Intro", "JHERSY (Peino 2 manos)", "JHERSY (Enrollo pasos lentos 1-6 + 7-8 atrás)", "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", 
  "MyS (Espalda con espalda - preparo en 2 + giro en 3)", "MyS (Onda + en 5 Giro Follow sobre mi)"
-]
+];
 
 const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY"];
 
