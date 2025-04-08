@@ -26,7 +26,8 @@ const words = [
  "DyY - Cats - abro en 1 + Giro Follow + Giro Leader", "DyY abro en 4 - medio cuadrado" , "EyG - Palanca en 1 + sombra", "JHERSY - Helice", "SENSUAL Lados", "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", 
  "YyE (70´ Cats)", "JHERSY - Onda ando cambio de mano", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5 + Estiro brazo 8 + Giro cuello + Contra giro en 5)", 
  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY - Salir Onda - Follow abajo en 4", "JHERSY - Diagonal Sombra - Prepa Follow en 5 + sale en 6", "JHERSY - Diagonal me paro en 5-8", "JHERSY - Frame Follow 5-8 mano dch escápula", 
-  "JHERSY - Intro", "JHERSY - Peino 2 manos", "JHERSY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSY - Pasos libres", "JHERSY - Lado con lado brazo Dcho Onda atrás", "MyS - espalda con espalda - preparo en 2 + giro en 3"
+ "JHERSY - Intro", "JHERSY - Peino 2 manos", "JHERSY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSY - Pasos libres", "JHERSY - Lado con lado brazo Dcho Onda atrás", "MyS - espalda con espalda - preparo en 2 + giro en 3",
+ "MyS - onda + en 5 Giro Follow sobre mi"
 ];
 
 const wordsCustom = [
@@ -47,7 +48,8 @@ const wordsCustom = [
  "DyY - Cats - abro en 1 + Giro Follow + Giro Leader", "DyY abro en 4 - medio cuadrado" , "EyG - Palanca en 1 + sombra", "JHERSY - Helice", "SENSUAL Lados", "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (70´ Cats)",
  "JHERSY - Onda ando cambio de mano", "CyT (GIRO 70 Cambio Posición)", "EyG (Palabca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5+ Estiro brazo 8 + Giro cuello + Contra giro en 5)", 
  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY - Salir Onda - Follow abajo en 4", "JHERSY - Diagonal Sombra - Prepa Follow en 5 + sale en 6", "JHERSY - Diagonal me paro en 5-8", "JHERSY - Frame Follow 5-8 mano dch escápula", 
-  "JHERSY - Intro", "JHERSY - Peino 2 manos", "JHERSY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSY - Pasos libres", "JHERSY - Lado con lado brazo Dcho Onda atrás", "MyS - espalda con espalda - preparo en 2 + giro en 3"
+ "JHERSY - Intro", "JHERSY - Peino 2 manos", "JHERSY - Enrollo pasos lentos 1-6 + 7-8 atrás", "JHERSY - Pasos libres", "JHERSY - Lado con lado brazo Dcho Onda atrás", "MyS - espalda con espalda - preparo en 2 + giro en 3", 
+ "MyS - onda + en 5 Giro Follow sobre mi"
 ]
 
 const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY"];
