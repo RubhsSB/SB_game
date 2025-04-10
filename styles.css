@@ -50,19 +50,21 @@ body {
 }
 
 #word span.main-text {
-  font-size: 72px;
+  font-size: 100px;
   font-weight: bold;
   display: block;
   text-align: center;
+  line-height: 1.1;
 }
 
 #word span.parenthesis {
-  font-size: 36px;
+  font-size: 56px;
   font-weight: normal;
   opacity: 0.8;
   display: block;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 10px;
+  line-height: 1.1;
 }
 
 /* Contador de palabras */
