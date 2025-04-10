@@ -50,7 +50,7 @@ body {
 }
 
 #word span.main-text {
-  font-size: 100px;
+  font-size: 56px;
   font-weight: bold;
   display: block;
   text-align: center;
@@ -58,7 +58,7 @@ body {
 }
 
 #word span.parenthesis {
-  font-size: 60px;
+  font-size: 40px;
   font-weight: normal;
   opacity: 0.85;
   display: block;
