@@ -31,7 +31,7 @@ const words = [
 
 const wordsCustom = [
 "CyC (Host cambio posición)", "Daniel y Alma", "JyE (diagonal Cintura)", "EyG (abro y cierro)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY (Preparar pos Cerrada)", "SERGIO y KATINA (Bassmnt - Círculo y tiro atrás)",
- "EyG (Cats - giro 2 manos)", "ALBERTO y MARÍA (Cats - Giro espalda)", "JHERSY (preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "GtoyM", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)", "IVAN y SARAI (Cuadrado Host)",
+ "EyG (Cats - Giro 2 manos)", "ALBERTO y MARÍA (Cats - Giro espalda)", "JHERSY (preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "GtoyM", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)", "IVAN y SARAI (Cuadrado Host)",
  "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", "JHERSY (Giro cambio mano)", "JHERSY (salir/end)", "MyS (Cambio posición con mano Izq)", "FRANCIA", 
  "Alex y Lais (jóvenes -3+1)", "DyY (SanSebastián - Separo en 4 y al hombro)", "JyE (preparo salida en 8)", "CyC (Mambo Manos Hombro)", "70'", "DyY (Cats - Bajo cabeza)", "DyY (Bassmnt - Giro mano escápula)", "ENGAÑO", 
  "DyY (Freno + contra + brazo Izq al hombro)", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", "Cuello (en 6)", "CyT (3 giros con Cuello)", "5 cintura abajo", "CyT (sens Péndulo)", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE (Ando atrás)", 
