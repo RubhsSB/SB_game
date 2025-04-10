@@ -62,7 +62,6 @@ let wordCount = 0;
 let timerInterval;
 let gameMode = "easy";
 
-// DOM
 const wordElement = document.getElementById("word");
 const playButton = document.getElementById("play");
 const nextButton = document.getElementById("next");
@@ -76,7 +75,6 @@ const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
 const familySelect = document.getElementById("family-selector");
 
-// Al cargar
 window.addEventListener("load", () => {
   gameMode = "easy";
   updateLevelButtons();
@@ -88,7 +86,6 @@ window.addEventListener("load", () => {
   });
 });
 
-// Cambio de nivel
 [easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
   btn.addEventListener("click", () => {
     gameMode = ["easy", "hard", "custom", "family"][i];
@@ -97,7 +94,6 @@ window.addEventListener("load", () => {
   });
 });
 
-// Cambio de familia dinámico
 familySelect.addEventListener("change", () => {
   if (gameMode === "family") {
     resetWords();
@@ -169,27 +165,11 @@ function getRandomWord() {
   return word;
 }
 
-function formatWordDisplay(word) {
-  const match = word.match(/^([^(]+)\s*\(([^)]+)\)/);
-  if (match) {
-    const mainText = match[1].trim();
-    const subText = match[2].trim();
-    return `
-      <div class="main-container">
-        <div class="main-text">${mainText}</div>
-        <div class="sub-text">(${subText})</div>
-      </div>
-    `;
-  } else {
-    return `<div class="main-container"><div class="main-text">${word}</div></div>`;
-  }
-}
-
 function saveHighScore(averageTime, wordCount) {
   const key = gameMode === "easy" ? "easyHighScores"
-            : gameMode === "hard" ? "hardHighScores"
-            : gameMode === "custom" ? "customHighScores"
-            : "familyHighScores";
+    : gameMode === "hard" ? "hardHighScores"
+    : gameMode === "custom" ? "customHighScores"
+    : "familyHighScores";
   let scores = JSON.parse(localStorage.getItem(key)) || [];
   scores.push({ averageTime, wordCount });
   scores.sort((a, b) => a.averageTime - b.averageTime);
@@ -206,6 +186,15 @@ function startTimer() {
 
 function stopTimer() {
   clearInterval(timerInterval);
+}
+
+function formatWordDisplay(word) {
+  const match = word.match(/^(.*?)(\s*\(.*\))$/);
+  if (match) {
+    return `<span class="main-text">${match[1].trim()}</span><span class="parenthesis">${match[2].trim()}</span>`;
+  } else {
+    return `<span class="main-text">${word}</span>`;
+  }
 }
 
 playButton.addEventListener("click", () => {
@@ -252,7 +241,6 @@ finishButton.addEventListener("click", () => {
   timerElement.textContent = `Tiempo: 0 segundos`;
 });
 
-// Swipe para móviles
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -262,7 +250,7 @@ document.addEventListener("touchstart", e => {
 
 document.addEventListener("touchend", e => {
   touchEndX = e.changedTouches[0].screenX;
-  if (touchEndX < touchStartX - 50 && !nextButton.disabled) {
-    nextButton.click();
+  if (touchEndX < touchStartX - 50) {
+    if (!nextButton.disabled) nextButton.click();
   }
 });
