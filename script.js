@@ -82,7 +82,6 @@ window.addEventListener("load", () => {
   updateLevelButtons();
   document.getElementById("family-selector-container").style.display = "none";
 
-  // Rellenar selector de familias
   familyPrefixes.forEach(prefix => {
     const option = document.createElement("option");
     option.value = option.textContent = prefix;
@@ -90,7 +89,6 @@ window.addEventListener("load", () => {
   });
 });
 
-// Botones de nivel
 [easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
   btn.addEventListener("click", () => {
     gameMode = ["easy", "hard", "custom", "family"][i];
@@ -99,7 +97,6 @@ window.addEventListener("load", () => {
   });
 });
 
-// Cambio dinámico de familia durante la partida
 familySelect.addEventListener("change", () => {
   if (gameMode === "family") {
     resetWords();
@@ -162,10 +159,9 @@ function getRandomWord() {
   const index = Math.floor(Math.random() * validWords.length);
   const word = validWords[index];
 
-  // Control de repeticiones (no para hard)
   if (gameMode !== "hard") {
     recentWords.push(word);
-    if (recentWords.length > 5) recentWords.shift(); // Puedes ajustar la cantidad
+    if (recentWords.length > 5) recentWords.shift();
   }
 
   if (gameMode !== "hard") {
@@ -173,6 +169,13 @@ function getRandomWord() {
   }
 
   return word;
+}
+
+function formatWordDisplay(word) {
+  const match = word.match(/^(.+?)\s*(\([^\)]+\))?$/);
+  const main = match?.[1]?.trim() || word;
+  const extra = match?.[2] || "";
+  return `<span class="main-text">${main}</span>` + (extra ? ` <span class="parenthesis">${extra}</span>` : "");
 }
 
 function saveHighScore(averageTime, wordCount) {
@@ -198,11 +201,10 @@ function stopTimer() {
   clearInterval(timerInterval);
 }
 
-// Eventos principales
 playButton.addEventListener("click", () => {
   resetWords();
   currentWord = getRandomWord();
-  wordElement.textContent = currentWord;
+  wordElement.innerHTML = formatWordDisplay(currentWord);
   startTime = Date.now();
   wordCount = 0;
   totalTime = 0;
@@ -221,7 +223,7 @@ nextButton.addEventListener("click", () => {
   counterElement.textContent = `Palabras jugadas: ${wordCount}`;
   stopTimer();
   currentWord = getRandomWord();
-  wordElement.textContent = currentWord;
+  wordElement.innerHTML = formatWordDisplay(currentWord);
   startTime = Date.now();
   startTimer();
 });
@@ -243,7 +245,6 @@ finishButton.addEventListener("click", () => {
   timerElement.textContent = `Tiempo: 0 segundos`;
 });
 
-// Swipe para móviles
 let touchStartX = 0;
 let touchEndX = 0;
 
