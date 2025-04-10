@@ -76,12 +76,11 @@ const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
 const familySelect = document.getElementById("family-selector");
 
-// Nivel por defecto al cargar
+// Al cargar
 window.addEventListener("load", () => {
   gameMode = "easy";
   updateLevelButtons();
   document.getElementById("family-selector-container").style.display = "none";
-
   familyPrefixes.forEach(prefix => {
     const option = document.createElement("option");
     option.value = option.textContent = prefix;
@@ -89,6 +88,7 @@ window.addEventListener("load", () => {
   });
 });
 
+// Cambio de nivel
 [easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
   btn.addEventListener("click", () => {
     gameMode = ["easy", "hard", "custom", "family"][i];
@@ -97,6 +97,7 @@ window.addEventListener("load", () => {
   });
 });
 
+// Cambio de familia dinámico
 familySelect.addEventListener("change", () => {
   if (gameMode === "family") {
     resetWords();
@@ -162,9 +163,6 @@ function getRandomWord() {
   if (gameMode !== "hard") {
     recentWords.push(word);
     if (recentWords.length > 5) recentWords.shift();
-  }
-
-  if (gameMode !== "hard") {
     wordsCopy = wordsCopy.filter(w => w !== word);
   }
 
@@ -172,10 +170,19 @@ function getRandomWord() {
 }
 
 function formatWordDisplay(word) {
-  const match = word.match(/^(.+?)\s*(\([^\)]+\))?$/);
-  const main = match?.[1]?.trim() || word;
-  const extra = match?.[2] || "";
-  return `<span class="main-text">${main}</span>` + (extra ? ` <span class="parenthesis">${extra}</span>` : "");
+  const match = word.match(/^([^(]+)\s*\(([^)]+)\)/);
+  if (match) {
+    const mainText = match[1].trim();
+    const subText = match[2].trim();
+    return `
+      <div class="main-container">
+        <div class="main-text">${mainText}</div>
+        <div class="sub-text">(${subText})</div>
+      </div>
+    `;
+  } else {
+    return `<div class="main-container"><div class="main-text">${word}</div></div>`;
+  }
 }
 
 function saveHighScore(averageTime, wordCount) {
@@ -245,14 +252,9 @@ finishButton.addEventListener("click", () => {
   timerElement.textContent = `Tiempo: 0 segundos`;
 });
 
+// Swipe para móviles
 let touchStartX = 0;
 let touchEndX = 0;
-
-function checkSwipe() {
-  if (touchEndX < touchStartX - 50) {
-    if (!nextButton.disabled) nextButton.click();
-  }
-}
 
 document.addEventListener("touchstart", e => {
   touchStartX = e.changedTouches[0].screenX;
@@ -260,5 +262,7 @@ document.addEventListener("touchstart", e => {
 
 document.addEventListener("touchend", e => {
   touchEndX = e.changedTouches[0].screenX;
-  checkSwipe();
+  if (touchEndX < touchStartX - 50 && !nextButton.disabled) {
+    nextButton.click();
+  }
 });
