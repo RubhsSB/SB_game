@@ -105,7 +105,7 @@ familySelect.addEventListener("change", () => {
     resetWords();
     if (!playButton.disabled) {
       currentWord = getRandomWord();
-      wordElement.textContent = currentWord;
+      wordElement.innerHTML = formatWordDisplay(currentWord);
       startTime = Date.now();
     }
   }
