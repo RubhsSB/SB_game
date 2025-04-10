@@ -76,11 +76,11 @@ const customButton = document.getElementById("custom");
 const familyButton = document.getElementById("family");
 const familySelect = document.getElementById("family-selector");
 
+// Inicialización
 window.addEventListener("load", () => {
   gameMode = "easy";
   updateLevelButtons();
   document.getElementById("family-selector-container").style.display = "none";
-
   familyPrefixes.forEach(prefix => {
     const option = document.createElement("option");
     option.value = option.textContent = prefix;
@@ -96,6 +96,7 @@ window.addEventListener("load", () => {
   });
 });
 
+// Cambio dinámico de familia
 familySelect.addEventListener("change", () => {
   if (gameMode === "family") {
     resetWords();
@@ -129,6 +130,7 @@ function resetWords() {
     const prefix = familySelect.value;
     wordsCopy = words.filter(w => w.startsWith(prefix));
   } else if (gameMode === "hard") wordsCopy = [];
+
   shuffleArray(wordsCopy);
   recentWords = [];
 }
@@ -167,20 +169,17 @@ function getRandomWord() {
 
   if (gameMode !== "hard") {
     recentWords.push(word);
-    if (recentWords.length > 5) recentWords.shift();
+    if (recentWords.length > 10) recentWords.shift(); // Cambia 10 si quieres otro rango
   }
 
   return word;
 }
 
 function formatWordDisplay(word) {
-  const match = word.match(/^(.*?)\s*(\(.*\))?$/);
-  if (match) {
-    const main = match[1];
-    const parens = match[2] || "";
-    return `<span class="main-text">${main}</span>` + (parens ? `<span class="parenthesis">${parens}</span>` : "");
-  }
-  return `<span class="main-text">${word}</span>`;
+  const match = word.match(/^(.*?)\s*(\([^)]+\))?$/);
+  const main = match[1];
+  const par = match[2] || "";
+  return `<span class="main-text">${main.trim()}</span>${par ? `<span class="parenthesis">${par}</span>` : ""}`;
 }
 
 function saveHighScore(averageTime, wordCount) {
@@ -245,11 +244,12 @@ finishButton.addEventListener("click", () => {
   playButton.disabled = false;
   nextButton.disabled = true;
   finishButton.disabled = true;
-  wordElement.innerHTML = "Presiona 'Play' para comenzar de nuevo.";
+  wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
   counterElement.textContent = `Palabras jugadas: 0`;
   timerElement.textContent = `Tiempo: 0 segundos`;
 });
 
+// Swipe para móviles
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -259,7 +259,7 @@ document.addEventListener("touchstart", e => {
 
 document.addEventListener("touchend", e => {
   touchEndX = e.changedTouches[0].screenX;
-  if (touchEndX < touchStartX - 50) {
-    if (!nextButton.disabled) nextButton.click();
+  if (touchEndX < touchStartX - 50 && !nextButton.disabled) {
+    nextButton.click();
   }
 });
