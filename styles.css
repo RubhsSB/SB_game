@@ -41,10 +41,16 @@ body {
 }
 
 /* Palabra centrada y grande */
-#word {
+#word span.main-text {
   font-size: 72px;
   font-weight: bold;
-  margin: 20px 0;
+}
+
+#word span.parenthesis {
+  font-size: 32px;
+  font-weight: normal;
+  color: #555;
+  margin-left: 10px;
 }
 
 /* Contador de palabras */
