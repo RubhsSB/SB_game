@@ -27,7 +27,8 @@ const words = [
  "EyG (Follow Giro en 5 + Estiro brazo 8)", "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY (Salir Onda Follow abajo en 4)", "JHERSY (Diagonal Sombra Prepa Follow en 5 + sale en 6)",
  "JHERSY (Diagonal me paro en 5-8)", "JHERSY (Frame Follow 5-8 mano dch escápula)", "JHERSY (Intro)", "JHERSY (Peino 2 manos)", "JHERSY (Enrollo pasos lentos 1-6 + 7-8 atrás)", "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", 
  "MyS (Espalda con espalda - preparo en 2 + giro en 3)", "MyS (Onda + en 5 Giro Follow sobre mi)", "TITANIC", "CyC (Pasos atrás)", "CyC (Freno en 6 + L de brazos)", "JHERSY (Acordeon - de lado en 5)", "JHERSY (Abro Izq - 5 Lado deslizo pies)", 
- "JHERSY (Sensual - mano cintura)", "Deniol - Espalda", "JyL - (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión)", "DyY (Agarre gancho onda)"
+ "JHERSY (Sensual - mano cintura)", "Deniol - Espalda", "JyL - (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión)", "DyY (Agarre gancho onda)", "YyE (Bachata Flow)", "CyC (Bachata Flow)", "JyL (Host- Diagonal y ando)", 
+ "EyG (Peino + Sombra Líder)", "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)"
 ];
 
 const wordsCustom = [
@@ -49,10 +50,11 @@ const wordsCustom = [
  "EyG (Follow Giro en 5+ Estiro brazo 8)", "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY (Salir Onda - Follow abajo en 4)", "JHERSY (Diagonal Sombra - Prepa Follow en 5 + sale en 6)", 
  "JHERSY (Diagonal me paro en 5-8)", "JHERSY (Frame Follow 5-8 mano dch escápula)", "JHERSY Intro", "JHERSY (Peino 2 manos)", "JHERSY (Enrollo pasos lentos 1-6 + 7-8 atrás)", "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", 
  "MyS (Espalda con espalda - preparo en 2 + giro en 3)", "MyS (Onda + en 5 Giro Follow sobre mi)", "TITANIC", "CyC (Pasos atrás)", "CyC (Freno en 6 + L de brazos)", "JHERSY (Acordeon - de lado en 5)", "JHERSY (Abro Izq - 5 Lado deslizo pies)", "INTRO Carlos", 
- "INTRO Carlos", "INTRO Carlos", "JHERSY (Sensual - mano cintura)", "Deniol - Espalda", "JyL - (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión)", "DyY (Agarre gancho onda)"
+ "INTRO Carlos", "INTRO Carlos", "JHERSY (Sensual - mano cintura)", "Deniol - Espalda", "JyL - (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión)", "DyY (Agarre gancho onda)", "YyE (Bachata Flow)", "CyC (Bachata Flow)", "JyL (Host- Diagonal y ando)", 
+ "EyG (Peino + Sombra Líder)", "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)"
 ];
 
-const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE"];
+const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE", "Stefy"];
 
 // Variables
 let wordsCopy = [];
