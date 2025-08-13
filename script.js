@@ -10,10 +10,10 @@ const words = [
  "DyY (Freno + contra + brazo Izq al hombro)", "ENGAÑO", "MOLINO juego", "TONIO (enrrollo + saco/peinado)", "SENSUAL Lados", "PATADA", "MATI y SOFI (Lanzo brazo atrás)", "MOLINO Insta", "EyG (Giro LED cintura)", "CyT", 
  "CyC (Freno en 2 y alargo 3-4)", "Elw Golpe", "JyE (Diagonal + Giro)", "INTRO", "EyG (Lanzo y Diagonal)", "VALENT", "VyA (Freno hombro en 2)", "FLECHA", "CyC (Giro en Diagonal + abrazo cuello)", "CyC (Olas Izq + Molino Follow)", 
  "CyC (Giro en diagonal)", "CyC (Diagonal + paseo)", "GERO y MIGLE (Cambio pos 360º)", "Cuello (en 6)", "CyT (3 giros con Cuello)", "EyG (SanSebastián - Rompo y abajo)", "BRAZOS Frame", "JOVENES 70'+ Cuello", "5 cintura abajo", 
- "VyA", "David", "CyT (sens Péndulo)", "CyT (sens Onda)", "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC (en 4 de espaldas)", "GAB", "CyC (andar atrás)", "CyT (Cambio + 70´)", "KENZ y JULY (Lanzo brazo atrás)", "JyE (Ando atrás)", 
+ "VyA", "David", "CyT (sens Péndulo)", "CyT (sens Onda)", "DISOCIACION de PECHO (Enrollada)", "EyG", "CyC (en 4 de espaldas)", "CyC (andar atrás)", "CyT (Cambio + 70´)", "KENZ y JULY (Lanzo brazo atrás)", "JyE (Ando atrás)", 
  "CyC (Giro en diagonal + peino + abajo)", "EyG (5 gira Foll + 7 gira Led)", "PABLO y NAT (jóvenes)", "OTTO", "CyC (½ Diagonal + Lanzo en sombra Led)", "ASCENSOR", "JLAB (Muñeco brazos)", "JAVI y BELÉN (Host)", "JORGE y SANDRA", 
  "JyE (Enrollo x 2)", "COLOMBIAN", "DISOCIACION de PECHO (en SOMBRA)", "CyC", "CyT (Giro 70 Cambio Posición)", "CyC (1/2 Diagonal + giro atrás + paseo)", "CyC", "CyC", "JLAB (Doble giro  +  70´)", "CyC", "YEIFREN", "CyC (Brazos Izq y Dcho hombros)", 
- "DyY (Onda + Círculo)", "SENSUAL +", "DyY (Giro + Freno en 6)", "70´Adelante", "JyE", "AyYUR (Palanca)", "Lado MAMBO", "GAB", "JyE (Giro CUELLO)", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", 
+ "DyY (Onda + Círculo)", "SENSUAL +", "DyY (Giro + Freno en 6)", "70´Adelante", "JyE", "AyYUR (Palanca)", "Lado MAMBO", "JyE (Giro CUELLO)", "DISOCIACION de PECHO (pos CERRADA)", "D e Inés", "INTRO", 
  "CyT (mano cuello LED en 8)", "Brazo Lanzo DEBAJO", "JLAB (Sensual/Giros)", "DOTORE (Mym)", "ARGETIN", "CANGURO", "PyL Pasos", "ENGAÑO", "CyC", "JyE", "GUITARRA", "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", 
  "SERGIO y KATINA (Casa de Campo - Molino)", "EyG (Giro Espalda con Espalda)", "DyY (Follow Gira en 8 + Lanzo izq)", "CyT (Balanceo)", "CyT (Péndulo)", "CyT (sensual meter pierna)", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", 
  "IVAN Y SARAI (3 sensual + Cadera)", "JHERSY Diagonal", "JHERSY Diagonal", "CyC (Giro en Diagonal + abrazo cuello)", "EyG (5 gira Foll + 7 gira Led)", "EyG (1/2 Sensual + disoc Follow)", "Básico (Grande + Pequeño)", 
@@ -29,7 +29,7 @@ const words = [
  "MyS (Espalda con espalda - preparo en 2 + giro en 3)", "MyS (Onda + en 5 Giro Follow sobre mi)", "TITANIC", "CyC (Freno en 6 + L de brazos)", "JHERSY (Acordeon - de lado en 5)", "JHERSY (Abro Izq - 5 Lado deslizo pies)", 
  "JHERSY (Sensual - mano cintura)", "Deniol - Espalda", "JyL - (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión)", "DyY (Agarre gancho onda)", "YyE (Bachata Flow)", "CyC (Bachata Flow)", "JyL (Host- Diagonal y ando)", 
  "EyG (Peino + Sombra Líder)", "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)", 
- "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)"
+ "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño"
 ];
 
 const wordsCustom = [
@@ -39,7 +39,7 @@ const wordsCustom = [
  "Alex y Lais (jóvenes -3+1)", "DyY (SanSebastián - Separo en 4 y al hombro)", "JyE (preparo salida en 8)", "CyC (Mambo Manos Hombro)", "70'", "DyY (Cats - Bajo cabeza)", "DyY (Bassmnt - Giro mano escápula)", "ENGAÑO", 
  "DyY (Freno + contra + brazo Izq al hombro)", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", "Cuello (en 6)", "CyT (3 giros con Cuello)", "5 cintura abajo", "CyT (sens Péndulo)", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE (Ando atrás)", 
  "PABLO y NAT (jóvenes)", "OTTO", "ASCENSOR", "JLAB (Muñeco brazos)", "JORGE y SANDRA", "JyE (Enrollo x 2)", "COLOMBIAN", "DISOCIACION de PECHO (en SOMBRA)", "JLAB (Doble giro  +  70´)", "DyY (Onda + Círculo)", "SENSUAL +", "70´Adelante", "JyE", 
- "AyYUR Palanca", "Lado MAMBO", "GAB", "JyE (Giro CUELLO)", "DISOCIACION de PECHO (pos CERRADA)", "CANGURO", "GUITARRA", "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "CyC (Diagonal + paseo)", "JHERSY (Diagonal)", 
+ "AyYUR Palanca", "Lado MAMBO", "JyE (Giro CUELLO)", "DISOCIACION de PECHO (pos CERRADA)", "CANGURO", "GUITARRA", "SINCOPADO", "Pasos CARLOS", "STEPHAN y NEVI (freno en 3 y horiz)", "CyC (Diagonal + paseo)", "JHERSY (Diagonal)", 
  "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", "IVAN Y SARAI (3 sensual + Cadera)", "EyG (1/2 Sensual + disoc Follow)", "Básico (Grande/Pequeño + Hombros + Caderas)", "D e Inés", "Brazo Lanzo DEBAJO", 
  "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "CyC (Host - Peino Follow + Me peino)", "Giros", "Giros", "CyC (Giro en Diagonal + abrazo cuello)", "SERGIO y KATINA (Casa de Campo - Molino)", 
  "EyG (Cambio posición + Giro + Lanzo)",  "DyY (Led giro atrás en 1 + Onda + Sombra)", "CyC (Host - Diagonal con pasos)", "Instag Salida Giro espalda Led", "Giro Foll en 5 + Giro Led en 7", "JHERSY (Preparar pos Cerrada)", 
@@ -52,7 +52,7 @@ const wordsCustom = [
  "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", "MyS (Espalda con espalda - preparo en 2 + giro en 3)", "MyS (Onda + en 5 Giro Follow sobre mi)", "TITANIC", "CyC (Freno en 6 + L de brazos)", 
  "JHERSY (Acordeon - de lado en 5)", "JHERSY (Abro Izq - 5 Lado deslizo pies)", "INTRO Carlos", "INTRO Carlos", "INTRO Carlos", "JHERSY (Sensual - mano cintura)", "Deniol - Espalda", "JyL - (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", 
  "DyY (Diagonal tensión)", "DyY (Agarre gancho onda)", "YyE (Bachata Flow)", "CyC (Bachata Flow)", "JyL (Host- Diagonal y ando)", "EyG (Peino + Sombra Líder)", "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", 
- "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)", "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)"
+ "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)", "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño"
 ];
 
 const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE", "Stefy"];
@@ -268,6 +268,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
