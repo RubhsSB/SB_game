@@ -4,7 +4,7 @@ const words = [
  "JHERSY (Preparar pos Cerrada)", "SERGIO y KATINA (Bassmnt - Círculo y tiro atrás)", "EyG (Cats - Giro 2 manos)", "ALBERTO y MARÍA (Cats - Giro espalda)", "JHERSY (preparo sensual + mano Follow)",
  "JHERSY (preparo sensual + lanzo en 4 y salgo)", "DIAGONAL salida", "AyV", "CyC (Segovia)", "Sergio y Katina (Host)", "Sensual +", "GtoyM", "José y Layla (Mymo)", "INTRO Carlos", "INTRO Carlos", "INTRO Carlos", 
  "K_ELDE Intro", "K_ELDE (mano en 5)",  "TONIO (brazos + cuello+Disoc + Salir)", "JLAB (salir/end)", "K_ELDE (brazos Izq)", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", 
- "JHERSY (Giro F en 5 + Giro L en 7 + desplazamiento)", "JHERSY Pasos", "JHERSY (Giro cambio mano)", "K_ELDE (brazos Dcha)", "IVAN Y SARAI (Cuadrado Host)", "JHERSY (salir/end)", "CyC (Giro 2 manos)", "Tonio (Codos + Angel + Andar)",
+ "JHERSY (Giro F en 5 + Giro L en 7 + desplazamiento)", "JHERSY Pasos", "JHERSY (Giro cambio mano)", "K_ELDE (brazos Dcha)", "JHERSY (salir/end)", "CyC (Giro 2 manos)", "Tonio (Codos + Angel + Andar)",
  "70'", "Yowke", "Elw Pasitos (Adelante/Atrás)", "Elw Pasitos (Izq/Dcha)", "MyS (Cambio posición con mano Izq)", "FRANCIA", "Alex y Lais (jóvenes -3+1)", "VyA (Cambio mano + Freno en 6)", "DyY (SanSebastián - Separo en 4 y al hombro)", 
  "JyE (Preparo salida en 8)", "CyC (Mambo Manos Hombro)", "70'", "CyC (70´ + mano hombro para sombra)", "M y Gta", "DyY (Cats -Bajo cabeza)", "ENGAÑO", "PyL", "Yowke", 
  "DyY (Freno + contra + brazo Izq al hombro)", "ENGAÑO", "MOLINO juego", "TONIO (enrrollo + saco/peinado)", "SENSUAL Lados", "PATADA", "MATI y SOFI (Lanzo brazo atrás)", "MOLINO Insta", "EyG (Giro LED cintura)", "CyT", 
@@ -35,7 +35,7 @@ const words = [
 
 const wordsCustom = [
 "CyC (Host cambio posición)", "Daniel y Alma", "JyE (Diagonal Cintura)", "DyY (abro en 4)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY (Preparar pos Cerrada)", "SERGIO y KATINA (Bassmnt - Círculo y tiro atrás)",
- "EyG (Cats - Giro 2 manos)", "ALBERTO y MARÍA (Cats - Giro espalda)", "JHERSY (Preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "GtoyM", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)", "IVAN y SARAI (Cuadrado Host)",
+ "EyG (Cats - Giro 2 manos)", "ALBERTO y MARÍA (Cats - Giro espalda)", "JHERSY (Preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "GtoyM", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)",
  "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", "JHERSY (Giro cambio mano)", "JHERSY (salir/end)", "MyS (Cambio posición con mano Izq)", "FRANCIA", 
  "Alex y Lais (jóvenes -3+1)", "DyY (SanSebastián - Separo en 4 y al hombro)", "JyE (preparo salida en 8)", "CyC (Mambo Manos Hombro)", "70'", "DyY (Cats - Bajo cabeza)", "ENGAÑO", 
  "DyY (Freno + contra + brazo Izq al hombro)", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", "CyT (3 giros con Cuello)", "5 cintura abajo", "CyT (sens Péndulo)", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE (Ando atrás)", 
@@ -271,6 +271,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
