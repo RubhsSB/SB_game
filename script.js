@@ -19,7 +19,7 @@ const words = [
  "CyC (Mymo)", "Giros", "Giros", "CyC (Host 70´+ sombra Follow)", "EyG (Cambio posición + Giro + Lanzo)",  "DyY (Led giro atrás en 1 + Onda + Sombra)", "CyC (Host - Diagonal con pasos)", "Insta Salida Giro espalda Led", 
  "Giro Foll en 5 + Giro Led en 7", "JHERSY (Preparar pos Cerrada)",  "DyY (Onda prep decha - Tiempo normal)", "DyY (Onda prep decha- Tiempo Follow)", "DyY (Onda prep decha - en Sombra Follow)", "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)", 
  "VyA (Segovia - 4 Preparo y abro + Giro Follow)", "CyC (Segovia - ½ Diagonal + Preparo en 6)", "DyY (Segovia - Lanzo + peino + sombra)", "CyC (Segovia - Rompo y atrás + desplazo Follow)", "DyY (Segovia - Enrollo en 5)", "CyC (Segovia - Diagonal freno Follow en 3)", "DyY (Onda en Sombra Follow prep decha)", "Carlos (Cintura Péndulo)", "JHERSY (Enrollo Follow suelto mano Ext)",
- "JHERSY (Giro Follow en 5 y semi giro Leader en 7)", "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "DyY (abro en 4 - medio cuadrado)" , "EyG (Palanca en 1 + sombra)", "JHERSY (Helice)", "SENSUAL Lados", 
+ "JHERSY (Giro Follow en 5 y semi giro Leader en 7)", "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "DyY (abro en 4 - medio cuadrado)", "EyG (Palanca en 1 + sombra)", "JHERSY (Helice)", "SENSUAL Lados", 
  "SENSUAL Lados", "DyY (Onda en Sombra Izq me siento)", "YyE (Cats - 70´)", "JHERSY (Onda ando cambio de mano)", "EyG (Palanca en 1 + Peino + Juego brazos)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", 
  "EyG (Follow Giro en 5 + Estiro brazo 8)", "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY (Salir Onda Follow abajo en 4)", "JHERSY (Diagonal Sombra Prepa Follow en 5 + sale en 6)", "JHERSY (Diagonal me paro en 5-8)", 
  "JHERSY (Frame Follow 5-8 mano dch escápula)", "JHERSY (Intro)", "JHERSY (Peino 2 manos)", "JHERSY (Enrollo pasos lentos 1-6 + 7-8 atrás)", "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", 
@@ -28,7 +28,7 @@ const words = [
  "CyC (Bachata Flow)", "JyL (Host- Diagonal y ando)", "EyG (Peino + Sombra Líder)", "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", 
  "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)", "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño", "JHERSY (Salida Diagonal)", 
  "JHERSY (Lanzo mano atrás + cadera + saco en 7)", "JHERSY (Mano/s pecho)", "JHERSY (Peinar con 2 manos)", "JHERSY (Posición cerrada vaivén)", "JHERSY (En 1 giro por detrás mano izq cuello)", "JHERSY (1 atrás/rompe estirado brazo para giro Lid en 5)", 
- "VyA (Host - 4 Preparo y freno Follow en sombra)"
+ "VyA (Host - 4 Preparo y freno Follow en sombra)", "EyG (4 preparo + 5 Giro dos manos + 7 abajo)"
 ];
 
 const wordsCustom = [
@@ -52,10 +52,10 @@ const wordsCustom = [
  "Deniol - Espalda", "JyL (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión + Abajo/Arriba)", "DyY (Agarre gancho onda)", "YyE (Bachata Flow)", "CyC (Bachata Flow)", "JyL (Host- Diagonal y ando)", 
  "EyG (Peino + Sombra Líder)", "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)", 
  "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño", "JHERSY (Salida Diagonal)", "JHERSY (Lanzo mano atrás + cadera + saco en 7)", "JHERSY (Mano/s pecho)", "JHERSY (Peinar con 2 manos)", 
- "JHERSY (Posición cerrada vaivén)", "JHERSY (En 1 giro por detrás mano izq cuello)", "JHERSY (1 atrás/rompe estirado brazo para giro Lid en 5)", "VyA (Host - 4 Preparo y freno Follow en sombra)"
+ "JHERSY (Posición cerrada vaivén)", "JHERSY (En 1 giro por detrás mano izq cuello)", "JHERSY (1 atrás/rompe estirado brazo para giro Lid en 5)", "VyA (Host - 4 Preparo y freno Follow en sombra)", "EyG (4 preparo + 5 Giro dos manos + 7 abajo)"
 ];
 
-const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE", "Stefy"];
+const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
 
 // Variables
 let wordsCopy = [];
@@ -268,6 +268,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
