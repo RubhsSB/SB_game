@@ -20,15 +20,36 @@ body {
   border-radius: 15px;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
   text-align: center;
-  max-width: 600px;
+  max-width: 700px;
   width: 90%;
 }
 
-/* Mensaje inicial o palabra */
+/* Contenedor de palabra con estructura */
 #word {
-  font-size: 28px;
-  font-weight: 400;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
   margin-bottom: 30px;
+}
+
+/* Texto principal grande */
+#word .main-text {
+  font-size: 72px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.1;
+}
+
+/* Texto entre paréntesis más pequeño debajo */
+#word .parenthesis {
+  font-size: 36px;
+  font-weight: 400;
+  opacity: 0.8;
+  margin-top: 10px;
+  text-align: center;
+  line-height: 1.1;
 }
 
 /* Contadores */
@@ -151,4 +172,31 @@ button:disabled {
   background-color: #222;
   color: white;
   border: 1px solid #555;
+}
+
+/* Responsividad: ajuste de texto para pantallas pequeñas */
+@media (max-width: 600px) {
+  #word .main-text {
+    font-size: 48px;
+  }
+
+  #word .parenthesis {
+    font-size: 24px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  button {
+    padding: 8px 20px;
+    font-size: 14px;
+  }
+
+  #results-button button,
+  #level-selection button {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
 }
