@@ -29,7 +29,9 @@ const words = [
  "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño", "JHERSY (Salida Diagonal)", "JHERSY (Lanzo mano atrás + cadera + saco en 7)", "JHERSY (Mano/s pecho)", 
  "JHERSY (Peinar con 2 manos)", "JHERSY (Posición cerrada vaivén)", "JHERSY (En 1 giro por detrás mano izq cuello)", "JHERSY (1 atrás/rompe estirado brazo para giro Lid en 5)", "VyA (Host - 4 Preparo y freno Follow en sombra)", 
  "EyG (4 preparo + 5 Giro dos manos + 7 abajo)", "ByL (Host - 4 figuras)", "IyR (Host - 4 abro para pasos)", "BÁSICO - Frame", "SERGIO y KATINA (Benidorm)", "JyL (Benidorm)", "KyN (Benidorm - Diagonal)", 
- "EyG (LEd peino izq + brazo Follow atrás en 2, preparo para giro con mano en sobaco/espalda)"
+ "EyG (LEd peino izq + brazo Follow atrás en 2, preparo para giro con mano en sobaco/espalda)", "JyE (Peino Decha + agarro brazo + sombra)", "DyY (Bassement 70´ en 1)" , "JyE (Bassement - Diagonal)" , "JyE (Peino Izq + apoyo Decha hombro)", 
+ "JyE (Sensual + Disociación en 1)", "JyE (Sensual + Onda Follow en 5)", "SyK (Cats - 5 traigo y sombra)" , "CyC (en 7 preparo agararrando codo + en 1 salgo para sombra en 4)", 
+ "JyE (Izq abajo en 1 a mi hombro + en 3 de lado + 4 hacia mi + 5 lanzo con cadera - 2 versiones)"
 ];
 
 const wordsCustom = [
@@ -54,7 +56,9 @@ const wordsCustom = [
  "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)", 
  "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño", "JHERSY (Salida Diagonal)", "JHERSY (Lanzo mano atrás + cadera + saco en 7)", "JHERSY (Mano/s pecho)", "JHERSY (Peinar con 2 manos)", 
  "JHERSY (Posición cerrada vaivén)", "JHERSY (En 1 giro por detrás mano izq cuello)", "JHERSY (1 atrás/rompe estirado brazo para giro Lid en 5)", "VyA (Host - 4 Preparo y freno Follow en sombra)", "EyG (4 preparo + 5 Giro dos manos + 7 abajo)", 
- "ByL (Host - 4 figuras)", "IyR (Host - 4 abro para pasos)", "BÁSICO - Frame", "SERGIO y KATINA (Benidorm)", "JyL (Benidorm)", "KyN (Benidorm - Diagonal)", "EyG (LEd peino izq + brazo Follow atrás en 2, preparo para giro con mano en sobaco/espalda)"
+ "ByL (Host - 4 figuras)", "IyR (Host - 4 abro para pasos)", "BÁSICO - Frame", "SERGIO y KATINA (Benidorm)", "JyL (Benidorm)", "KyN (Benidorm - Diagonal)", "EyG (LEd peino izq + brazo Follow atrás en 2, preparo para giro con mano en sobaco/espalda)", 
+ "JyE (Peino Decha + agarro brazo + sombra)", "DyY (Bassement 70´ en 1)" , "JyE (Bassement - Diagonal)" , "JyE (Peino Izq + apoyo Decha hombro)", "JyE (Sensual + Disociación en 1)", "JyE (Sensual + Onda Follow en 5)", "SyK (Cats - 5 traigo y sombra)", 
+ "CyC (en 7 preparo agararrando codo + en 1 salgo para sombra en 4)", "JyE (Izq abajo en 1 a mi hombro + en 3 de lado + 4 hacia mi + 5 lanzo con cadera - 2 versiones)"
 ];
 
 const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
@@ -291,3 +295,4 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
