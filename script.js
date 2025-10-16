@@ -226,12 +226,9 @@ playButton.addEventListener("click", () => {
   totalTime = 0;
   counterElement.textContent = `Palabras jugadas: ${wordCount}`;
   timerElement.textContent = `Tiempo: 0 segundos`;
-
-  // Mostrar botones de juego y ocultar Play
-  playButton.style.display = "none";
-  nextButton.style.display = "inline-block";
-  finishButton.style.display = "inline-block";
-
+  playButton.disabled = true;
+  nextButton.disabled = false;
+  finishButton.disabled = false;
   startTimer();
 });
 
@@ -256,11 +253,9 @@ finishButton.addEventListener("click", () => {
   } else {
     resultElement.textContent = "No has jugado todavía.";
   }
-
-  playButton.style.display = "inline-block";
-  nextButton.style.display = "none";
-  finishButton.style.display = "none";
-
+  playButton.disabled = false;
+  nextButton.disabled = true;
+  finishButton.disabled = true;
   wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
   counterElement.textContent = `Palabras jugadas: 0`;
   timerElement.textContent = `Tiempo: 0 segundos`;
@@ -280,3 +275,4 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
