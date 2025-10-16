@@ -3,44 +3,45 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Juego de Palabras</title>
+  <title>SB Game</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div id="results-button">
+    <button title="Ver resultados">⏳</button>
+  </div>
 
-  <!-- Botón R para acceder a resultados -->
-  <a href="resultados.html" id="results-button">
-    <button>R</button>
-  </a>
-
-  <!-- Botones para seleccionar el nivel -->
   <div id="level-selection">
-    <button id="easy" class="active">E</button>
+    <button id="easy">E</button>
     <button id="hard">H</button>
     <button id="custom">C</button>
     <button id="family">F</button>
   </div>
 
-  <!-- Selector de familias solo visible en modo Family -->
-  <div id="family-selector-container" style="display: none; margin-top: 10px;">
-    <label for="family-selector">Selecciona una familia:</label>
+  <div id="family-selector-container">
     <select id="family-selector">
-      <!-- Se rellena dinámicamente con JS -->
+      <option value="CyC">CyC</option>
+      <option value="CyT">CyT</option>
+      <option value="EyG">EyG</option>
+      <option value="JyE">JyE</option>
+      <option value="DyY">DyY</option>
     </select>
   </div>
 
-  <!-- Contenido principal del juego -->
-  <div id="game">
-    <p id="word">Presiona "Play" para comenzar</p>
-    <p id="counter">Palabras jugadas: 0</p>
-    <p id="timer">Tiempo: 0 segundos</p>
-    <button id="play">Play</button>
-    <button id="next" disabled>Next</button>
-    <button id="finish" disabled>Finalizar</button>
-    <p id="result"></p>
+  <div class="card">
+    <div id="word">Presiona Play para comenzar</div>
+    <div class="info-row">
+      <div id="counter">Palabras: 0</div>
+      <div id="timer">Tiempo: 0.0s</div>
+    </div>
+    <div class="button-row">
+      <button id="play">▶ Play</button>
+      <button id="next" disabled>Siguiente</button>
+      <button id="finish" disabled>Finalizar</button>
+    </div>
+    <div id="result"></div>
   </div>
 
-  <!-- Script principal -->
   <script src="script.js"></script>
 </body>
 </html>
