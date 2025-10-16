@@ -93,6 +93,11 @@ window.addEventListener("load", () => {
     option.value = option.textContent = prefix;
     familySelect.appendChild(option);
   });
+
+  // Mostrar solo el botón Play al inicio
+  playButton.style.display = "inline-block";
+  nextButton.style.display = "none";
+  finishButton.style.display = "none";
 });
 
 [easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
@@ -176,7 +181,7 @@ function getRandomWord() {
 
   if (gameMode !== "hard") {
     recentWords.push(word);
-    if (recentWords.length > 10) recentWords.shift(); // Cambia 10 si quieres otro rango
+    if (recentWords.length > 10) recentWords.shift(); // ajustable
   }
 
   return word;
@@ -221,9 +226,12 @@ playButton.addEventListener("click", () => {
   totalTime = 0;
   counterElement.textContent = `Palabras jugadas: ${wordCount}`;
   timerElement.textContent = `Tiempo: 0 segundos`;
-  playButton.disabled = true;
-  nextButton.disabled = false;
-  finishButton.disabled = false;
+
+  // Mostrar botones de juego y ocultar Play
+  playButton.style.display = "none";
+  nextButton.style.display = "inline-block";
+  finishButton.style.display = "inline-block";
+
   startTimer();
 });
 
@@ -248,15 +256,17 @@ finishButton.addEventListener("click", () => {
   } else {
     resultElement.textContent = "No has jugado todavía.";
   }
-  playButton.disabled = false;
-  nextButton.disabled = true;
-  finishButton.disabled = true;
+
+  playButton.style.display = "inline-block";
+  nextButton.style.display = "none";
+  finishButton.style.display = "none";
+
   wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
   counterElement.textContent = `Palabras jugadas: 0`;
   timerElement.textContent = `Tiempo: 0 segundos`;
 });
 
-// Swipe para móviles
+// Swipe móvil
 let touchStartX = 0;
 let touchEndX = 0;
 
@@ -270,24 +280,3 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
