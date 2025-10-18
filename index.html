@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SB Game</title>
+  <title>BACHATA</title>
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- Para hacer la app instalable -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#ff3b5c" />
 </head>
 <body>
   <!-- Botón para ver resultados -->
@@ -22,12 +26,12 @@
     <button id="family">F</button>
   </div>
 
-<!-- Selector de familia -->
-<div id="family-selector-container">
-  <select id="family-selector">
-    <!-- Las opciones se llenarán dinámicamente desde script.js -->
-  </select>
-</div>
+  <!-- Selector de familia -->
+  <div id="family-selector-container">
+    <select id="family-selector">
+      <!-- Las opciones se llenarán dinámicamente desde script.js -->
+    </select>
+  </div>
 
   <!-- Tarjeta principal del juego -->
   <div class="card">
@@ -50,4 +54,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
