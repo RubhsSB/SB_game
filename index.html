@@ -4,11 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BACHATA</title>
+
+  <!-- Estilo -->
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Para hacer la app instalable -->
+  <!-- PWA (App Instalable) -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ff3b5c" />
+  <link rel="icon" href="icon-192.png" type="image/png" />
 </head>
 <body>
   <!-- Botón para ver resultados -->
@@ -51,6 +54,16 @@
     <div id="result"></div>
   </div>
 
+  <!-- JS principal -->
   <script src="script.js"></script>
+
+  <!-- Service Worker para PWA -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(reg => console.log('✅ Service Worker registrado:', reg.scope))
+        .catch(err => console.error('❌ Error al registrar el Service Worker:', err));
+    }
+  </script>
 </body>
 </html>
