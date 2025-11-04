@@ -23,7 +23,7 @@ const words = [
  "JyE (Peino Decha + agarro brazo + sombra)", "DyY (Bassement 70´ en 1)" , "JyE (Bassement - Diagonal)" , "JyE (Peino Izq + apoyo Decha hombro)", "JyE (Sensual + Disociación en 1)", "JyE (Sensual + Onda Follow en 5)", "SyK (Cats - 5 traigo y sombra)", 
  "CyC (en 7 preparo agararrando codo + en 1 salgo para sombra en 4)", "JyE (Izq abajo en 1 a mi hombro + en 3 de lado + 4 hacia mi + 5 lanzo con cadera - 2 versiones)", "CyG (Andar atás completo - 8)", 
  "CyG (Andar atás 1-4 + abrazo + 5 IZQ + 6 CENTRO + 7 SEPARO + 8 JUNTO)", "CyG (Frame - junto en 1 separo 2 a 4 + junto en 1 separo 6 a 8)", "SUAVE", "SUAVE", "SUAVE", "SUAVE", "SUAVE", "DISFRUTA", "DISFRUTA", "DISFRUTA", "DISFRUTA", "DISFRUTA", 
- "DyY (Cats - peino Fol en 1)"
+ "DyY (Cats - peino Fol en 1)", "ByL (Bachata Flow)", "DyY (Cha3)", "NyE (Cha3)", "DyY (Pasitos)"
 ];
 
 const wordsCustom = [
@@ -50,7 +50,7 @@ const wordsCustom = [
  "JyE (Peino Decha + agarro brazo + sombra)", "DyY (Bassement 70´ en 1)" , "JyE (Bassement - Diagonal)" , "JyE (Peino Izq + apoyo Decha hombro)", "JyE (Sensual + Disociación en 1)", "JyE (Sensual + Onda Follow en 5)", "SyK (Cats - 5 traigo y sombra)", 
  "CyC (en 7 preparo agararrando codo + en 1 salgo para sombra en 4)", "JyE (Izq abajo en 1 a mi hombro + en 3 de lado + 4 hacia mi + 5 lanzo con cadera - 2 versiones)", "CyG (Andar atás completo - 8)", 
  "CyG (Andar atás 1-4 + abrazo + 5 IZQ + 6 CENTRO + 7 SEPARO + 8 JUNTO)", "CyG (Frame - junto en 1 separo 2 a 4 + junto en 1 separo 6 a 8)", "SUAVE", "SUAVE", "SUAVE", "SUAVE", "SUAVE", "DISFRUTA", "DISFRUTA", "DISFRUTA", "DISFRUTA", "DISFRUTA", 
- "DyY (Cats - peino Fol en 1)"
+ "DyY (Cats - peino Fol en 1)", "ByL (Bachata Flow)", "DyY (Cha3)", "NyE (Cha3)", "DyY (Pasitos)"
 ];
 
 const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
@@ -287,6 +287,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
