@@ -60,7 +60,7 @@ const wordsCustom = [
  "JHERSY (postura)", "JHERSY (liderar)", "JHERSY (liderar)"
 ];
 
-const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
+const familyPrefixes = ["JHERSY", "CyC", "K_ELDE", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
 
 // =======================
 // Variables y elementos
@@ -294,6 +294,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
