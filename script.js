@@ -26,7 +26,9 @@ const words = [
  "DyY (Pasitos)", "JHERSY (Giro Follow con mano derecha)", "JHERSY (en 5 amago y giro Follow)", "JHERSY (giro suave en 5 + freno + en 7 traigo suave a sombra)", "JHERSY (Mambo tensión brazos abajo/aariba)", "DyY (Cruzo manos + Sombra en 5 + Giro en 7)",
  "GyJ (Cha3 - Freno 6)", "JyE (Cats - Pegado crírculo cadera)", "JyE (Cambio posición en 5 + mano cuello en 8 + saco Follow)", "JyE (Versión 1 - Enrrollo en 5)", "JyE (Versión 2 - Giro por detrás + cambio posisión en 5)", 
  "JyE (Versión 1 + 2 - Enrrollo en 5 + sombra + péndulos)", "JHERSY (Cambio posición en 5 + mano cuello en 8 con mano decha en cintura)", "JHERSY (suave)", "JHERSY (suave)", "JHERSY (postura)", "JHERSY (postura)", "JHERSY (liderar)", "JHERSY (liderar)", 
- "SyK (Bailarina)", "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)"
+ "SyK (Bailarina)", "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)", 
+ "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J6J)", 
+ "JHERSY (en sombra hacer Rueda)"
 ];
 
 const wordsCustom = [
@@ -54,7 +56,9 @@ const wordsCustom = [
  "JHERSY (giro suave en 5 + freno + en 7 traigo suave a sombra)", "JHERSY (Mambo tensión brazos abajo/aariba)", "DyY (Cruzo manos + Sombra en 5 + Giro en 7)", "GyJ (Cha3 - Freno 6)", "JyE (Cats - Pegado crírculo cadera)", 
  "JyE (Cambio posición en 5 + mano cuello en 8 + saco Follow)", "JyE (Versión 1 - Enrrollo en 5)", "JyE (Versión 2 - Giro por detrás + cambio posisión en 5)", "JyE (Versión 1 + 2 - Enrrollo en 5 + sombra + péndulos)", 
  "JHERSY (Cambio posición en 5 + mano cuello en 8 con mano decha en cintura)", "JHERSY (suave)", "JHERSY (suave)", "JHERSY (postura)", "JHERSY (postura)", "JHERSY (liderar)", "JHERSY (liderar)", "SyK (Bailarina)", 
- "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)"
+ "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)", 
+ "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J6J)", 
+ "JHERSY (en sombra hacer Rueda)"
 ];
 
 const familyPrefixes = ["JHERSY", "CyC", "K_ELDE", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
@@ -291,6 +295,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
