@@ -27,7 +27,7 @@ const words = [
  "JHERSY (Cambio posición en 5 + mano cuello en 8 con mano decha en cintura)", "JHERSY (suave)", "JHERSY (suave)", "JHERSY (postura)", "JHERSY (postura)", "JHERSY (liderar)", "JHERSY (liderar)", "SyK (Bailarina)", 
  "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)", 
  "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J6J)", 
- "JHERSY (en sombra hacer Rueda)", "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo -  tensión brazos 1o Izq + 5º Decha)", "ByL (MAD -  Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", "CyS (CATs - 1 lanzo brazo Drech atrás)", 
+ "JHERSY (en sombra hacer Rueda)", "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo -  tensión brazos 1o Izq + 5º Decha)", "ByL (MAD -  Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", "CyS (CATs - 1 lanzo brazo Derch atrás)", 
  "Illusion", "Illusion", "Bailar en el sitio - Mov pequeños", "Bailar en el sitio - Mov pequeños" 
 ];
 
@@ -57,7 +57,7 @@ const wordsCustom = [
  "JyE (Versión 1 + 2 - Enrrollo en 5 + sombra + péndulos)", "JHERSY (Cambio posición en 5 + mano cuello en 8 con mano decha en cintura)", "JHERSY (suave)", "JHERSY (suave)", "JHERSY (postura)", "JHERSY (postura)", "JHERSY (liderar)", "JHERSY (liderar)", 
  "SyK (Bailarina)", "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)", 
  "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J6J)", 
- "JHERSY (en sombra hacer Rueda)", "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo -  tensión brazos 1o Izq + 5º Decha)", "ByL (MAD -  Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", "CyS (CATs - 1 lanzo brazo Drech atrás)", 
+ "JHERSY (en sombra hacer Rueda)", "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo -  tensión brazos 1o Izq + 5º Decha)", "ByL (MAD -  Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", "CyS (CATs - 1 lanzo brazo Derch atrás)", 
  "Illusion", "Illusion", "Bailar en el sitio - Mov pequeños", "Bailar en el sitio - Mov pequeños"
 ];
 
@@ -295,6 +295,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
