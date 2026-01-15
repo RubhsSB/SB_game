@@ -33,7 +33,7 @@ const words = [
 ];
 
 const wordsCustom = [
-"CyC (Host cambio posición)", "Daniel y Alma", "JyE (Diagonal Cintura)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY (Preparar pos Cerrada)", "EyG (Cats - Giro 2 manos)", "ALBERTO y MARÍA (Cats - Giro espalda)", 
+"CyC (Host cambio posición)", "Daniel y Alma", "JyE (Diagonal Cintura)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)","JHERSY (Preparar pos Cerrada)", "ALBERTO y MARÍA (Cats - Giro espalda)", 
  "JHERSY (Preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", 
  "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", "JHERSY (Giro cambio mano)", "JHERSY (salir/end)", "MyS (Cambio posición con mano Izq)", "DyY (SanSebastián - Separo en 4 y al hombro)", "CyC (Mambo Manos Hombro)", "70'", 
  "ENGAÑO", "Giro + Engaño", "GERO y MIGLE (cambio pos 360º)", "CyT (3 giros con Cuello)", "5 cintura abajo", "CyT (sens Péndulo)", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE (Ando atrás)", "OTTO", "ASCENSOR", 
@@ -296,6 +296,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
