@@ -95,191 +95,199 @@ const familySelect = document.getElementById("family-selector");
 // Inicialización
 // =======================
 window.addEventListener("load", () => {
-  gameMode = "easy";
-  updateLevelButtons();
-  document.getElementById("family-selector-container").style.display = "none";
+ gameMode = "easy";
+ updateLevelButtons();
+ document.getElementById("family-selector-container").style.display = "none";
 
-  familyPrefixes.forEach(prefix => {
-    const option = document.createElement("option");
-    option.value = option.textContent = prefix;
-    familySelect.appendChild(option);
-  });
+ familyPrefixes.forEach(prefix => {
+   const option = document.createElement("option");
+   option.value = option.textContent = prefix;
+   familySelect.appendChild(option);
+ });
 
-  // Mostrar solo el botón Play al inicio
-  playButton.style.display = "inline-block";
-  nextButton.style.display = "none";
-  finishButton.style.display = "none";
+ // Mostrar solo el botón Play al inicio
+ playButton.style.display = "inline-block";
+ nextButton.style.display = "none";
+ finishButton.style.display = "none";
 });
 
 // =======================
 // Selección de nivel
 // =======================
 [easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
-  btn.addEventListener("click", () => {
-    gameMode = ["easy", "hard", "custom", "family"][i];
-    updateLevelButtons();
-    document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
-  });
+ btn.addEventListener("click", () => {
+   gameMode = ["easy", "hard", "custom", "family"][i];
+   updateLevelButtons();
+   document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
+ });
 });
 
 function updateLevelButtons() {
-  [easyButton, hardButton, customButton, familyButton].forEach(btn => btn.classList.remove("active"));
-  if (gameMode === "easy") easyButton.classList.add("active");
-  if (gameMode === "hard") hardButton.classList.add("active");
-  if (gameMode === "custom") customButton.classList.add("active");
-  if (gameMode === "family") familyButton.classList.add("active");
+ [easyButton, hardButton, customButton, familyButton].forEach(btn => btn.classList.remove("active"));
+ if (gameMode === "easy") easyButton.classList.add("active");
+ if (gameMode === "hard") hardButton.classList.add("active");
+ if (gameMode === "custom") customButton.classList.add("active");
+ if (gameMode === "family") familyButton.classList.add("active");
 }
 
 // =======================
 // Funciones principales
 // =======================
 function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
+ for (let i = array.length - 1; i > 0; i--) {
+   const j = Math.floor(Math.random() * (i + 1));
+   [array[i], array[j]] = [array[j], array[i]];
+ }
 }
 
 function resetWords() {
-  if (gameMode === "easy") wordsCopy = [...words];
-  else if (gameMode === "custom") wordsCopy = [...wordsCustom];
-  else if (gameMode === "family") {
-    const prefix = familySelect.value;
-    wordsCopy = words.filter(w => w.startsWith(prefix));
-  } else if (gameMode === "hard") wordsCopy = [];
+ if (gameMode === "easy") wordsCopy = [...words];
+ else if (gameMode === "custom") wordsCopy = [...wordsCustom];
+ else if (gameMode === "family") {
+   const prefix = familySelect.value;
+   wordsCopy = words.filter(w => w.startsWith(prefix));
+ } else if (gameMode === "hard") wordsCopy = [...words]; // En Hard usamos todas
 
-  shuffleArray(wordsCopy);
-  recentWords = [];
+ shuffleArray(wordsCopy);
+ recentWords = [];
 }
 
 function getRandomWord() {
-  let validWords;
-  if (gameMode === "hard") return words[Math.floor(Math.random() * words.length)];
+ let validWords;
+ 
+ if (gameMode === "family") {
+   const selectedPrefix = familySelect.value;
+   validWords = words.filter(w => w.startsWith(selectedPrefix) && !recentWords.includes(w));
+   if (validWords.length === 0) {
+     validWords = words.filter(w => w.startsWith(selectedPrefix));
+     recentWords = [];
+   }
+ } else if (gameMode === "custom") {
+   validWords = wordsCustom.filter(w => !recentWords.includes(w));
+   if (validWords.length === 0) {
+     validWords = [...wordsCustom];
+     recentWords = [];
+   }
+ } else {
+   // Para EASY y HARD usamos la lista general filtrando las recientes
+   validWords = words.filter(w => !recentWords.includes(w));
+   if (validWords.length === 0) {
+     recentWords = [];
+     validWords = [...words];
+   }
+ }
 
-  if (gameMode === "family") {
-    const selectedPrefix = familySelect.value;
-    validWords = words.filter(w => w.startsWith(selectedPrefix) && !recentWords.includes(w));
-    if (validWords.length === 0) {
-      validWords = words.filter(w => w.startsWith(selectedPrefix));
-      recentWords = [];
-    }
-  } else if (gameMode === "custom") {
-    validWords = wordsCustom.filter(w => !recentWords.includes(w));
-    if (validWords.length === 0) {
-      validWords = [...wordsCustom];
-      recentWords = [];
-    }
-  } else {
-    validWords = wordsCopy.filter(w => !recentWords.includes(w));
-    if (validWords.length === 0) {
-      shuffleArray(wordsCopy);
-      validWords = [...wordsCopy];
-      recentWords = [];
-    }
-  }
+ const word = validWords[Math.floor(Math.random() * validWords.length)];
 
-  const word = validWords[Math.floor(Math.random() * validWords.length)];
+ // LÓGICA DE MEMORIA MEJORADA:
+ recentWords.push(word);
+ 
+ let memoriaLimite = 10; // Por defecto recordamos 10
+ if (gameMode === "custom") {
+   memoriaLimite = 50; // En Custom recordamos 50 para que no se repitan
+ } else if (gameMode === "hard") {
+   memoriaLimite = 20; // En Hard recordamos 20 para dar variedad
+ }
 
-  if (gameMode !== "hard") {
-    recentWords.push(word);
-    if (recentWords.length > 10) recentWords.shift();
-  }
+ if (recentWords.length > memoriaLimite) {
+   recentWords.shift();
+ }
 
-  return word;
+ return word;
 }
 
 function formatWordDisplay(word) {
-  const match = word.match(/^(.*?)\s*(\([^)]+\))?$/);
-  const main = match[1];
-  const par = match[2] || "";
-  return `<span class="main-text">${main.trim()}</span>${par ? `<br><span class="parenthesis">${par}</span>` : ""}`;
+ const match = word.match(/^(.*?)\s*(\([^)]+\))?$/);
+ const main = match[1];
+ const par = match[2] || "";
+ return `<span class="main-text">${main.trim()}</span>${par ? `<br><span class="parenthesis">${par}</span>` : ""}`;
 }
 
 function saveHighScore(averageTime, wordCount) {
-  const key = gameMode === "easy" ? "easyHighScores"
-            : gameMode === "hard" ? "hardHighScores"
-            : gameMode === "custom" ? "customHighScores"
-            : "familyHighScores";
-  let scores = JSON.parse(localStorage.getItem(key)) || [];
-  scores.push({ averageTime, wordCount });
-  scores.sort((a, b) => a.averageTime - b.averageTime);
-  localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
+ const key = gameMode === "easy" ? "easyHighScores"
+           : gameMode === "hard" ? "hardHighScores"
+           : gameMode === "custom" ? "customHighScores"
+           : "familyHighScores";
+ let scores = JSON.parse(localStorage.getItem(key)) || [];
+ scores.push({ averageTime, wordCount });
+ scores.sort((a, b) => a.averageTime - b.averageTime);
+ localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
 }
 
 function startTimer() {
-  timerInterval = setInterval(() => {
-    const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
-    timerElement.textContent = `Tiempo: ${currentTime} segundos`;
-  }, 100);
+ timerInterval = setInterval(() => {
+   const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
+   timerElement.textContent = `Tiempo: ${currentTime} segundos`;
+ }, 100);
 }
 
 function stopTimer() {
-  clearInterval(timerInterval);
+ clearInterval(timerInterval);
 }
 
 // =======================
 // Botón PLAY
 // =======================
 playButton.addEventListener("click", () => {
-  resetWords();
-  currentWord = getRandomWord();
-  wordElement.innerHTML = formatWordDisplay(currentWord);
-  startTime = Date.now();
-  wordCount = 0;
-  totalTime = 0;
-  counterElement.textContent = `Palabras jugadas: ${wordCount}`;
-  timerElement.textContent = `Tiempo: 0 segundos`;
+ resetWords();
+ currentWord = getRandomWord();
+ wordElement.innerHTML = formatWordDisplay(currentWord);
+ startTime = Date.now();
+ wordCount = 0;
+ totalTime = 0;
+ counterElement.textContent = `Palabras jugadas: ${wordCount}`;
+ timerElement.textContent = `Tiempo: 0 segundos`;
 
-  // Mostrar solo los botones de juego
-  playButton.disabled = true;
-  playButton.style.display = "none";
-  nextButton.disabled = false;
-  nextButton.style.display = "inline-block";
-  finishButton.disabled = false;
-  finishButton.style.display = "inline-block";
+ // Mostrar solo los botones de juego
+ playButton.disabled = true;
+ playButton.style.display = "none";
+ nextButton.disabled = false;
+ nextButton.style.display = "inline-block";
+ finishButton.disabled = false;
+ finishButton.style.display = "inline-block";
 
-  startTimer();
+ startTimer();
 });
 
 // =======================
 // Botón SIGUIENTE
 // =======================
 nextButton.addEventListener("click", () => {
-  const endTime = Date.now();
-  totalTime += (endTime - startTime) / 1000;
-  wordCount++;
-  counterElement.textContent = `Palabras jugadas: ${wordCount}`;
-  stopTimer();
-  currentWord = getRandomWord();
-  wordElement.innerHTML = formatWordDisplay(currentWord);
-  startTime = Date.now();
-  startTimer();
+ const endTime = Date.now();
+ totalTime += (endTime - startTime) / 1000;
+ wordCount++;
+ counterElement.textContent = `Palabras jugadas: ${wordCount}`;
+ stopTimer();
+ currentWord = getRandomWord();
+ wordElement.innerHTML = formatWordDisplay(currentWord);
+ startTime = Date.now();
+ startTimer();
 });
 
 // =======================
 // Botón FINALIZAR
 // =======================
 finishButton.addEventListener("click", () => {
-  stopTimer();
-  if (wordCount > 0) {
-    const averageTime = totalTime / wordCount;
-    resultElement.textContent = `Promedio: ${averageTime.toFixed(2)} segundos por palabra.`;
-    saveHighScore(averageTime, wordCount);
-  } else {
-    resultElement.textContent = "No has jugado todavía.";
-  }
+ stopTimer();
+ if (wordCount > 0) {
+   const averageTime = totalTime / wordCount;
+   resultElement.textContent = `Promedio: ${averageTime.toFixed(2)} segundos por palabra.`;
+   saveHighScore(averageTime, wordCount);
+ } else {
+   resultElement.textContent = "No has jugado todavía.";
+ }
 
-  // Volver a estado inicial
-  playButton.disabled = false;
-  playButton.style.display = "inline-block";
-  nextButton.disabled = true;
-  nextButton.style.display = "none";
-  finishButton.disabled = true;
-  finishButton.style.display = "none";
+ // Volver a estado inicial
+ playButton.disabled = false;
+ playButton.style.display = "inline-block";
+ nextButton.disabled = true;
+ nextButton.style.display = "none";
+ finishButton.disabled = true;
+ finishButton.style.display = "none";
 
-  wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
-  counterElement.textContent = `Palabras jugadas: 0`;
-  timerElement.textContent = `Tiempo: 0 segundos`;
+ wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
+ counterElement.textContent = `Palabras jugadas: 0`;
+ timerElement.textContent = `Tiempo: 0 segundos`;
 });
 
 // =======================
@@ -289,43 +297,12 @@ let touchStartX = 0;
 let touchEndX = 0;
 
 document.addEventListener("touchstart", e => {
-  touchStartX = e.changedTouches[0].screenX;
+ touchStartX = e.changedTouches[0].screenX;
 });
 
 document.addEventListener("touchend", e => {
-  touchEndX = e.changedTouches[0].screenX;
-  if (touchEndX < touchStartX - 50 && !nextButton.disabled) {
-    nextButton.click();
-  }
+ touchEndX = e.changedTouches[0].screenX;
+ if (touchEndX < touchStartX - 50 && !nextButton.disabled) {
+   nextButton.click();
+ }
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
