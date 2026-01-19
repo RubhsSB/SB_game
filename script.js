@@ -29,7 +29,8 @@ const words = [
  "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J6J)", 
  "JHERSY (en sombra hacer Rueda)", "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo -  tensión brazos 1o Izq + 5º Decha)", "ByL (MAD -  Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", 
  "Illusion", "Illusion", "Bailar en el sitio - Mov pequeños", "Bailar en el sitio - Mov pequeños", "EyG (Break 1 Jowke - Preparo en 4, en 5 estiro atrás Drcho)", "EyG (1 lanzo Dcho atrás- Jowke)", "EyG (Guitarra círculos - Jowke)", 
- "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)"
+ "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)", 
+ "MatySof (CATS - Freno en 6 con mano Drecha hombr Follow)"
 ];
 
 const wordsCustom = [
@@ -59,7 +60,8 @@ const wordsCustom = [
  "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J&J)", 
  "JHERSY (en sombra hacer Rueda)", "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo -  tensión brazos 1o Izq + 5º Decha)", "ByL (MAD -  Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", 
  "Illusion", "Illusion", "Bailar en el sitio - Mov pequeños", "Bailar en el sitio - Mov pequeños", "EyG (Break 1 Jowke - Preparo en 4, en 5 estiro atrás Drcho)", "EyG (1 lanzo Dcho atrás- Jowke)", "EyG (Guitarra círculos - Jowke)", 
- "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)"
+ "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)", 
+ "MatySof (CATS - Freno en 6 con mano Drecha hombr Follow)"
 ];
 
 const familyPrefixes = ["JHERSY", "CyC", "K_ELDE", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
@@ -296,6 +298,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
   }
 });
+
 
 
 
