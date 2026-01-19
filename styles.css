@@ -5,13 +5,13 @@ body {
   background-color: #0a0808;
   color: #eee;
   font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
+  min-height: 100vh; /* Permite que la página crezca si es necesario */
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  /* Eliminado overflow: hidden para recuperar el scroll y refresco */
 }
 
 /* Tarjeta central */
@@ -23,6 +23,7 @@ body {
   text-align: center;
   max-width: 600px;
   width: 90%;
+  margin: 20px 0; /* Margen para que no pegue arriba/abajo en móviles */
 }
 
 /* Contenedor de palabra */
@@ -77,6 +78,7 @@ body {
 .timer-yellow { color: #f1c40f !important; }
 .timer-red { color: #e74c3c !important; }
 
+/* Animación de parpadeo a los 8 segundos */
 .timer-blink {
   animation: blinker 0.6s linear infinite;
 }
@@ -109,15 +111,15 @@ button {
   color: white;
 }
 
-/* BOTÓN SIGUIENTE (Tamaño normalizado) */
+/* BOTÓN SIGUIENTE (Tamaño normal) */
 #next {
   background-color: #ff3b5c;
   color: white;
-  /* Ya no tiene el scale ni el brillo exagerado */
 }
 
 #next:disabled {
   background-color: #444;
+  cursor: not-allowed;
 }
 
 /* Botón de resultados (Copa) */
@@ -135,6 +137,9 @@ button {
   width: 38px;
   height: 38px;
   padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Selector de nivel (E, H, C, F) */
@@ -155,6 +160,9 @@ button {
   height: 34px;
   padding: 0;
   font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #level-selection button.active {
@@ -165,6 +173,7 @@ button {
 
 /* Selector de familia */
 #family-selector-container {
+  margin-top: 15px;
   margin-bottom: 15px;
 }
 
@@ -183,11 +192,33 @@ button {
   color: #888;
 }
 
-/* AJUSTES PARA MÓVIL (Más compacto) */
+/* AJUSTES PARA MÓVIL */
 @media (max-width: 600px) {
   #word .main-text { font-size: 36px; }
   #word .parenthesis { font-size: 20px; }
-  .card { padding: 20px 10px; }
-  .button-row { flex-direction: row; flex-wrap: wrap; }
-  button { flex: 1; min-width: 100px; }
+  .card { padding: 20px 10px; width: 85%; }
+  
+  /* Los botones se adaptan al espacio */
+  .button-row { 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    justify-content: center;
+  }
+  
+  button { 
+    flex: 1 1 auto; 
+    min-width: 80px; 
+    font-size: 14px;
+  }
+  
+  /* Asegura que el botón de resultados y niveles no se pisen */
+  #results-button, #level-selection {
+    position: static;
+    margin-bottom: 10px;
+  }
+  
+  body {
+    justify-content: flex-start; /* Ayuda a que en móviles no se corte por arriba */
+    padding-top: 20px;
+  }
 }
