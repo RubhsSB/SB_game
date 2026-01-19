@@ -41,7 +41,7 @@ const wordsCustom = [
  "JLAB (Muñeco brazos)", "JORGE y SANDRA", "JyE (Enrollo x 2)", "DISOCIACION de PECHO (en SOMBRA)", "JLAB (Doble giro  +  70´)", "DyY (Onda + Círculo)", "SENSUAL +", "70´Adelante", "AyYUR Palanca", "Lado MAMBO", "DISOCIACION de PECHO (pos CERRADA)", 
  "GUITARRA", "SINCOPADO", "STEPHAN y NEVI (freno en 3 y horiz)", "JHERSY (Diagonal)", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", "IVAN Y SARAI (3 sensual + Cadera)", "EyG (1/2 Sensual + disoc Follow)", 
  "Básico (Grande/Pequeño + Hombros + Caderas)", "D e Inés", "Brazo Lanzo DEBAJO", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "Giros", "Giros", "CyC (Giro en Diagonal + abrazo cuello)", "EyG (Cambio posición + Giro + Lanzo)",  
- "CyC (Host - Diagonal con pasos)", "Instag Salida Giro espalda Led", "Giro Foll en 5 + Giro Led en 7", "JHERSY (Preparar pos Cerrada)", "DyY (Onda prep decha - Tiempo normal)", "DyY (Onda prep decha- Tiempo Follow)", 
+ "Instag Salida Giro espalda Led", "Giro Foll en 5 + Giro Led en 7", "JHERSY (Preparar pos Cerrada)", "DyY (Onda prep decha - Tiempo normal)", "DyY (Onda prep decha- Tiempo Follow)", 
  "DyY (Onda prep decha - en Sombra Follow)", "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)", "CyC (Segovia - ½ Diagonal + Preparo en 6)", "DyY (Onda en Sombra Follow prep decha)", 
  "Carlos (Cintura Péndulo)", "JHERSY (Enrollo Follow suelto mano Ext)", "JHERSY (Giro Follow en 5 y semi giro Leader en 7)", "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "JHERSY (Helice)", "SENSUAL Lados", 
  "SENSUAL Lados", "YyE (Cats - 70´)", "JHERSY (Onda ando cambio de mano)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5+ Estiro brazo 8)", "JHERSY (Salir Onda - Follow abajo en 4)", 
@@ -67,10 +67,9 @@ const wordsCustom = [
 const familyPrefixes = ["JHERSY", "CyC", "K_ELDE", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
 
 // =======================
-// Variables y elementos
+// VARIABLES DE JUEGO
 // =======================
-let wordsCopy = [];
-let recentWords = [];
+let wordsQueue = [];
 let currentWord = "";
 let startTime = 0;
 let totalTime = 0;
@@ -92,7 +91,7 @@ const familyButton = document.getElementById("family");
 const familySelect = document.getElementById("family-selector");
 
 // =======================
-// Inicialización
+// INICIALIZACIÓN
 // =======================
 window.addEventListener("load", () => {
  gameMode = "easy";
@@ -105,15 +104,11 @@ window.addEventListener("load", () => {
    familySelect.appendChild(option);
  });
 
- // Mostrar solo el botón Play al inicio
  playButton.style.display = "inline-block";
  nextButton.style.display = "none";
  finishButton.style.display = "none";
 });
 
-// =======================
-// Selección de nivel
-// =======================
 [easyButton, hardButton, customButton, familyButton].forEach((btn, i) => {
  btn.addEventListener("click", () => {
    gameMode = ["easy", "hard", "custom", "family"][i];
@@ -131,69 +126,35 @@ function updateLevelButtons() {
 }
 
 // =======================
-// Funciones principales
+// LÓGICA DE BOLSA (AGOTAR LISTA)
 // =======================
-function shuffleArray(array) {
+function shuffle(array) {
  for (let i = array.length - 1; i > 0; i--) {
    const j = Math.floor(Math.random() * (i + 1));
    [array[i], array[j]] = [array[j], array[i]];
  }
+ return array;
 }
 
-function resetWords() {
- if (gameMode === "easy") wordsCopy = [...words];
- else if (gameMode === "custom") wordsCopy = [...wordsCustom];
- else if (gameMode === "family") {
-   const prefix = familySelect.value;
-   wordsCopy = words.filter(w => w.startsWith(prefix));
- } else if (gameMode === "hard") wordsCopy = [...words]; // En Hard usamos todas
-
- shuffleArray(wordsCopy);
- recentWords = [];
-}
-
-function getRandomWord() {
- let validWords;
- 
- if (gameMode === "family") {
-   const selectedPrefix = familySelect.value;
-   validWords = words.filter(w => w.startsWith(selectedPrefix) && !recentWords.includes(w));
-   if (validWords.length === 0) {
-     validWords = words.filter(w => w.startsWith(selectedPrefix));
-     recentWords = [];
-   }
+function refillQueue() {
+ if (gameMode === "easy") {
+   wordsQueue = shuffle([...words]);
  } else if (gameMode === "custom") {
-   validWords = wordsCustom.filter(w => !recentWords.includes(w));
-   if (validWords.length === 0) {
-     validWords = [...wordsCustom];
-     recentWords = [];
-   }
- } else {
-   // Para EASY y HARD usamos la lista general filtrando las recientes
-   validWords = words.filter(w => !recentWords.includes(w));
-   if (validWords.length === 0) {
-     recentWords = [];
-     validWords = [...words];
-   }
+   wordsQueue = shuffle([...wordsCustom]);
+ } else if (gameMode === "family") {
+   const prefix = familySelect.value;
+   wordsQueue = shuffle(words.filter(w => w.startsWith(prefix)));
  }
+}
 
- const word = validWords[Math.floor(Math.random() * validWords.length)];
-
- // LÓGICA DE MEMORIA MEJORADA:
- recentWords.push(word);
- 
- let memoriaLimite = 10; // Por defecto recordamos 10
- if (gameMode === "custom") {
-   memoriaLimite = 50; // En Custom recordamos 50 para que no se repitan
- } else if (gameMode === "hard") {
-   memoriaLimite = 20; // En Hard recordamos 20 para dar variedad
+function getNextWord() {
+ if (gameMode === "hard") {
+   return words[Math.floor(Math.random() * words.length)];
  }
-
- if (recentWords.length > memoriaLimite) {
-   recentWords.shift();
+ if (wordsQueue.length === 0) {
+   refillQueue();
  }
-
- return word;
+ return wordsQueue.shift();
 }
 
 function formatWordDisplay(word) {
@@ -203,43 +164,60 @@ function formatWordDisplay(word) {
  return `<span class="main-text">${main.trim()}</span>${par ? `<br><span class="parenthesis">${par}</span>` : ""}`;
 }
 
+// =======================
+// CRONÓMETRO CON SEMÁFORO
+// =======================
+function startTimer() {
+  timerInterval = setInterval(() => {
+    const timeInSeconds = (Date.now() - startTime) / 1000;
+    const currentTime = timeInSeconds.toFixed(1);
+    timerElement.textContent = `Tiempo: ${currentTime}s`;
+
+    // Limpiamos colores previos
+    timerElement.classList.remove("timer-green", "timer-yellow", "timer-red", "timer-blink");
+
+    // Lógica de semáforo solicitada
+    if (timeInSeconds < 2) {
+      timerElement.classList.add("timer-green");
+    } else if (timeInSeconds >= 2 && timeInSeconds < 4) {
+      timerElement.classList.add("timer-yellow");
+    } else if (timeInSeconds >= 4 && timeInSeconds < 8) {
+      timerElement.classList.add("timer-red");
+    } else if (timeInSeconds >= 8) {
+      timerElement.classList.add("timer-red", "timer-blink");
+    }
+  }, 100);
+}
+
+function stopTimer() {
+ clearInterval(timerInterval);
+ // Resetear color al parar
+ timerElement.classList.remove("timer-green", "timer-yellow", "timer-red", "timer-blink");
+}
+
+// =======================
+// ACCIONES DE BOTONES
+// =======================
 function saveHighScore(averageTime, wordCount) {
- const key = gameMode === "easy" ? "easyHighScores"
-           : gameMode === "hard" ? "hardHighScores"
-           : gameMode === "custom" ? "customHighScores"
-           : "familyHighScores";
+ const key = gameMode + "HighScores";
  let scores = JSON.parse(localStorage.getItem(key)) || [];
  scores.push({ averageTime, wordCount });
  scores.sort((a, b) => a.averageTime - b.averageTime);
  localStorage.setItem(key, JSON.stringify(scores.slice(0, 10)));
 }
 
-function startTimer() {
- timerInterval = setInterval(() => {
-   const currentTime = ((Date.now() - startTime) / 1000).toFixed(1);
-   timerElement.textContent = `Tiempo: ${currentTime} segundos`;
- }, 100);
-}
-
-function stopTimer() {
- clearInterval(timerInterval);
-}
-
-// =======================
-// Botón PLAY
-// =======================
 playButton.addEventListener("click", () => {
- resetWords();
- currentWord = getRandomWord();
+ wordsQueue = [];
+ refillQueue();
+ 
+ currentWord = getNextWord();
  wordElement.innerHTML = formatWordDisplay(currentWord);
+ 
  startTime = Date.now();
  wordCount = 0;
  totalTime = 0;
- counterElement.textContent = `Palabras jugadas: ${wordCount}`;
- timerElement.textContent = `Tiempo: 0 segundos`;
-
- // Mostrar solo los botones de juego
- playButton.disabled = true;
+ counterElement.textContent = `Palabras: ${wordCount}`;
+ 
  playButton.style.display = "none";
  nextButton.disabled = false;
  nextButton.style.display = "inline-block";
@@ -249,60 +227,38 @@ playButton.addEventListener("click", () => {
  startTimer();
 });
 
-// =======================
-// Botón SIGUIENTE
-// =======================
 nextButton.addEventListener("click", () => {
  const endTime = Date.now();
  totalTime += (endTime - startTime) / 1000;
  wordCount++;
- counterElement.textContent = `Palabras jugadas: ${wordCount}`;
- stopTimer();
- currentWord = getRandomWord();
+ counterElement.textContent = `Palabras: ${wordCount}`;
+ 
+ currentWord = getNextWord();
  wordElement.innerHTML = formatWordDisplay(currentWord);
+ 
  startTime = Date.now();
- startTimer();
+ // Al reiniciar el cronómetro, el color volverá a verde automáticamente
 });
 
-// =======================
-// Botón FINALIZAR
-// =======================
 finishButton.addEventListener("click", () => {
  stopTimer();
  if (wordCount > 0) {
    const averageTime = totalTime / wordCount;
-   resultElement.textContent = `Promedio: ${averageTime.toFixed(2)} segundos por palabra.`;
+   resultElement.textContent = `Promedio: ${averageTime.toFixed(2)}s por palabra.`;
    saveHighScore(averageTime, wordCount);
- } else {
-   resultElement.textContent = "No has jugado todavía.";
  }
 
- // Volver a estado inicial
- playButton.disabled = false;
  playButton.style.display = "inline-block";
- nextButton.disabled = true;
  nextButton.style.display = "none";
- finishButton.disabled = true;
  finishButton.style.display = "none";
-
- wordElement.textContent = "Presiona 'Play' para comenzar de nuevo.";
- counterElement.textContent = `Palabras jugadas: 0`;
- timerElement.textContent = `Tiempo: 0 segundos`;
+ wordElement.textContent = "Presiona Play para comenzar";
 });
 
-// =======================
-// Swipe en móviles
-// =======================
+// Gesto Swipe
 let touchStartX = 0;
-let touchEndX = 0;
-
-document.addEventListener("touchstart", e => {
- touchStartX = e.changedTouches[0].screenX;
-});
-
+document.addEventListener("touchstart", e => { touchStartX = e.changedTouches[0].screenX; });
 document.addEventListener("touchend", e => {
- touchEndX = e.changedTouches[0].screenX;
- if (touchEndX < touchStartX - 50 && !nextButton.disabled) {
+ if (e.changedTouches[0].screenX < touchStartX - 50 && !nextButton.disabled) {
    nextButton.click();
  }
 });
