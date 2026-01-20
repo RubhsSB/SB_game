@@ -222,3 +222,8 @@ button {
     padding-top: 20px;
   }
 }
+body {
+    justify-content: center; /* CAMBIADO: Antes estaba en flex-start */
+    padding-top: 0px;        /* CAMBIADO: Antes tenía 20px */
+  }
+}
