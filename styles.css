@@ -1,81 +1,138 @@
-/* Estilo general oscuro */
-body {
+/* 1. BLOQUEO TOTAL DE MOVIMIENTO DE PANTALLA */
+html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Prohíbe que la interfaz se mueva a los lados o rebote */
+  position: fixed; 
   background-color: #0a0808;
   color: #eee;
   font-family: 'Segoe UI', sans-serif;
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 2. CABECERA (Copa y Niveles) */
+.header-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 10px;
+  gap: 15px;
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+#results-button button {
+  background: none;
+  border: 1px solid #ff3b5c;
+  color: #ff3b5c;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 22px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-  position: relative;
 }
 
-/* Tarjeta central */
+#level-selection {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+}
+
+#level-selection button {
+  background-color: #222;
+  color: #777;
+  border: 1px solid #444;
+  border-radius: 25px;
+  padding: 8px 18px;
+  font-size: 14px;
+  min-width: 45px;
+  transition: 0.3s;
+}
+
+#level-selection button.active {
+  background-color: #ff3b5c;
+  color: white;
+  border: none;
+  box-shadow: 0 0 10px rgba(255, 59, 92, 0.3);
+}
+
+/* 3. ÁREA DE JUEGO (Tarjeta Central) */
+.main-container {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* IMPORTANTE: Bloquea el gesto lateral del navegador para usar el nuestro */
+  touch-action: none; 
+}
+
 .card {
   background-color: #111;
-  padding: 40px;
+  padding: 30px;
   border-radius: 15px;
-  box-shadow: 0 0 30px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   text-align: center;
-  max-width: 700px;
-  width: 90%;
+  width: 85%;
+  max-width: 500px;
+  user-select: none; /* Evita seleccionar texto al deslizar */
 }
 
-/* Contenedor de palabra */
+/* 4. TEXTOS Y PALABRAS */
 #word {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 140px;
-  margin-bottom: 30px;
-}
-
-/* Texto principal grande */
-#word .main-text {
-  font-size: 72px;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.1;
-}
-
-/* Texto entre paréntesis */
-#word .parenthesis {
-  font-size: 36px;
-  font-weight: 400;
-  opacity: 0.8;
-  margin-top: 10px;
-  text-align: center;
-  line-height: 1.1;
-}
-
-/* Contadores */
-.info-row {
-  display: flex;
-  justify-content: space-around;
   margin-bottom: 20px;
 }
 
-#counter {
-  color: #ff4c61;
-  font-size: 18px;
+#word .main-text {
+  font-size: clamp(28px, 8vw, 48px);
+  font-weight: bold;
+  color: #fff;
+  line-height: 1.1;
 }
 
-/* ESTADOS DEL SEMÁFORO (Añadido para que funcione el JS) */
-#timer {
-  font-size: 18px;
-  font-weight: bold;
+#word .parenthesis {
+  font-size: clamp(18px, 5vw, 24px);
+  opacity: 0.6;
+  margin-top: 10px;
+  line-height: 1.2;
 }
+
+/* 5. INFORMACIÓN Y SEMÁFORO */
+.info-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+#counter { color: #888; font-size: 16px; }
+
+#timer {
+  font-size: 22px;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
 .timer-green { color: #2ecc71 !important; }
 .timer-yellow { color: #f1c40f !important; }
 .timer-red { color: #e74c3c !important; }
 .timer-blink { animation: blinker 0.6s linear infinite; }
 @keyframes blinker { 50% { opacity: 0.3; } }
 
-/* Botones principales */
+/* 6. BOTONES DE ACCIÓN */
 .button-row {
   display: flex;
   justify-content: center;
@@ -83,87 +140,50 @@ body {
 }
 
 button {
-  font-size: 16px;
-  padding: 10px 25px;
-  border: none;
-  border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
-  background-color: #ff3b5c;
-  color: white;
-  transition: all 0.3s ease;
-}
-
-button:hover { background-color: #ff1e44; }
-button:disabled { background-color: #555; cursor: not-allowed; }
-
-/* Resultado */
-#result { margin-top: 20px; font-size: 18px; color: #ccc; }
-
-/* Botón de resultados (Copa) */
-#results-button {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-}
-
-#results-button button {
-  background: none;
-  border: 2px solid #ff3b5c;
-  color: #ff3b5c;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Selector de nivel (E, H, C, F) */
-#level-selection {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  display: flex;
-  gap: 10px;
-}
-
-#level-selection button {
-  background-color: transparent;
-  color: #fff;
-  border: 1px solid #777;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 14px;
-}
-
-#level-selection button.active {
-  background-color: #ff3b5c;
-  color: white;
   border: none;
 }
 
-/* Selector de familia (Tamaño grande recuperado) */
-#family-selector-container {
-  margin-top: 20px;
-}
-
-#family-selector {
-  font-size: 20px;
-  padding: 12px;
-  width: 90%;
-  border-radius: 10px;
-  background-color: #222;
+#play {
+  background-color: #ff3b5c;
   color: white;
-  border: 1px solid #555;
+  padding: 15px;
+  border-radius: 12px;
+  font-size: 18px;
+  width: 100%;
 }
 
-/* Responsividad */
-@media (max-width: 600px) {
-  #word .main-text { font-size: 48px; }
-  #word .parenthesis { font-size: 24px; }
-  .card { padding: 20px; }
-  button { padding: 8px 20px; font-size: 14px; }
+#next {
+  background-color: #ff3b5c;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  flex: 2;
+}
+
+#finish {
+  background-color: #333;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 10px;
+  font-size: 16px;
+  flex: 1;
+}
+
+#family-selector-container { margin-bottom: 15px; }
+#result { margin-top: 15px; color: #666; font-size: 14px; }
+
+/* 7. ADAPTACIÓN PARA MÓVIL HORIZONTAL */
+@media (max-height: 500px) {
+  .header-container {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+  }
+  
+  .card { padding: 15px; margin: 5px auto; }
+  #word { min-height: 70px; margin-bottom: 10px; }
+  .info-row { margin-bottom: 10px; }
 }
