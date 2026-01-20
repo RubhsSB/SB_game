@@ -270,12 +270,17 @@ document.addEventListener("touchstart", e => {
 document.addEventListener("touchend", e => {
   let touchEndX = e.changedTouches[0].screenX;
   let distance = touchEndX - touchStartX;
+ if (playButton.style.display !== "none") return; 
+  // -----------------------------------------
 
-  // Si el movimiento es mayor a 50px (izquierda o derecha) y el juego está activo
+  let touchEndX = e.changedTouches[0].screenX;
+  let distance = touchEndX - touchStartX;
+
+  // Si el movimiento es mayor a 50px y el botón Siguiente no está desactivado
   if (Math.abs(distance) > 50 && !nextButton.disabled) {
     nextButton.click();
     
-    // Pequeño efecto visual de vibración (opcional)
+    // Pequeño efecto visual de vibración
     if (window.navigator.vibrate) window.navigator.vibrate(10);
   }
 }, {passive: true});
