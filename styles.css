@@ -8,12 +8,57 @@ body {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Empieza desde arriba para controlar el aire */
   flex-direction: column;
-  position: relative;
 }
 
-/* Tarjeta central */
+/* --- CABECERA (Icono y Niveles) --- */
+.header-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  gap: 15px; /* Espacio entre el icono y los botones de nivel */
+}
+
+#results-button button {
+  background: none;
+  border: 1px solid #ff3b5c;
+  color: #ff3b5c;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#level-selection {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+#level-selection button {
+  background-color: #222;
+  color: #777;
+  border: 1px solid #444;
+  border-radius: 25px; /* Estilo cápsula */
+  padding: 8px 20px;
+  font-size: 14px;
+  min-width: 50px;
+}
+
+#level-selection button.active {
+  background-color: #ff3b5c;
+  color: white;
+  border: none;
+}
+
+/* --- TARJETA CENTRAL --- */
 .card {
   background-color: #111;
   padding: 30px;
@@ -22,10 +67,9 @@ body {
   text-align: center;
   max-width: 600px;
   width: 90%;
-  margin: 20px auto;
+  margin: 30px auto; /* Espacio equilibrado */
 }
 
-/* Contenedor de palabra */
 #word {
   display: flex;
   flex-direction: column;
@@ -36,116 +80,90 @@ body {
 }
 
 #word .main-text {
-  font-size: 52px;
-  font-weight: 700;
-  text-align: center;
-  line-height: 1.1;
+  font-size: 48px;
+  font-weight: bold;
   color: #fff;
 }
 
 #word .parenthesis {
   font-size: 24px;
-  font-weight: 400;
   opacity: 0.7;
-  margin-top: 8px;
-  line-height: 1.1;
+  margin-top: 10px;
 }
 
-/* Contadores */
+/* --- INFORMACIÓN Y TIEMPO --- */
 .info-row {
   display: flex;
   justify-content: space-around;
+  align-items: center;
   margin-bottom: 25px;
 }
 
-#counter { color: #ccc; font-size: 16px; }
+#timer {
+  font-size: 24px;
+  font-weight: bold;
+}
 
-/* SEMÁFORO */
-#timer { font-size: 20px; font-weight: bold; transition: color 0.3s ease; }
 .timer-green { color: #2ecc71 !important; }
 .timer-yellow { color: #f1c40f !important; }
 .timer-red { color: #e74c3c !important; }
 .timer-blink { animation: blinker 0.6s linear infinite; }
 @keyframes blinker { 50% { opacity: 0.3; } }
 
-/* Botones principales */
+/* --- BOTONES DE ACCIÓN --- */
 .button-row {
   display: flex;
   justify-content: center;
-  align-items: center;
-  gap: 12px;
+  gap: 15px;
 }
 
 button {
-  font-size: 15px;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
   cursor: pointer;
   font-weight: bold;
+  transition: 0.2s;
 }
 
-#play { background-color: #ff3b5c; color: white; width: 100%; }
-#next { background-color: #ff3b5c; color: white; }
-#finish { background-color: #333; color: white; }
-
-/* Cabecera: Copa y Niveles */
-#results-button { position: absolute; top: 15px; left: 15px; }
-#results-button button {
-  background: none;
-  border: 1px solid #ff3b5c;
-  color: #ff3b5c;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
+#play {
+  background-color: #ff3b5c;
+  color: white;
+  padding: 15px 40px;
+  border-radius: 12px;
+  font-size: 18px;
+  width: 80%;
 }
 
-#level-selection { position: absolute; top: 15px; right: 15px; display: flex; gap: 8px; }
-#level-selection button {
-  background-color: #222;
-  color: #777;
-  border: 1px solid #444;
-  border-radius: 50%;
-  width: 36px;
-  height: 36px;
-  font-size: 14px;
+#next {
+  background-color: #ff3b5c;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  flex: 1;
 }
 
-#level-selection button.active { background-color: #ff3b5c; color: white; border: none; }
-
-/* AJUSTES MÓVIL VERTICAL */
-@media (max-width: 600px) {
-  body { justify-content: flex-start; padding-top: 80px; }
-  
-  #level-selection {
-    position: absolute;
-    top: 70px; /* Bajamos los niveles a una segunda línea */
-    right: 50%;
-    transform: translateX(50%); /* Centrados bajo el logo */
-    width: 100%;
-    justify-content: center;
-  }
-  
-  .card { margin-top: 60px; }
-  #word .main-text { font-size: 40px; }
+#finish {
+  background-color: #333;
+  color: white;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 16px;
+  flex: 1;
 }
 
-/* AJUSTES MÓVIL HORIZONTAL */
+#family-selector-container { margin-bottom: 15px; }
+#result { margin-top: 20px; color: #888; font-size: 14px; }
+
+/* --- ADAPTACIÓN HORIZONTAL --- */
 @media (max-height: 500px) {
-  body { padding-top: 10px; justify-content: center; }
-  
-  #results-button { top: 5px; left: 10px; }
-  #level-selection { top: 5px; right: 10px; position: absolute; transform: none; width: auto; }
-  
-  .card { 
-    margin-top: 40px; 
-    padding: 10px 20px; 
-    width: 95%; 
+  .header-container {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px 20px;
+    gap: 0;
   }
   
-  #word { min-height: 60px; margin-bottom: 5px; }
-  #word .main-text { font-size: 30px; }
-  #word .parenthesis { font-size: 18px; margin-top: 0; }
-  .info-row { margin-bottom: 10px; }
+  #level-selection { width: auto; }
+  .card { margin: 10px auto; padding: 15px; }
+  #word { min-height: 80px; margin-bottom: 5px; }
+  #word .main-text { font-size: 32px; }
 }
