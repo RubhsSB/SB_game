@@ -22,7 +22,7 @@ body {
   text-align: center;
   max-width: 600px;
   width: 90%;
-  margin: 0 auto; /* Centrada sin márgenes que la empujen */
+  margin: 0 auto; 
   z-index: 1;
 }
 
@@ -78,7 +78,6 @@ body {
 .timer-yellow { color: #f1c40f !important; }
 .timer-red { color: #e74c3c !important; }
 
-/* Animación de parpadeo a los 8 segundos */
 .timer-blink {
   animation: blinker 0.6s linear infinite;
 }
@@ -105,15 +104,14 @@ button {
   transition: all 0.2s ease;
 }
 
-/* Estilo para Play y Finalizar */
-#play, #finish {
-  background-color: #333;
+/* Play y Siguiente en Rosa, Finalizar en Gris */
+#play, #next {
+  background-color: #ff3b5c;
   color: white;
 }
 
-/* BOTÓN SIGUIENTE (Tamaño normal) */
-#next {
-  background-color: #ff3b5c;
+#finish {
+  background-color: #333;
   color: white;
 }
 
@@ -122,7 +120,7 @@ button {
   cursor: not-allowed;
 }
 
-/* Botón de resultados (Copa) - Posición absoluta */
+/* Elementos Flotantes (Escritorio) */
 #results-button {
   position: absolute;
   top: 15px;
@@ -142,7 +140,6 @@ button {
   justify-content: center;
 }
 
-/* Selector de nivel (E, H, C, F) - Posición absoluta */
 #level-selection {
   position: absolute;
   top: 15px;
@@ -171,7 +168,6 @@ button {
   border: none;
 }
 
-/* Selector de familia */
 #family-selector-container {
   margin-top: 15px;
   margin-bottom: 15px;
@@ -194,42 +190,59 @@ button {
 
 /* AJUSTES PARA MÓVIL */
 @media (max-width: 600px) {
-  #word .main-text { font-size: 36px; }
-  #word .parenthesis { font-size: 20px; }
+  #word .main-text { font-size: 34px; }
+  #word .parenthesis { font-size: 18px; }
   
   .card { 
     padding: 20px 10px; 
-    width: 85%; 
-    margin: 0 auto; /* Asegura el centrado horizontal */
+    width: 88%; 
+    margin: 0 auto;
   }
   
   .button-row { 
     flex-direction: row; 
     flex-wrap: wrap; 
     justify-content: center;
+    gap: 8px;
   }
   
   button { 
     flex: 1 1 auto; 
-    min-width: 80px; 
-    font-size: 14px;
+    min-width: 75px; 
+    font-size: 13px;
+    padding: 10px 12px;
   }
   
-  /* Hacemos que los elementos de las esquinas NO ocupen espacio */
+  /* REUBICACIÓN PARA EVITAR SOLAPAMIENTO */
   #results-button {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 10px;
+    left: 10px;
   }
 
   #level-selection {
     position: absolute;
-    top: 15px;
-    right: 15px;
+    top: 10px;
+    right: 10px;
+    gap: 4px;
+  }
+
+  /* Reducimos el tamaño de los círculos E, H, C, F en móvil */
+  #level-selection button {
+    width: 30px;
+    height: 30px;
+    font-size: 11px;
   }
   
   body {
-    justify-content: center; /* Fuerza el centrado vertical de la tarjeta */
+    justify-content: center;
     padding-top: 0;
+  }
+
+  /* Ajuste específico para horizontal en móvil */
+  @media (orientation: landscape) {
+    .card { padding: 15px; }
+    #word { min-height: 100px; margin-bottom: 10px; }
+    #word .main-text { font-size: 30px; }
   }
 }
