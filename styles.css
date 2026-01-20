@@ -1,206 +1,23 @@
-/* 1. BLOQUEO TOTAL DE MOVIMIENTO DE PANTALLA */
+/* 1. BLOQUEO LATERAL PERO PERMITE ACTUALIZAR */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
-  overflow: hidden; /* Prohíbe que la interfaz se mueva a los lados o rebote */
-  position: fixed; 
+  /* Cambiamos height: 100% por min-height para permitir el scroll de refresco */
+  min-height: 100vh; 
   background-color: #0a0808;
   color: #eee;
   font-family: 'Segoe UI', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-/* 2. CABECERA (Copa y Niveles) */
-.header-container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px 10px;
-  gap: 15px;
-  z-index: 10;
-  box-sizing: border-box;
-}
-
-#results-button button {
-  background: none;
-  border: 1px solid #ff3b5c;
-  color: #ff3b5c;
-  border-radius: 50%;
-  width: 45px;
-  height: 45px;
-  font-size: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-#level-selection {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-}
-
-#level-selection button {
-  background-color: #222;
-  color: #777;
-  border: 1px solid #444;
-  border-radius: 25px;
-  padding: 8px 18px;
-  font-size: 14px;
-  min-width: 45px;
-  transition: 0.3s;
-}
-
-#level-selection button.active {
-  background-color: #ff3b5c;
-  color: white;
-  border: none;
-  box-shadow: 0 0 10px rgba(255, 59, 92, 0.3);
-}
-
-/* 3. ÁREA DE JUEGO (Tarjeta Central) */
-.main-container {
-  flex: 1;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  /* IMPORTANTE: Bloquea el gesto lateral del navegador para usar el nuestro */
-  touch-action: none; 
-}
-
-.card {
-  background-color: #111;
-  padding: 30px;
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
-  text-align: center;
-  width: 85%;
-  max-width: 500px;
-  user-select: none; /* Evita seleccionar texto al deslizar */
-}
-
-/* 4. TEXTOS Y PALABRAS */
-#word {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 140px;
-  margin-bottom: 20px;
-}
-
-#word .main-text {
-  font-size: clamp(28px, 8vw, 48px);
-  font-weight: bold;
-  color: #fff;
-  line-height: 1.1;
-}
-
-#word .parenthesis {
-  font-size: clamp(18px, 5vw, 24px);
-  opacity: 0.6;
-  margin-top: 10px;
-  line-height: 1.2;
-}
-
-/* 5. INFORMACIÓN Y SEMÁFORO */
-.info-row {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-#counter { color: #888; font-size: 16px; }
-
-#timer {
-  font-size: 22px;
-  font-weight: bold;
-  transition: color 0.3s ease;
-}
-
-.timer-green { color: #2ecc71 !important; }
-.timer-yellow { color: #f1c40f !important; }
-.timer-red { color: #e74c3c !important; }
-.timer-blink { animation: blinker 0.6s linear infinite; }
-@keyframes blinker { 50% { opacity: 0.3; } }
-
-/* 6. BOTONES DE ACCIÓN */
-.button-row {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-
-button {
-  cursor: pointer;
-  font-weight: bold;
-  border: none;
-}
-
-#play {
-  background-color: #ff3b5c;
-  color: white;
-  padding: 15px;
-  border-radius: 12px;
-  font-size: 18px;
-  width: 100%;
-}
-
-#next {
-  background-color: #ff3b5c;
-  color: white;
-  padding: 12px 25px;
-  border-radius: 10px;
-  font-size: 16px;
-  flex: 2;
-}
-
-#finish {
-  background-color: #333;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 16px;
-  flex: 1;
-}
-
-##family-selector-container { 
-  margin-top: 10px;
-  margin-bottom: 25px; 
-}
-
-/* Esta es la parte que hace la caja más grande */
-#family-selector {
-  font-size: 20px;    /* Aumenta el texto */
-  padding: 12px;      /* Hace la caja más "gorda" */
-  width: 90%;         /* La hace más ancha */
-  border-radius: 10px;
-}
-
-#result { 
-  margin-top: 15px; 
-  color: #666; 
-  font-size: 14px; 
-}
-
-/* 7. ADAPTACIÓN PARA MÓVIL HORIZONTAL */
-@media (max-height: 500px) {
-  .header-container {
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px 20px;
-  }
   
-  .card { padding: 15px; margin: 5px auto; }
-  #word { min-height: 70px; margin-bottom: 10px; }
-  .info-row { margin-bottom: 10px; }
+  /* ESTA ES LA CLAVE: */
+  overflow-x: hidden;      /* Bloquea el movimiento a los lados */
+  overscroll-behavior-y: contain; /* Permite el gesto de actualizar pero evita el rebote blanco */
 }
 
+/* Ajuste para que el fondo no se desplace */
+body {
+  position: relative; /* Cambiado de fixed a relative */
+}
