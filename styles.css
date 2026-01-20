@@ -5,13 +5,12 @@ body {
   background-color: #0a0808;
   color: #eee;
   font-family: 'Segoe UI', sans-serif;
-  min-height: 100vh; /* Permite que la página crezca si es necesario */
+  min-height: 100vh; 
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* Centrado vertical */
+  justify-content: center; /* Centrado horizontal */
   flex-direction: column;
   position: relative;
-  /* Eliminado overflow: hidden para recuperar el scroll y refresco */
 }
 
 /* Tarjeta central */
@@ -23,7 +22,8 @@ body {
   text-align: center;
   max-width: 600px;
   width: 90%;
-  margin: 20px 0; /* Margen para que no pegue arriba/abajo en móviles */
+  margin: 0 auto; /* Centrada sin márgenes que la empujen */
+  z-index: 1;
 }
 
 /* Contenedor de palabra */
@@ -122,7 +122,7 @@ button {
   cursor: not-allowed;
 }
 
-/* Botón de resultados (Copa) */
+/* Botón de resultados (Copa) - Posición absoluta */
 #results-button {
   position: absolute;
   top: 15px;
@@ -142,7 +142,7 @@ button {
   justify-content: center;
 }
 
-/* Selector de nivel (E, H, C, F) */
+/* Selector de nivel (E, H, C, F) - Posición absoluta */
 #level-selection {
   position: absolute;
   top: 15px;
@@ -196,9 +196,13 @@ button {
 @media (max-width: 600px) {
   #word .main-text { font-size: 36px; }
   #word .parenthesis { font-size: 20px; }
-  .card { padding: 20px 10px; width: 85%; }
   
-  /* Los botones se adaptan al espacio */
+  .card { 
+    padding: 20px 10px; 
+    width: 85%; 
+    margin: 0 auto; /* Asegura el centrado horizontal */
+  }
+  
   .button-row { 
     flex-direction: row; 
     flex-wrap: wrap; 
@@ -211,19 +215,21 @@ button {
     font-size: 14px;
   }
   
-  /* Asegura que el botón de resultados y niveles no se pisen */
-  #results-button, #level-selection {
-    position: static;
-    margin-bottom: 10px;
+  /* Hacemos que los elementos de las esquinas NO ocupen espacio */
+  #results-button {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+  }
+
+  #level-selection {
+    position: absolute;
+    top: 15px;
+    right: 15px;
   }
   
   body {
-    justify-content: flex-start; /* Ayuda a que en móviles no se corte por arriba */
-    padding-top: 20px;
-  }
-}
-body {
-    justify-content: center; /* CAMBIADO: Antes estaba en flex-start */
-    padding-top: 0px;        /* CAMBIADO: Antes tenía 20px */
+    justify-content: center; /* Fuerza el centrado vertical de la tarjeta */
+    padding-top: 0;
   }
 }
