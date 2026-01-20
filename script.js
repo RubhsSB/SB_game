@@ -209,15 +209,15 @@ function saveHighScore(averageTime, wordCount) {
 playButton.addEventListener("click", () => {
  wordsQueue = [];
  refillQueue();
- 
+
  currentWord = getNextWord();
  wordElement.innerHTML = formatWordDisplay(currentWord);
- 
+
  startTime = Date.now();
  wordCount = 0;
  totalTime = 0;
  counterElement.textContent = `Palabras: ${wordCount}`;
- 
+
  playButton.style.display = "none";
  nextButton.disabled = false;
  nextButton.style.display = "inline-block";
@@ -228,6 +228,10 @@ playButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
+ const endTime = Date.now();
+ totalTime += (endTime - startTime) / 1000;
+ wordCount++;
+ counterElement.textContent = `Palabras: ${wordCount}`;
   // --- ESTA ES LA LÍNEA QUE DEBES AÑADIR ---
   if (playButton.style.display !== "none") return; 
   // -----------------------------------------
@@ -236,10 +240,10 @@ nextButton.addEventListener("click", () => {
   totalTime += (endTime - startTime) / 1000;
   wordCount++;
   counterElement.textContent = `Palabras: ${wordCount}`;
- 
+
  currentWord = getNextWord();
  wordElement.innerHTML = formatWordDisplay(currentWord);
- 
+
  startTime = Date.now();
  // Al reiniciar el cronómetro, el color volverá a verde automáticamente
 });
@@ -270,20 +274,12 @@ document.addEventListener("touchstart", e => {
 document.addEventListener("touchend", e => {
   let touchEndX = e.changedTouches[0].screenX;
   let distance = touchEndX - touchStartX;
- if (playButton.style.display !== "none") return; 
-  // -----------------------------------------
 
-  let touchEndX = e.changedTouches[0].screenX;
-  let distance = touchEndX - touchStartX;
-
-  // Si el movimiento es mayor a 50px y el botón Siguiente no está desactivado
+  // Si el movimiento es mayor a 50px (izquierda o derecha) y el juego está activo
   if (Math.abs(distance) > 50 && !nextButton.disabled) {
     nextButton.click();
-    
-    // Pequeño efecto visual de vibración
+
+    // Pequeño efecto visual de vibración (opcional)
     if (window.navigator.vibrate) window.navigator.vibrate(10);
   }
 }, {passive: true});
-
-
-
