@@ -253,12 +253,27 @@ finishButton.addEventListener("click", () => {
  finishButton.style.display = "none";
  wordElement.textContent = "Presiona Play para comenzar";
 });
-
-// Gesto Swipe
+// =======================
+// GESTO SWIPE (AMBOS LADOS)
+// =======================
 let touchStartX = 0;
-document.addEventListener("touchstart", e => { touchStartX = e.changedTouches[0].screenX; });
+
+// Registramos donde empieza el dedo
+document.addEventListener("touchstart", e => { 
+  touchStartX = e.changedTouches[0].screenX; 
+}, {passive: true});
+
 document.addEventListener("touchend", e => {
- if (e.changedTouches[0].screenX < touchStartX - 50 && !nextButton.disabled) {
-   nextButton.click();
- }
-});
+  let touchEndX = e.changedTouches[0].screenX;
+  let distance = touchEndX - touchStartX;
+
+  // Si el movimiento es mayor a 50px (izquierda o derecha) y el juego está activo
+  if (Math.abs(distance) > 50 && !nextButton.disabled) {
+    nextButton.click();
+    
+    // Pequeño efecto visual de vibración (opcional)
+    if (window.navigator.vibrate) window.navigator.vibrate(10);
+  }
+}, {passive: true});
+
+
