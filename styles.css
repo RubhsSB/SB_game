@@ -83,7 +83,7 @@ body {
 }
 
 button {
-  font-size: 16px;
+  font-size: 20px;
   padding: 10px 25px;
   border: none;
   border-radius: 10px;
@@ -167,3 +167,4 @@ button:disabled { background-color: #555; cursor: not-allowed; }
   .card { padding: 20px; }
   button { padding: 8px 20px; font-size: 14px; }
 }
+
