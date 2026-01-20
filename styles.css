@@ -172,8 +172,20 @@ button {
   flex: 1;
 }
 
-#family-selector-container { margin-bottom: 15px; }
-#result { margin-top: 15px; color: #666; font-size: 14px; }
+/* Selector de familia (Tamaño grande recuperado) */
+#family-selector-container {
+  margin-top: 20px;
+}
+
+#family-selector {
+  font-size: 20px;
+  padding: 12px;
+  width: 90%;
+  border-radius: 10px;
+  background-color: #222;
+  color: white;
+  border: 1px solid #555;
+}
 
 /* 7. ADAPTACIÓN PARA MÓVIL HORIZONTAL */
 @media (max-height: 500px) {
@@ -187,3 +199,4 @@ button {
   #word { min-height: 70px; margin-bottom: 10px; }
   .info-row { margin-bottom: 10px; }
 }
+
