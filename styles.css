@@ -83,7 +83,7 @@ body {
 }
 
 button {
-  font-size: 20px;
+  font-size: 16px;
   padding: 10px 25px;
   border: none;
   border-radius: 10px;
@@ -92,6 +92,15 @@ button {
   background-color: #ff3b5c;
   color: white;
   transition: all 0.3s ease;
+}
+
+/* --- ESTILO ESPECÍFICO PARA HACER EL BOTÓN PLAY MÁS LARGO --- */
+#play {
+  width: 100%;           /* Ocupa todo el ancho disponible de la tarjeta */
+  padding: 15px 0;       /* Aumenta un poco la altura para que sea más imponente */
+  font-size: 24px;       /* Tamaño de letra más grande solo para Play */
+  margin-bottom: 10px;   /* Separa un poco el botón Play de los que saldrán después */
+  display: block;        /* Asegura que se comporte como un bloque largo */
 }
 
 button:hover { background-color: #ff1e44; }
@@ -167,4 +176,5 @@ button:disabled { background-color: #555; cursor: not-allowed; }
   .card { padding: 20px; }
   button { padding: 8px 20px; font-size: 14px; }
 }
+
 
