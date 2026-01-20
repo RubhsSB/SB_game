@@ -228,10 +228,14 @@ playButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
- const endTime = Date.now();
- totalTime += (endTime - startTime) / 1000;
- wordCount++;
- counterElement.textContent = `Palabras: ${wordCount}`;
+  // --- ESTA ES LA LÍNEA QUE DEBES AÑADIR ---
+  if (playButton.style.display !== "none") return; 
+  // -----------------------------------------
+
+  const endTime = Date.now();
+  totalTime += (endTime - startTime) / 1000;
+  wordCount++;
+  counterElement.textContent = `Palabras: ${wordCount}`;
  
  currentWord = getNextWord();
  wordElement.innerHTML = formatWordDisplay(currentWord);
@@ -275,5 +279,6 @@ document.addEventListener("touchend", e => {
     if (window.navigator.vibrate) window.navigator.vibrate(10);
   }
 }, {passive: true});
+
 
 
