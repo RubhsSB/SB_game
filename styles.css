@@ -172,8 +172,24 @@ button {
   flex: 1;
 }
 
-#family-selector-container { margin-bottom: 15px; }
-#result { margin-top: 15px; color: #666; font-size: 14px; }
+##family-selector-container { 
+  margin-top: 10px;
+  margin-bottom: 25px; 
+}
+
+/* Esta es la parte que hace la caja más grande */
+#family-selector {
+  font-size: 20px;    /* Aumenta el texto */
+  padding: 12px;      /* Hace la caja más "gorda" */
+  width: 90%;         /* La hace más ancha */
+  border-radius: 10px;
+}
+
+#result { 
+  margin-top: 15px; 
+  color: #666; 
+  font-size: 14px; 
+}
 
 /* 7. ADAPTACIÓN PARA MÓVIL HORIZONTAL */
 @media (max-height: 500px) {
@@ -187,3 +203,4 @@ button {
   #word { min-height: 70px; margin-bottom: 10px; }
   .info-row { margin-bottom: 10px; }
 }
+
