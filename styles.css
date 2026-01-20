@@ -175,6 +175,8 @@ button:disabled { background-color: #555; cursor: not-allowed; }
   #word .parenthesis { font-size: 24px; }
   .card { padding: 20px; }
   button { padding: 8px 20px; font-size: 14px; }
+  #play { width: 100%; font-size: 20px; padding: 12px 0; }
 }
+
 
 
