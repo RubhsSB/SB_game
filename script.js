@@ -3,38 +3,31 @@
 // =======================
 
 const words = [
-  "CyC (Host cambio posición)", "Daniel y Alma", "JyE (Diagonal Cintura)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)", "JHERSY (Preparar pos Cerrada)", "SERGIO y KATINA (Bassmnt - Círculo y tiro atrás)", "EyG (Cats - Giro 2 manos)",
-  "ALBERTO y MARÍA (Cats - Giro espalda)", "JHERSY (Preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)", "JHERSY (salir pasos cambio mano)",
-  "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", "JHERSY (Giro cambio mano)", "JHERSY (salir/end)", "MyS (Cambio posición con mano Izq)", "FRANCIA", "Alex y Lais (jóvenes -3+1)",
-  "DyY (SanSebastián - Separo en 4 y al hombro)", "CyC (Mambo Manos Hombro)", "70'", "DyY (Cats - Bajo cabeza)", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", "CyT (3 giros con Cuello)", "5 cintura abajo", "CyT (sens Péndulo)",
-  "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE (Ando atrás)", "OTTO", "ASCENSOR", "JLAB (Muñeco brazos)", "JORGE y SANDRA", "JyE (Enrollo x 2)", "DISOCIACION de PECHO (en SOMBRA)", "JLAB (Doble giro + 70´)", "DyY (Onda + Círculo)",
-  "SENSUAL +", "70´Adelante", "AyYUR Palanca", "Lado MAMBO", "DISOCIACION de PECHO (pos CERRADA)", "CANGURO", "GUITARRA", "SINCOPADO", "STEPHAN y NEVI (freno en 3 y horiz)", "JHERSY (Diagonal)", "CyT (Tumbar Follow)",
-  "DyY (Cats - Giro en 5 + juego de Brazos)", "IVAN Y SARAI (3 sensual + Cadera)", "EyG (1/2 Sensual + disoc Follow)", "Básico (Grande/Pequeño + Hombros + Caderas)", "D e Inés", "Brazo Lanzo DEBAJO", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)",
-  "Giros", "CyC (Giro en Diagonal + abrazo cuello)", "CyC (Host - Diagonal con pasos)", "Instag Salida Giro espalda Led", "Giro Foll en 5 + Giro Led en 7",
-  "DyY (Onda prep decha - Tiempo normal)", "DyY (Onda prep decha- Tiempo Follow)", "DyY (Onda prep decha - en Sombra Follow)", "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)", "CyC (Segovia - ½ Diagonal + Preparo en 6)",
-  "DyY (Segovia - Lanzo + peino + sombra)", "CyC (Segovia - Rompo y atrás)", "DyY (Segovia - Enrollo en 5 + Onla lenta)", "CyC (Segovia - Diagonal freno Follow en 3)", "DyY (Onda en Sombra Follow prep decha)", "Carlos (Cintura Péndulo)",
-  "JHERSY (Enrollo Follow suelto mano Ext)", "JHERSY (Giro Follow en 5 y semi giro Leader en 7)", "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "JHERSY (Helice)", "SENSUAL Lados",
-  "JHERSY (Onda ando cambio de mano)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5+ Estiro brazo 8)", "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY (Salir Onda - Follow abajo en 4)",
-  "JHERSY (Diagonal Sombra - Prepa Follow en 5 + sale en 6)", "JHERSY (Diagonal me paro en 5-8)", "JHERSY (Frame Follow 5-8 mano dch escápula)", "JHERSY Intro", "JHERSY (Peino 2 manos)", "JHERSY (Enrollo pasos lentos 1-6 + 7-8 atrás)",
-  "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", "TITANIC", "CyC (Freno en 6 + L de brazos)", "JHERSY (Acordeon - de lado en 5)", "JHERSY (Abro Izq - 5 Lado deslizo pies)", "INTRO Carlos",
-  "JHERSY (Sensual - mano cintura)", "JyL (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión + Abajo/Arriba)", "DyY (Agarre gancho onda)", "YyE (Bachata Flow)", "JyL (Host- Diagonal y ando)",
-  "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)",
-  "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño", "JHERSY (Salida Diagonal)", "JHERSY (Lanzo mano atrás + cadera + saco en 7)", "JHERSY (Mano/s pecho)", "JHERSY (Peinar con 2 manos)",
-  "JHERSY (Posición cerrada vaivén)", "JHERSY (En 1 giro por detrás mano izq cuello)", "JHERSY (1 atrás/rompe estirado brazo para giro Lid en 5)", "VyA (Host - 4 Preparo y freno Follow en sombra)", "EyG (4 preparo + 5 Giro dos manos + 7 abajo)",
-  "ByL (Host - 4 figuras)", "IyR (Host - 4 abro para pasos)", "BÁSICO - Frame", "JyL (Benidorm)", "KyN (Benidorm - Diagonal)", "EyG (LED peino izq + brazo Follow atrás en 2, preparo para giro con mano en sobaco/espalda)",
-  "JyE (Peino Decha + agarro brazo + sombra)", "DyY (Bassement 70´ en 1)", "JyE (Bassement - Diagonal)", "JyE (Peino Izq + apoyo Decha hombro)", "JyE (Sensual + Disociación en 1)", "JyE (Sensual + Onda Follow en 5)", "SyK (Cats - 5 traigo y sombra)",
-  "CyG (Andar atás completo - 8)", "CyG (Andar atrás 1-4 + abrazo + 5 IZQ + 6 CENTRO + 7 SEPARO + 8 JUNTO)", "CyG (Frame - junto en 1 separo 2 a 4 + junto en 5 separo 6 a 8)", "SUAVE", "DISFRUTA",
-  "DyY (Cats - peino Fol en 1)", "ByL (Bachata Flow)", "NyE (Cha3)", "DyY (Pasitos)", "JHERSY (Giro Follow con mano derecha)", "JHERSY (en 5 amago y giro Follow)",
-  "JHERSY (giro suave en 5 + freno + en 7 traigo suave a sombra)", "JHERSY (Mambo tensión brazos abajo/ariba)", "DyY (Cruzo manos + Sombra en 5 + Giro en 7)", "GyJ (Cha3 - Freno 6)", "JyE (Cats - Pegado círculo cadera)",
-  "JyE (Cambio posición en 5 + mano cuello en 8 + saco Follow)", "JyE (Versión 1 - Enrrollo en 5)", "JyE (Versión 2 - Giro por detrás + cambio posisión en 5)", "JyE (Versión 1 + 2 - Enrrollo en 5 + sombra + péndulos)",
-  "JHERSY (Cambio posición en 5 + mano cuello en 8 con mano decha en cintura)", "JHERSY (suave)", "JHERSY (postura)", "JHERSY (liderar)", "SyK (Bailarina)",
-  "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)",
-  "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J6J)",
-  "JHERSY (en sombra hacer Rueda)", "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo - tensión brazos 1o Izq + 5º Decha)", "ByL (MAD - Lanzo Decha)", "MyS (MAD - Cambio pos en 1)",
-  "Illusion", "Bailar en el sitio - Mov pequeños", "EyG (Break 1 Jowke - Preparo en 4, en 5 estiro atrás Drcho)", "EyG (1 lanzo Dcho atrás- Jowke)", "EyG (Guitarra círculos - Jowke)",
-  "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)",
-  "MatySof (CATS - Freno en 6 con mano Drecha hombr Follow)", "JyE (Diagonal + en 5 preparo para ponernos de espaldas)", "JyE (Sensual + rompo para sensual en 4)", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", 
-  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)"
+  "CyC (Host cambio posición)", "Daniel y Alma", "JyE (Diagonal Cintura)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)", "JHERSY (Preparar pos Cerrada)", "SERGIO y KATINA (Bassmnt - Círculo y tiro atrás)", "EyG (Cats - Giro 2 manos)", "ALBERTO y MARÍA (Cats - Giro espalda)", 
+  "JHERSY (Preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", 
+  "JHERSY (Giro cambio mano)", "JHERSY (salir/end)", "MyS (Cambio posición con mano Izq)", "FRANCIA", "Alex y Lais (jóvenes -3+1)", "DyY (SanSebastián - Separo en 4 y al hombro)", "CyC (Mambo Manos Hombro)", "70'", "DyY (Cats - Bajo cabeza)", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", 
+  "CyT (3 giros con Cuello)", "5 cintura abajo", "CyT (sens Péndulo)", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE (Ando atrás)", "OTTO", "ASCENSOR", "JLAB (Muñeco brazos)", "JORGE y SANDRA", "JyE (Enrollo x 2)", "DISOCIACION de PECHO (en SOMBRA)", "JLAB (Doble giro + 70´)", 
+  "DyY (Onda + Círculo)", "SENSUAL +", "70´Adelante", "AyYUR Palanca", "Lado MAMBO", "DISOCIACION de PECHO (pos CERRADA)", "CANGURO", "GUITARRA", "SINCOPADO", "STEPHAN y NEVI (freno en 3 y horiz)", "JHERSY (Diagonal)", "CyT (Tumbar Follow)", "DyY (Cats - Giro en 5 + juego de Brazos)", 
+  "IVAN Y SARAI (3 sensual + Cadera)", "EyG (1/2 Sensual + disoc Follow)", "Básico (Grande/Pequeño + Hombros + Caderas)", "D e Inés", "Brazo Lanzo DEBAJO", "Cuellar Bachatero (Giro + Camb Pos + Sombra + peino)", "Giros", "CyC (Giro en Diagonal + abrazo cuello)", "CyC (Host - Diagonal con pasos)", 
+  "Instag Salida Giro espalda Led", "Giro Foll en 5 + Giro Led en 7", "DyY (Onda prep decha - Tiempo normal)", "DyY (Onda prep decha- Tiempo Follow)", "DyY (Onda prep decha - en Sombra Follow)", "EyG (Cambio posición + Giro + Peino + Giro + ONDA abajo)", "CyC (Segovia - ½ Diagonal + Preparo en 6)",
+  "DyY (Segovia - Lanzo + peino + sombra)", "CyC (Segovia - Rompo y atrás)", "DyY (Segovia - Enrollo en 5 + Onla lenta)", "CyC (Segovia - Diagonal freno Follow en 3)", "DyY (Onda en Sombra Follow prep decha)", "Carlos (Cintura Péndulo)", "JHERSY (Enrollo Follow suelto mano Ext)", 
+  "JHERSY (Giro Follow en 5 y semi giro Leader en 7)", "JHERSY (Onda delante-atrás)", "DyY (Cats - abro en 1 + Giro Follow + Giro Leader)", "JHERSY (Helice)", "SENSUAL Lados", "JHERSY (Onda ando cambio de mano)", "TONIO (Giro 5 + espalda freno + Giro…Cerrada)", "EyG (Follow Giro en 5+ Estiro brazo 8)",
+  "EyG (Ventilador Fecha+ Freno Flow + Giro + Sombra)", "JHERSY (Salir Onda - Follow abajo en 4)", "JHERSY (Diagonal Sombra - Prepa Follow en 5 + sale en 6)", "JHERSY (Diagonal me paro en 5-8)", "JHERSY (Frame Follow 5-8 mano dch escápula)", "JHERSY Intro", "JHERSY (Peino 2 manos)", 
+  "JHERSY (Enrollo pasos lentos 1-6 + 7-8 atrás)", "JHERSY (Pasos libres)", "JHERSY (Lado con lado brazo Dcho Onda atrás)", "TITANIC", "CyC (Freno en 6 + L de brazos)", "JHERSY (Acordeon - de lado en 5)", "JHERSY (Abro Izq - 5 Lado deslizo pies)", "INTRO Carlos", "JHERSY (Sensual - mano cintura)", 
+  "JyL (Host - Diagonal)", "JHERSY (Onda + 5 coger mano Follow y salir)", "DyY (Diagonal tensión + Abajo/Arriba)", "DyY (Agarre gancho onda)", "YyE (Bachata Flow)", "JyL (Host- Diagonal y ando)", "JyE (Peino + mano hombro)", "Stefy (Diagonal Freno)", "Stefy (Molino + sombra+ Cuello)", 
+  "Stefy (Diagonal + me peino)", "Stefy (Catapulta + juego manos)", "Stefy (Catapulta + Enrollo)", "Stefy (Molino + giro Follow)", "JyE (Led Giro + Cambio mano + ZigZag)", "JHERSY (Balanceo)", "JHERSY (1 Rompo atrás + 5 adelante)", "Giro + Engaño", "JHERSY (Salida Diagonal)", 
+  "JHERSY (Lanzo mano atrás + cadera + saco en 7)", "JHERSY (Mano/s pecho)", "JHERSY (Peinar con 2 manos)", "JHERSY (Posición cerrada vaivén)", "JHERSY (En 1 giro por detrás mano izq cuello)", "JHERSY (1 atrás/rompe estirado brazo para giro Lid en 5)", "VyA (Host - 4 Preparo y freno Follow en sombra)", 
+  "EyG (4 preparo + 5 Giro dos manos + 7 abajo)", "ByL (Host - 4 figuras)", "IyR (Host - 4 abro para pasos)", "BÁSICO - Frame", "JyL (Benidorm)", "KyN (Benidorm - Diagonal)", "EyG (LED peino izq + brazo Follow atrás en 2, preparo para giro con mano en sobaco/espalda)", 
+  "JyE (Peino Decha + agarro brazo + sombra)", "DyY (Bassement 70´ en 1)", "JyE (Bassement - Diagonal)", "JyE (Peino Izq + apoyo Decha hombro)", "JyE (Sensual + Disociación en 1)", "JyE (Sensual + Onda Follow en 5)", "SyK (Cats - 5 traigo y sombra)", "CyG (Andar atás completo - 8)", 
+  "CyG (Andar atrás 1-4 + abrazo + 5 IZQ + 6 CENTRO + 7 SEPARO + 8 JUNTO)", "CyG (Frame - junto en 1 separo 2 a 4 + junto en 5 separo 6 a 8)", "SUAVE", "DISFRUTA", "DyY (Cats - peino Fol en 1)", "ByL (Bachata Flow)", "NyE (Cha3)", "DyY (Pasitos)", "JHERSY (Giro Follow con mano derecha)", 
+  "JHERSY (en 5 amago y giro Follow)", "JHERSY (giro suave en 5 + freno + en 7 traigo suave a sombra)", "JHERSY (Mambo tensión brazos abajo/ariba)", "DyY (Cruzo manos + Sombra en 5 + Giro en 7)", "GyJ (Cha3 - Freno 6)", "JyE (Cats - Pegado círculo cadera)", 
+  "JyE (Cambio posición en 5 + mano cuello en 8 + saco Follow)", "JyE (Versión 1 - Enrrollo en 5)", "JyE (Versión 2 - Giro por detrás + cambio posisión en 5)", "JyE (Versión 1 + 2 - Enrrollo en 5 + sombra + péndulos)", "JHERSY (Cambio posición en 5 + mano cuello en 8 con mano decha en cintura)", 
+  "JHERSY (suave)", "JHERSY (postura)", "JHERSY (liderar)", "SyK (Bailarina)", "SyA (Cats - Diagonal + Giro Follow y abajo)", "DyY (Giro mano Izq en 5)", "DyY (en 4 de lado dejo caer la mano mi espalda y en 5 me giro)", "JyE (peino + doble giro)", "JyE (Diagonal + preparo + vuelta alrededor)", 
+  "JHERSY (Estirados pasar mano por encima 1º en 1)", "JHERSY (Cogiéndo del codo Péndulo on brazo + giro cabeza + cambre)", "JHERSY (Andar atrás de lado empieza como Diagonal)", "JHERSY (Giro cambio mano con vuelta Follow y Led - J6J)", "JHERSY (en sombra hacer Rueda)", 
+  "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo - tensión brazos 1o Izq + 5º Decha)", "ByL (MAD - Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", "Illusion", "Bailar en el sitio - Mov pequeños", "EyG (Break 1 Jowke - Preparo en 4, en 5 estiro atrás Drcho)", 
+  "EyG (1 lanzo Dcho atrás- Jowke)", "EyG (Guitarra círculos - Jowke)", "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)",
+  "MatySof (CATS - Freno en 6 con mano Drecha hombr Follow)", "JyE (Diagonal + en 5 preparo para ponernos de espaldas)", "JyE (Sensual + rompo para sensual en 4)", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4",  
+  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)", "Beyto (En sombra brazo por encima en 1)", "CyC (Freno en 6 + Giro fram brazos)"
 ];
 
 const wordsCustom = [
@@ -66,7 +59,7 @@ const wordsCustom = [
   "Illusion", "Bailar en el sitio - Mov pequeños", "EyG (Break 1 Jowke - Preparo en 4, en 5 estiro atrás Drcho)", "EyG (1 lanzo Dcho atrás- Jowke)", "EyG (Guitarra círculos - Jowke)",
   "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)",
   "MatySof (CATS - Freno en 6 con mano Drecha hombr Follow)", "JyE (Diagonal + en 5 preparo para ponernos de espaldas)", "JyE (Sensual + rompo para sensual en 4)", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", 
-  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)"
+  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)", "Beyto (En sombra brazo por encima en 1)", "CyC (Freno en 6 + Giro fram brazos)"
 ];
 
 const familyPrefixes = ["JHERSY", "CyC", "K_ELDE", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
@@ -279,6 +272,7 @@ document.addEventListener("touchend", e => {
     if (window.navigator.vibrate) window.navigator.vibrate(10);
   }
 }, {passive: true})
+
 
 
 
