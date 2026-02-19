@@ -27,7 +27,7 @@ const words = [
   "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo - tensión brazos 1o Izq + 5º Decha)", "ByL (MAD - Lanzo Decha)", "MyS (MAD - Cambio pos en 1)", "Illusion", "Bailar en el sitio - Mov pequeños", "EyG (Break 1 Jowke - Preparo en 4, en 5 estiro atrás Drcho)", 
   "EyG (1 lanzo Dcho atrás- Jowke)", "EyG (Guitarra círculos - Jowke)", "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)",
   "MatySof (CATS - Freno en 6 con mano Drecha hombr Follow)", "JyE (Diagonal + en 5 preparo para ponernos de espaldas)", "JyE (Sensual + rompo para sensual en 4)", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4",  
-  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)", "Beyto (En sombra brazo por encima en 1)", "CyC (Freno en 6 + Giro fram brazos)", "JyE (Diagonal + preparo en 8 para sombra)", "JyE (Snsual + 5 izq, 6 abajo + 7 dcha + 8 atrá - arriba)"
+  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)", "Beyto (En sombra brazo por encima en 1)", "CyC (Freno en 6 + Giro fram brazos)", "JyE (Diagonal + preparo en 8 para sombra)", "JyE (Snsual + 5 izq, 6 abajo + 7 dcha + 8 atrá - arriba)", "YAKO - Dominicana"
 ];
 
 const wordsCustom = [
@@ -53,7 +53,7 @@ const wordsCustom = [
   "JHERSY (En posición cerrada dos Ondas laterales rápidas)", "JHERSY (Mambo - tensión brazos 1o Izq + 5º Decha)", "ByL (MAD - Lanzo Decha)", "MyS (MAD - Cambio pos in 1)", "Illusion", "Bailar en el sitio - Mov pequeños", "EyG (Break 1 Jowke - Preparo en 4, en 5 estiro atrás Drcho)", 
   "EyG (1 lanzo Dcho atrás- Jowke)", "EyG (Guitarra círculos - Jowke)", "EyG (Piano - Jowke)", "JyE (Diagonal + Giro en 6 Led + juego de pies + sombra Follow)", "AyA (CATs - Enrollo en 5)", "JyL (CATS - Freno Follow en 6 y yo sigo)", "Franceses (CATS - Freno Follow en 6 y ambos IZQ para péndulo)",
   "MatySof (CATS - Freno en 6 con mano Drecha hombr Follow)", "JyE (Diagonal + en 5 preparo para ponernos de espaldas)", "JyE (Sensual + rompo para sensual en 4)", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", "Chica Exorcista", "MOlino Follow", "Freno MOlino en 4", 
-  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)", "Beyto (En sombra brazo por encima en 1)", "CyC (Freno en 6 + Giro fram brazos)", "JyE (Diagonal + preparo en 8 para sombra)", "JyE (Snsual + 5 izq, 6 abajo + 7 dcha + 8 atrá - arriba)"
+  "JyE (Diagonal y preparo en 7-8 preparo arriba para Sensual con brazo pegados)", "Beyto (En sombra brazo por encima en 1)", "CyC (Freno en 6 + Giro fram brazos)", "JyE (Diagonal + preparo en 8 para sombra)", "JyE (Snsual + 5 izq, 6 abajo + 7 dcha + 8 atrá - arriba)", "YAKO - Dominicana"
 ];
 
 const familyPrefixes = ["JHERSY", "CyC", "K_ELDE", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
@@ -266,6 +266,7 @@ document.addEventListener("touchend", e => {
     if (window.navigator.vibrate) window.navigator.vibrate(10);
   }
 }, {passive: true})
+
 
 
 
