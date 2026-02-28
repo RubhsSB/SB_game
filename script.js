@@ -3,7 +3,7 @@
 // =======================
 
 const words = [
-  "CyC (Host cambio posición)", "Daniel y Alma", "JyE (Diagonal Cintura)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)", "JHERSY (Preparar pos Cerrada)", "ALBERTO y MARÍA (Cats - Giro espalda)", "SALIDA después media DIAGONAL", 
+  "CyC (Host cambio posición)", "Daniel y Alma", "JyE (Diagonal Cintura)", "MARCO ESPEJO", "CyC (lanzo atrás en 3)", "JHERSY (Preparar pos Cerrada)", "ALBERTO y MARÍA (Cats - Giro espalda)", "SALIDA después media DIAGONAL", "JHERSY (Sara Panero - Media Diagonal + Giro / Cambio mano)",
   "JHERSY (Preparo sensual + mano Follow)", "JHERSY (preparo sensual + lanzo en 4 y salgo)", "K_ELDE Intro", "K_ELDE (mano en 5)", "JLAB (salir/end)", "JHERSY (salir pasos cambio mano)", "JHERSY (Mano en 5 bajar)", "JHERSY (Giro F en 5 + Giro L en 7 más desplazamiento)", "JHERSY pasos", 
   "JHERSY (Giro cambio mano)", "JHERSY (salir/end)", "MyS (Cambio posición con mano Izq)", "FRANCIA", "Alex y Lais (jóvenes -3+1)", "DyY (SanSebastián - Separo en 4 y al hombro)", "CyC (Mambo Manos Hombro)", "70'", "DyY (Cats - Bajo cabeza)", "ENGAÑO", "GERO y MIGLE (cambio pos 360º)", 
   "CyT (3 giros con Cuello)", "5 cintura abajo", "CyT (sens Péndulo)", "DISOCIACION de PECHO (Enrollada)", "CyT (Cambio + 70´)", "JyE (Ando atrás)", "OTTO", "ASCENSOR", "JLAB (Muñeco brazos)", "JORGE y SANDRA", "JyE (Enrollo x 2)", "DISOCIACION de PECHO (en SOMBRA)", "JLAB (Doble giro + 70´)", 
@@ -236,6 +236,7 @@ document.addEventListener("touchend", e => {
     if (window.navigator.vibrate) window.navigator.vibrate(10);
   }
 }, {passive: true})
+
 
 
 
