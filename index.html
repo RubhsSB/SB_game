@@ -1,61 +1,68 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Bachata Trainer</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#0a0808">
-</head>
-<body>
-
-    <div class="header-container">
-        <div id="results-button">
-            <button onclick="window.location.href='resultados.html'">⌛</button>
-        </div>
-
-        <div id="level-selection">
-            <button id="easy" class="active">E</button>
-            <button id="hard">H</button>
-            <button id="family">F</button>
-        </div>
+<div class="header-container">
+    <div id="results-button">
+        <button onclick="window.location.href='resultados.html'">⌛</button>
+    </div>
+    
+    <div id="manager-button" style="position: absolute; top: 15px; left: 60px;">
+        <button id="open-manager-btn">⚙️</button>
     </div>
 
-    <div class="card">
-        <div id="family-selector-container" style="display: none;">
-            <select id="family-selector"></select>
-        </div>
+    <div id="level-selection">
+        <button id="easy" class="active">E</button>
+        <button id="hard">H</button>
+        <button id="family">F</button>
+    </div>
+</div>
 
-        <div id="word">
-            <span class="main-text">Presiona Play para comenzar</span>
-        </div>
-
-        <div class="info-row">
-            <div id="counter">Palabras: 0</div>
-            <div id="timer">Tiempo: 0.0s</div>
-        </div>
-
-        <div class="button-row">
-            <button id="play">▶ Play</button>
-            <button id="next" style="display: none;">Siguiente</button>
-            <button id="finish" style="display: none;">Finalizar</button>
-        </div>
-
-        <div id="result"></div>
+<div class="card">
+    <div id="family-selector-container" style="display: none;">
+        <select id="family-selector"></select>
     </div>
 
-    <script src="script.js"></script>
-    <script>
-        // Registro del Service Worker para funcionamiento offline
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js')
-                    .then(reg => console.log('SW registrado'))
-                    .catch(err => console.log('Error SW', err));
-            });
-        }
-    </script>
-</body>
-</html>
+    <div id="word">
+        <span class="main-text">Presiona Play para comenzar</span>
+    </div>
 
+    <div class="info-row">
+        <div id="counter">Palabras: 0</div>
+        <div id="timer">Tiempo: 0.0s</div>
+    </div>
+
+    <div class="button-row">
+        <button id="play">▶ Play</button>
+        <button id="next" style="display: none;">Siguiente</button>
+        <button id="finish" style="display: none;">Finalizar</button>
+    </div>
+
+    <div id="result"></div>
+</div>
+
+<!-- Gestor de Figuras Modal -->
+<div id="manager-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span id="close-manager-btn" class="close-btn">&times;</span>
+        <h2 style="margin-top:0;">Gestor de Figuras</h2>
+        <div class="add-word-section">
+            <input type="text" id="new-word-input" placeholder="Ej: JHERSY (Nueva figura)">
+            <button id="add-word-btn">Añadir</button>
+        </div>
+        
+        <h3 style="font-size:16px;">Mis Figuras Personalizadas</h3>
+        <ul id="custom-words-list">
+            <!-- Custom words will be listed here -->
+        </ul>
+        <p style="font-size: 11px; color: #888; margin-top: 15px; line-height:1.2;">La base de figuras original carga sola y no se puede borrar desde aquí. Si actualizas la lista en GitHub, se verán los cambios aquí.</p>
+    </div>
+</div>
+
+<script src="script.js"></script>
+<script>
+    // Registro del Service Worker para funcionamiento offline
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js')
+                .then(reg => console.log('SW registrado'))
+                .catch(err => console.log('Error SW', err));
+        });
+    }
+</script>
