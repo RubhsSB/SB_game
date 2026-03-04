@@ -201,6 +201,112 @@ button:disabled { background-color: #555; cursor: not-allowed; }
   #finish { flex: 1 !important; }
 }
 
+/* Modal Gestor */
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 100; 
+  left: 0;
+  top: 0;
+  width: 100%; 
+  height: 100%; 
+  background-color: rgba(0,0,0,0.8); 
+  align-items: center;
+  justify-content: center;
+}
 
+.modal-content {
+  background-color: #1a1a1a;
+  padding: 20px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  border: 1px solid #333;
+  color: #fff;
+  position: relative;
+  max-height: 80vh;
+  overflow-y: auto;
+  text-align: left;
+}
 
+.close-btn {
+  color: #aaa;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
+.close-btn:hover { color: #fff; }
+
+.add-word-section {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.add-word-section input {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  background: #2a2a2a;
+  color: white;
+  font-size: 16px;
+}
+
+.add-word-section button {
+  background-color: #ff3b5c;
+  color: white;
+  padding: 10px 15px;
+  font-size: 15px;
+  border-radius: 8px;
+}
+
+#custom-words-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+#custom-words-list li {
+  background: #222;
+  margin-bottom: 6px;
+  padding: 10px 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.delete-word-btn {
+  background: transparent !important;
+  color: #ff4c61;
+  font-size: 14px;
+  padding: 5px;
+  width: auto;
+}
+.delete-word-btn:hover { color: #ff1e44; }
+
+/* Botón manager */
+#manager-button button {
+  background: none;
+  border: 2px solid #777;
+  color: #777;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#manager-button button:hover {
+  border-color: #fff;
+  color: #fff;
+}
