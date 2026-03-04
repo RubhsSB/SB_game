@@ -198,8 +198,7 @@ button:disabled { background-color: #555; cursor: not-allowed; }
   button { padding: 8px 20px; font-size: 14px; }
   #play { width: 100%; font-size: 20px; padding: 12px 0; }
   #next { flex: 3 !important; }
-  #finish { flex: 1 !important; }
-}
+  #finish { flex: 1 !important; }}
 
 /* Modal Gestor */
 .modal {
@@ -310,3 +309,4 @@ button:disabled { background-color: #555; cursor: not-allowed; }
   border-color: #fff;
   color: #fff;
 }
+
