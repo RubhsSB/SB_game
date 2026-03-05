@@ -70,7 +70,7 @@ window.addEventListener("load", async () => {
 });
 
 function updateWordsList() {
-  words = [...baseWords, ...customWords];
+  words = [...new Set([...baseWords, ...customWords])];
 }
 
 [easyButton, hardButton, familyButton].forEach((btn, i) => {
@@ -308,4 +308,5 @@ function renderCustomWords() {
     customWordsList.appendChild(li);
   });
 }
+
 
