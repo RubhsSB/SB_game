@@ -116,10 +116,13 @@ let lastWord = "";
 
 function getNextWord() {
   if (gameMode === "hard") {
+    if (words.length === 0) return null;
     let newWord;
+    let attempts = 0;
     do {
       newWord = words[Math.floor(Math.random() * words.length)];
-    } while (newWord === lastWord && words.length > 1);
+      attempts++;
+    } while (newWord === lastWord && words.length > 1 && attempts < 10);
     lastWord = newWord;
     return newWord;
   }
@@ -127,6 +130,7 @@ function getNextWord() {
   if (wordsQueue.length === 0) {
     if (gameMode === "family") {
       refillQueue();
+      if (wordsQueue.length === 0) return null;
     } else {
       return null; // Fin de lista para EASY
     }
@@ -184,12 +188,27 @@ function saveHighScore(averageTime, wordCount) {
 }
 
 playButton.addEventListener("click", () => {
+  if (words.length === 0) {
+    alert("No hay figuras cargadas todavía.");
+    return;
+  }
+
   wordsQueue = [];
   refillQueue();
-  lastWord = ""; // Reset de última palabra
+  lastWord = "";
+
+  // Guardar total antes de empezar para el contador
+  totalInQueue = wordsQueue.length || words.length;
 
   currentWord = getNextWord();
+  if (!currentWord) return;
+
   wordElement.innerHTML = formatWordDisplay(currentWord);
+  if (gameMode !== "hard") {
+    updateProgressDisplay(1);
+  } else {
+    resultElement.textContent = "";
+  }
 
   startTime = Date.now();
   wordCount = 0;
@@ -206,8 +225,7 @@ playButton.addEventListener("click", () => {
 });
 
 nextButton.addEventListener("click", () => {
-  // Solo permite pasar si el juego ha comenzado (Play oculto)
-  if (playButton.style.display !== "none") return;
+  if (playButton.style.display !== "none" && nextButton.disabled) return;
 
   const endTime = Date.now();
   totalTime += (endTime - startTime) / 1000;
@@ -217,12 +235,10 @@ nextButton.addEventListener("click", () => {
   currentWord = getNextWord();
 
   if (currentWord === null) {
-    // Fin de lista en EASY
     stopTimer();
     nextButton.disabled = true;
     wordElement.innerHTML = `<span class="main-text" style="color:var(--accent);">🏆 ¡LISTA COMPLETADA!</span><br><span class="parenthesis">Has practicado todo el repertorio</span>`;
 
-    // Guardar resultados automáticamente al terminar
     if (wordCount > 0) {
       const averageTime = totalTime / wordCount;
       saveHighScore(averageTime, wordCount);
@@ -232,8 +248,20 @@ nextButton.addEventListener("click", () => {
   }
 
   wordElement.innerHTML = formatWordDisplay(currentWord);
+  if (gameMode !== "hard") {
+    updateProgressDisplay(wordCount + 1);
+  }
   startTime = Date.now();
 });
+
+let totalInQueue = 0;
+function updateProgressDisplay(current) {
+  if (gameMode === "hard") {
+    resultElement.textContent = "";
+  } else {
+    resultElement.textContent = `Figura ${current} de ${totalInQueue}`;
+  }
+}
 
 finishButton.addEventListener("click", () => {
   stopTimer();
