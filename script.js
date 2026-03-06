@@ -42,17 +42,17 @@ window.addEventListener("load", async () => {
   // Cargar custom words desde LocalStorage
   const savedCustom = localStorage.getItem('sbg_custom_words');
   if (savedCustom) {
-    try { customWords = JSON.parse(savedCustom); } catch(e) { customWords = []; }
+    try { customWords = JSON.parse(savedCustom); } catch (e) { customWords = []; }
   }
 
   // Cargar palabras base desde JSON
   try {
     const response = await fetch('words.json');
     baseWords = await response.json();
-  } catch(e) {
+  } catch (e) {
     console.error("Error cargando words.json", e);
     // Fallback vacio en caso de error
-    baseWords = []; 
+    baseWords = [];
   }
 
   updateWordsList();
@@ -100,22 +100,41 @@ function shuffle(array) {
 }
 
 function refillQueue() {
-  if (gameMode === "easy") {
-    wordsQueue = shuffle([...words]);
-  } else if (gameMode === "family") {
-    const prefix = familySelect.value;
-    wordsQueue = shuffle(words.filter(w => w.startsWith(prefix)));
+  if (gameMode === "easy" || gameMode === "family") {
+    let source = [];
+    if (gameMode === "easy") {
+      source = [...words];
+    } else {
+      const prefix = familySelect.value;
+      source = words.filter(w => w.startsWith(prefix));
+    }
+    wordsQueue = shuffle(source);
   }
 }
 
+let lastWord = "";
+
 function getNextWord() {
   if (gameMode === "hard") {
-    return words[Math.floor(Math.random() * words.length)];
+    let newWord;
+    do {
+      newWord = words[Math.floor(Math.random() * words.length)];
+    } while (newWord === lastWord && words.length > 1);
+    lastWord = newWord;
+    return newWord;
   }
+
   if (wordsQueue.length === 0) {
-    refillQueue();
+    if (gameMode === "family") {
+      refillQueue();
+    } else {
+      return null; // Fin de lista para EASY
+    }
   }
-  return wordsQueue.shift();
+
+  const word = wordsQueue.shift();
+  lastWord = word;
+  return word;
 }
 
 function formatWordDisplay(word) {
@@ -167,18 +186,16 @@ function saveHighScore(averageTime, wordCount) {
 playButton.addEventListener("click", () => {
   wordsQueue = [];
   refillQueue();
-  
-  // Añadido para prevenir errores si no hay palabras
-  if (words.length === 0) { alert("¡Añade al menos una figura en el Gestor de Figuras!"); return; }
+  lastWord = ""; // Reset de última palabra
 
   currentWord = getNextWord();
   wordElement.innerHTML = formatWordDisplay(currentWord);
-  
+
   startTime = Date.now();
   wordCount = 0;
   totalTime = 0;
   counterElement.textContent = `Palabras: ${wordCount}`;
-  
+
   playButton.style.display = "none";
   nextButton.disabled = false;
   nextButton.style.display = "inline-block";
@@ -196,10 +213,25 @@ nextButton.addEventListener("click", () => {
   totalTime += (endTime - startTime) / 1000;
   wordCount++;
   counterElement.textContent = `Palabras: ${wordCount}`;
-  
+
   currentWord = getNextWord();
+
+  if (currentWord === null) {
+    // Fin de lista en EASY
+    stopTimer();
+    nextButton.disabled = true;
+    wordElement.innerHTML = `<span class="main-text" style="color:var(--accent);">🏆 ¡LISTA COMPLETADA!</span><br><span class="parenthesis">Has practicado todo el repertorio</span>`;
+
+    // Guardar resultados automáticamente al terminar
+    if (wordCount > 0) {
+      const averageTime = totalTime / wordCount;
+      saveHighScore(averageTime, wordCount);
+      resultElement.textContent = `Promedio: ${averageTime.toFixed(2)}s. ¡Excelente repaso!`;
+    }
+    return;
+  }
+
   wordElement.innerHTML = formatWordDisplay(currentWord);
-  
   startTime = Date.now();
 });
 
@@ -222,9 +254,9 @@ finishButton.addEventListener("click", () => {
 // =======================
 let touchStartX = 0;
 
-document.addEventListener("touchstart", e => { 
-  touchStartX = e.changedTouches[0].screenX; 
-}, {passive: true});
+document.addEventListener("touchstart", e => {
+  touchStartX = e.changedTouches[0].screenX;
+}, { passive: true });
 
 document.addEventListener("touchend", e => {
   // Bloqueo: No permite swipe si no se ha dado a PLAY
@@ -237,7 +269,7 @@ document.addEventListener("touchend", e => {
     nextButton.click();
     if (window.navigator.vibrate) window.navigator.vibrate(10);
   }
-}, {passive: true})
+}, { passive: true })
 
 // =======================
 // GESTOR DE FIGURAS
@@ -308,5 +340,3 @@ function renderCustomWords() {
     customWordsList.appendChild(li);
   });
 }
-
-
