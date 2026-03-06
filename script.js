@@ -78,7 +78,12 @@ function updateWordsList() {
     gameMode = ["easy", "hard", "family"][i];
     updateLevelButtons();
     document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
+    resetBoard();
   });
+});
+
+familySelect.addEventListener("change", () => {
+  if (gameMode === "family") resetBoard();
 });
 
 function updateLevelButtons() {
@@ -86,6 +91,20 @@ function updateLevelButtons() {
   if (gameMode === "easy") easyButton.classList.add("active");
   if (gameMode === "hard") hardButton.classList.add("active");
   if (gameMode === "family") familyButton.classList.add("active");
+}
+
+function resetBoard() {
+  stopTimer();
+  wordElement.innerHTML = `<span class="main-text">Presiona Play para comenzar</span>`;
+  counterElement.textContent = `Palabras: 0`;
+  timerElement.textContent = `Tiempo: 0.0s`;
+  resultElement.textContent = ``;
+
+  playButton.style.display = "inline-block";
+  nextButton.style.display = "none";
+  finishButton.style.display = "none";
+  nextButton.disabled = false;
+  finishButton.disabled = false;
 }
 
 // =======================
