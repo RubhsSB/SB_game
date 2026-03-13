@@ -23,6 +23,7 @@
             <button id="easy" class="active">E</button>
             <button id="hard">H</button>
             <button id="family">F</button>
+            <button id="timer-mode">T</button>
         </div>
     </div>
 
@@ -61,6 +62,7 @@
             
             <h3 style="font-size:16px;">Mis Figuras Personalizadas</h3>
             <ul id="custom-words-list">
+                <!-- Custom words will be listed here -->
             </ul>
             <p style="font-size: 11px; color: #888; margin-top: 15px; line-height:1.2;">La base de figuras original carga sola y no se puede borrar desde aquí. Si actualizas la lista en GitHub, se verán los cambios aquí.</p>
         </div>
@@ -68,6 +70,7 @@
 
     <script src="script.js"></script>
     <script>
+        // Registro del Service Worker para funcionamiento offline
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('sw.js')
@@ -78,3 +81,4 @@
     </script>
 </body>
 </html>
+
