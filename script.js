@@ -29,7 +29,22 @@ const timerElement = document.getElementById("timer");
 const easyButton = document.getElementById("easy");
 const hardButton = document.getElementById("hard");
 const familyButton = document.getElementById("family");
+const timerModeButton = document.getElementById("timer-mode");
 const familySelect = document.getElementById("family-selector");
+
+let autoNextInterval;
+function startAutoNext() {
+  stopAutoNext();
+  autoNextInterval = setInterval(() => {
+    if (!nextButton.disabled && playButton.style.display === "none") {
+      nextButton.click();
+    }
+  }, 4000);
+}
+
+function stopAutoNext() {
+  clearInterval(autoNextInterval);
+}
 
 // =======================
 // INICIALIZACIÓN
@@ -73,9 +88,9 @@ function updateWordsList() {
   words = [...new Set([...baseWords, ...customWords])];
 }
 
-[easyButton, hardButton, familyButton].forEach((btn, i) => {
+[easyButton, hardButton, familyButton, timerModeButton].forEach((btn, i) => {
   btn.addEventListener("click", () => {
-    gameMode = ["easy", "hard", "family"][i];
+    gameMode = ["easy", "hard", "family", "timer"][i];
     updateLevelButtons();
     document.getElementById("family-selector-container").style.display = gameMode === "family" ? "block" : "none";
     resetBoard();
@@ -87,14 +102,16 @@ familySelect.addEventListener("change", () => {
 });
 
 function updateLevelButtons() {
-  [easyButton, hardButton, familyButton].forEach(btn => btn.classList.remove("active"));
+  [easyButton, hardButton, familyButton, timerModeButton].forEach(btn => btn.classList.remove("active"));
   if (gameMode === "easy") easyButton.classList.add("active");
   if (gameMode === "hard") hardButton.classList.add("active");
   if (gameMode === "family") familyButton.classList.add("active");
+  if (gameMode === "timer") timerModeButton.classList.add("active");
 }
 
 function resetBoard() {
   stopTimer();
+  stopAutoNext();
   wordElement.innerHTML = `<span class="main-text">Presiona Play para comenzar</span>`;
   counterElement.textContent = `Palabras: 0`;
   timerElement.textContent = `Tiempo: 0.0s`;
@@ -119,9 +136,9 @@ function shuffle(array) {
 }
 
 function refillQueue() {
-  if (gameMode === "easy" || gameMode === "family") {
+  if (gameMode === "easy" || gameMode === "family" || gameMode === "timer") {
     let source = [];
-    if (gameMode === "easy") {
+    if (gameMode === "easy" || gameMode === "timer") {
       source = [...words];
     } else {
       const prefix = familySelect.value;
@@ -241,6 +258,9 @@ playButton.addEventListener("click", () => {
   finishButton.style.display = "inline-block";
 
   startTimer();
+  if (gameMode === "timer") {
+    startAutoNext();
+  }
 });
 
 nextButton.addEventListener("click", () => {
@@ -255,6 +275,7 @@ nextButton.addEventListener("click", () => {
 
   if (currentWord === null) {
     stopTimer();
+    stopAutoNext();
     nextButton.disabled = true;
     wordElement.innerHTML = `<span class="main-text" style="color:var(--accent);">🏆 ¡LISTA COMPLETADA!</span><br><span class="parenthesis">Has practicado todo el repertorio</span>`;
 
@@ -271,6 +292,9 @@ nextButton.addEventListener("click", () => {
     updateProgressDisplay(wordCount + 1);
   }
   startTime = Date.now();
+  if (gameMode === "timer" && currentWord !== null) {
+    startAutoNext();
+  }
 });
 
 let totalInQueue = 0;
@@ -284,6 +308,7 @@ function updateProgressDisplay(current) {
 
 finishButton.addEventListener("click", () => {
   stopTimer();
+  stopAutoNext();
   if (wordCount > 0) {
     const averageTime = totalTime / wordCount;
     resultElement.textContent = `Promedio: ${averageTime.toFixed(2)}s por palabra.`;
