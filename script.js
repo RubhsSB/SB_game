@@ -6,7 +6,7 @@ let baseWords = [];
 let customWords = [];
 let words = []; // Combinación de base y custom
 
-const familyPrefixes = ["JHERSY", "CyC", "K_ELDE", "EyG", "CyT", "JyE", "DyY", "YyE", "VyA", "Stefy"];
+const familyPrefixes = ["JHERSY", "CyC", "EyG", "CyT", "JyE", "DyY", "CyG", "VyA", "Argeni", "Stefy"];
 
 // =======================
 // VARIABLES DE JUEGO
