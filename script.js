@@ -1,23 +1,13 @@
 // ======================================================
-// LISTAS DE PALABRAS Y DATOS
+// DATOS
 // ======================================================
 
 let baseWords = [];
 let customWords = [];
-let words = []; // Combinación de base + personalizadas
+let words = [];
 
-const familyPrefixes = [
-  "JHERSY",
-  "CyC",
-  "EyG",
-  "CyT",
-  "JyE",
-  "DyY",
-  "CyG",
-  "VyA",
-  "Argeni",
-  "Stefy"
-];
+// Familias detectadas automáticamente
+let detectedFamilies = [];
 
 
 // ======================================================
@@ -42,227 +32,164 @@ let totalInQueue = 0;
 
 
 // ======================================================
-// ELEMENTOS DE LA PÁGINA
+// ELEMENTOS
 // ======================================================
 
-const wordElement =
-  document.getElementById("word");
+const wordElement = document.getElementById("word");
 
-const playButton =
-  document.getElementById("play");
+const playButton = document.getElementById("play");
+const nextButton = document.getElementById("next");
+const finishButton = document.getElementById("finish");
 
-const nextButton =
-  document.getElementById("next");
+const resultElement = document.getElementById("result");
+const counterElement = document.getElementById("counter");
+const timerElement = document.getElementById("timer");
 
-const finishButton =
-  document.getElementById("finish");
+const easyButton = document.getElementById("easy");
+const hardButton = document.getElementById("hard");
+const familyButton = document.getElementById("family");
+const timerModeButton = document.getElementById("timer-mode");
 
-const resultElement =
-  document.getElementById("result");
-
-const counterElement =
-  document.getElementById("counter");
-
-const timerElement =
-  document.getElementById("timer");
-
-
-const easyButton =
-  document.getElementById("easy");
-
-const hardButton =
-  document.getElementById("hard");
-
-const familyButton =
-  document.getElementById("family");
-
-const timerModeButton =
-  document.getElementById("timer-mode");
-
-
-const familySelect =
-  document.getElementById("family-selector");
+const familySelect = document.getElementById("family-selector");
 
 const familySelectorContainer =
-  document.getElementById(
-    "family-selector-container"
-  );
-
-
-// NUEVOS ELEMENTOS DE PROGRESO
+  document.getElementById("family-selector-container");
 
 const progressContainer =
-  document.getElementById(
-    "progress-container"
-  );
+  document.getElementById("progress-container");
 
 const progressText =
-  document.getElementById(
-    "progress-text"
-  );
+  document.getElementById("progress-text");
 
 const progressFill =
-  document.getElementById(
-    "progress-fill"
-  );
+  document.getElementById("progress-fill");
 
 
 // ======================================================
-// TIMER AUTOMÁTICO - MODO T
+// GESTOR
 // ======================================================
 
-function startAutoNext() {
+const managerModal =
+  document.getElementById("manager-modal");
 
-  stopAutoNext();
+const openManagerBtn =
+  document.getElementById("open-manager-btn");
 
-  autoNextInterval =
-    setInterval(() => {
+const closeManagerBtn =
+  document.getElementById("close-manager-btn");
 
-      if (
-        !nextButton.disabled &&
-        playButton.style.display === "none"
-      ) {
+const addWordBtn =
+  document.getElementById("add-word-btn");
 
-        nextButton.click();
+const newWordInput =
+  document.getElementById("new-word-input");
 
-      }
-
-    }, 4000);
-
-}
-
-
-function stopAutoNext() {
-
-  clearInterval(autoNextInterval);
-
-}
+const customWordsList =
+  document.getElementById("custom-words-list");
 
 
 // ======================================================
 // INICIALIZACIÓN
 // ======================================================
 
-window.addEventListener(
-  "load",
-  async () => {
+window.addEventListener("load", async () => {
 
-    gameMode = "easy";
+  gameMode = "easy";
 
 
-    // ------------------------------------------
-    // FIGURAS PERSONALIZADAS
-    // ------------------------------------------
+  // -----------------------------
+  // CARGAR PERSONALIZADAS
+  // -----------------------------
 
-    const savedCustom =
-      localStorage.getItem(
-        "sbg_custom_words"
-      );
+  const savedCustom =
+    localStorage.getItem("sbg_custom_words");
 
-
-    if (savedCustom) {
-
-      try {
-
-        customWords =
-          JSON.parse(savedCustom);
-
-      }
-
-      catch (error) {
-
-        customWords = [];
-
-      }
-
-    }
-
-
-    // ------------------------------------------
-    // CARGAR words.json
-    // ------------------------------------------
+  if (savedCustom) {
 
     try {
 
-      const response =
-        await fetch("words.json");
+      customWords =
+        JSON.parse(savedCustom);
 
+    } catch (error) {
 
-      baseWords =
-        await response.json();
-
-    }
-
-    catch (error) {
-
-      console.error(
-        "Error cargando words.json",
-        error
-      );
-
-      baseWords = [];
+      customWords = [];
 
     }
-
-
-    // Combinar listas
-
-    updateWordsList();
-
-
-    // Gestor
-
-    renderCustomWords();
-
-
-    // ------------------------------------------
-    // FAMILIAS
-    // ------------------------------------------
-
-    familySelect.innerHTML = "";
-
-
-    familyPrefixes.forEach(
-      prefix => {
-
-        const option =
-          document.createElement(
-            "option"
-          );
-
-        option.value =
-          prefix;
-
-        option.textContent =
-          prefix;
-
-        familySelect.appendChild(
-          option
-        );
-
-      }
-    );
-
-
-    // Estado inicial
-
-    updateLevelButtons();
-
-    resetBoard();
 
   }
-);
+
+
+  // -----------------------------
+  // CARGAR WORDS.JSON
+  // -----------------------------
+
+  try {
+
+    const response =
+      await fetch("words.json");
+
+    if (!response.ok) {
+      throw new Error("No se pudo cargar words.json");
+    }
+
+    baseWords =
+      await response.json();
+
+  } catch (error) {
+
+    console.error(
+      "Error cargando words.json:",
+      error
+    );
+
+    baseWords = [];
+
+  }
+
+
+  // Combinar palabras
+
+  updateWordsList();
+
+
+  // Detectar familias
+
+  detectFamilies();
+
+
+  // Crear selector
+
+  populateFamilySelector();
+
+
+  // Gestor
+
+  renderCustomWords();
+
+
+  // Pantalla inicial
+
+  updateLevelButtons();
+
+  resetBoard();
+
+});
 
 
 // ======================================================
-// COMBINAR FIGURAS BASE + PERSONALIZADAS
+// COMBINAR BASE + PERSONALIZADAS
 // ======================================================
 
 function updateWordsList() {
 
   /*
-    Set evita duplicados exactos entre
-    words.json y las figuras personalizadas.
+    Elimina duplicados EXACTOS.
+
+    Por ejemplo, si:
+    YAKO (Sensual + MAMBO)
+
+    aparece dos veces, solo se utilizará una.
   */
 
   words = [
@@ -271,6 +198,567 @@ function updateWordsList() {
       ...customWords
     ])
   ];
+
+}
+
+
+// ======================================================
+// DETECTAR FAMILIAS AUTOMÁTICAMENTE
+// ======================================================
+
+function detectFamilies() {
+
+  const familiesMap = new Map();
+
+
+  words.forEach(word => {
+
+    const family =
+      extractFamily(word);
+
+    if (!family) return;
+
+
+    /*
+      Usamos minúsculas internamente para que:
+
+      JHERSY
+      Jhersy
+      jhersy
+
+      sean la misma familia.
+    */
+
+    const normalized =
+      family.toLowerCase();
+
+
+    /*
+      Conservamos la primera forma encontrada
+      para mostrarla en el selector.
+    */
+
+    if (!familiesMap.has(normalized)) {
+
+      familiesMap.set(
+        normalized,
+        family
+      );
+
+    }
+
+  });
+
+
+  detectedFamilies =
+    Array.from(
+      familiesMap.values()
+    );
+
+
+  // Orden alfabético
+
+  detectedFamilies.sort(
+    (a, b) =>
+      a.localeCompare(
+        b,
+        "es",
+        {
+          sensitivity: "base"
+        }
+      )
+  );
+
+}
+
+
+// ======================================================
+// EXTRAER FAMILIA DE UNA FIGURA
+// ======================================================
+
+function extractFamily(word) {
+
+  if (
+    typeof word !== "string"
+  ) {
+    return null;
+  }
+
+
+  const clean =
+    word.trim();
+
+
+  if (!clean) {
+    return null;
+  }
+
+
+  /*
+    CASO 1
+    ------
+
+    Nombre seguido de paréntesis.
+
+    Ejemplos:
+
+    JHERSY (Diagonal)
+    CyC (Chaca Chaca)
+    GABO (J&J Exorcista)
+    ARGENI (Preparar FOLLOW...)
+
+    Resultado:
+
+    JHERSY
+    CyC
+    GABO
+    ARGENI
+  */
+
+  const parenthesisMatch =
+    clean.match(
+      /^(.+?)\s*\(/
+    );
+
+
+  if (parenthesisMatch) {
+
+    const possibleFamily =
+      parenthesisMatch[1].trim();
+
+
+    /*
+      Evitamos considerar como familia
+      textos excesivamente largos.
+    */
+
+    if (
+      possibleFamily.length <= 25
+    ) {
+
+      return possibleFamily;
+
+    }
+
+  }
+
+
+  /*
+    CASO 2
+    ------
+
+    Nombre seguido de " - "
+
+    Ejemplos:
+
+    JHERSY - Intro
+    YAKO - Dominicana
+    MARIO - Intro
+
+    Resultado:
+
+    JHERSY
+    YAKO
+    MARIO
+  */
+
+  const dashMatch =
+    clean.match(
+      /^(.+?)\s+-\s+/
+    );
+
+
+  if (dashMatch) {
+
+    const possibleFamily =
+      dashMatch[1].trim();
+
+
+    if (
+      possibleFamily.length <= 25
+    ) {
+
+      return possibleFamily;
+
+    }
+
+  }
+
+
+  /*
+    CASO 3
+    ------
+
+    Figuras conocidas por otras palabras
+    de la misma familia.
+
+    Por ejemplo, si existe:
+
+    JHERSY (Diagonal)
+
+    entonces:
+
+    JHERSY Intro
+    JHERSY pasos
+
+    también deben pertenecer a JHERSY.
+
+    Para eso comprobamos familias que ya
+    podemos identificar claramente.
+  */
+
+  const knownFamilies =
+    getClearlyDetectedFamilies();
+
+
+  for (
+    const family of knownFamilies
+  ) {
+
+    if (
+      belongsToFamily(
+        clean,
+        family
+      )
+    ) {
+
+      return family;
+
+    }
+
+  }
+
+
+  /*
+    Si no podemos saber con seguridad
+    que el inicio es una familia,
+    NO inventamos una.
+
+    Así:
+
+    Daniel y Alma
+    MARCO ESPEJO
+    SALIDA después media DIAGONAL
+    TITANIC
+    SUAVE
+
+    continúan siendo figuras normales.
+  */
+
+  return null;
+
+}
+
+
+// ======================================================
+// OBTENER FAMILIAS CLARAMENTE IDENTIFICABLES
+// ======================================================
+
+function getClearlyDetectedFamilies() {
+
+  const map =
+    new Map();
+
+
+  words.forEach(word => {
+
+    if (
+      typeof word !== "string"
+    ) {
+      return;
+    }
+
+
+    const clean =
+      word.trim();
+
+
+    // -------------------------
+    // POR PARÉNTESIS
+    // -------------------------
+
+    const parenthesisMatch =
+      clean.match(
+        /^(.+?)\s*\(/
+      );
+
+
+    if (parenthesisMatch) {
+
+      const family =
+        parenthesisMatch[1].trim();
+
+
+      if (
+        family.length <= 25
+      ) {
+
+        const normalized =
+          family.toLowerCase();
+
+
+        if (
+          !map.has(normalized)
+        ) {
+
+          map.set(
+            normalized,
+            family
+          );
+
+        }
+
+      }
+
+    }
+
+
+    // -------------------------
+    // POR GUION
+    // -------------------------
+
+    const dashMatch =
+      clean.match(
+        /^(.+?)\s+-\s+/
+      );
+
+
+    if (dashMatch) {
+
+      const family =
+        dashMatch[1].trim();
+
+
+      if (
+        family.length <= 25
+      ) {
+
+        const normalized =
+          family.toLowerCase();
+
+
+        if (
+          !map.has(normalized)
+        ) {
+
+          map.set(
+            normalized,
+            family
+          );
+
+        }
+
+      }
+
+    }
+
+  });
+
+
+  return Array.from(
+    map.values()
+  );
+
+}
+
+
+// ======================================================
+// COMPROBAR SI UNA FIGURA PERTENECE A UNA FAMILIA
+// ======================================================
+
+function belongsToFamily(
+  word,
+  family
+) {
+
+  if (
+    !word ||
+    !family
+  ) {
+    return false;
+  }
+
+
+  const normalizedWord =
+    word
+      .trim()
+      .toLowerCase();
+
+
+  const normalizedFamily =
+    family
+      .trim()
+      .toLowerCase();
+
+
+  /*
+    Tiene que comenzar exactamente
+    por el nombre de la familia.
+  */
+
+  if (
+    !normalizedWord.startsWith(
+      normalizedFamily
+    )
+  ) {
+
+    return false;
+
+  }
+
+
+  /*
+    Si fueran exactamente iguales:
+    también pertenece.
+  */
+
+  if (
+    normalizedWord ===
+    normalizedFamily
+  ) {
+
+    return true;
+
+  }
+
+
+  /*
+    Miramos qué viene justo después
+    del nombre.
+
+    Aceptamos:
+
+    espacio
+    (
+    -
+    :
+  */
+
+  const nextCharacter =
+    normalizedWord.charAt(
+      normalizedFamily.length
+    );
+
+
+  return (
+    nextCharacter === " " ||
+    nextCharacter === "(" ||
+    nextCharacter === "-" ||
+    nextCharacter === ":"
+  );
+
+}
+
+
+// ======================================================
+// CREAR SELECTOR DE FAMILIAS
+// ======================================================
+
+function populateFamilySelector() {
+
+  const previousSelection =
+    familySelect.value;
+
+
+  familySelect.innerHTML =
+    "";
+
+
+  detectedFamilies.forEach(
+    family => {
+
+      const option =
+        document.createElement(
+          "option"
+        );
+
+
+      option.value =
+        family;
+
+
+      /*
+        Añadimos el número de figuras
+        de esa familia.
+
+        Ejemplo:
+
+        JHERSY (42)
+        CyC (12)
+      */
+
+      const count =
+        words.filter(
+          word =>
+            belongsToFamily(
+              word,
+              family
+            )
+        ).length;
+
+
+      option.textContent =
+        `${family} (${count})`;
+
+
+      familySelect.appendChild(
+        option
+      );
+
+    }
+  );
+
+
+  /*
+    Intentamos mantener la selección
+    anterior si sigue existiendo.
+  */
+
+  if (
+    previousSelection &&
+    detectedFamilies.some(
+      family =>
+        family.toLowerCase() ===
+        previousSelection.toLowerCase()
+    )
+  ) {
+
+    familySelect.value =
+      detectedFamilies.find(
+        family =>
+          family.toLowerCase() ===
+          previousSelection.toLowerCase()
+      );
+
+  }
+
+}
+
+
+// ======================================================
+// OBTENER FIGURAS DE LA FAMILIA SELECCIONADA
+// ======================================================
+
+function getFamilyWords() {
+
+  const selectedFamily =
+    familySelect.value;
+
+
+  if (!selectedFamily) {
+
+    return [];
+
+  }
+
+
+  return words.filter(
+    word =>
+      belongsToFamily(
+        word,
+        selectedFamily
+      )
+  );
 
 }
 
@@ -286,7 +774,6 @@ function updateWordsList() {
   timerModeButton
 
 ].forEach(
-
   (button, index) => {
 
     button.addEventListener(
@@ -294,12 +781,13 @@ function updateWordsList() {
       () => {
 
         /*
-          No permitimos cambiar de modo
-          mientras se está jugando.
+          No cambiamos de modo
+          durante una partida.
         */
 
         if (
-          playButton.style.display === "none"
+          playButton.style.display ===
+          "none"
         ) {
 
           return;
@@ -312,7 +800,6 @@ function updateWordsList() {
           "hard",
           "family",
           "timer"
-
         ][index];
 
 
@@ -349,7 +836,7 @@ familySelect.addEventListener(
 
 
 // ======================================================
-// ACTUALIZAR BOTONES DE NIVEL
+// BOTONES DE NIVEL
 // ======================================================
 
 function updateLevelButtons() {
@@ -369,42 +856,24 @@ function updateLevelButtons() {
 
 
   if (gameMode === "easy") {
-
-    easyButton.classList.add(
-      "active"
-    );
-
+    easyButton.classList.add("active");
   }
 
 
   if (gameMode === "hard") {
-
-    hardButton.classList.add(
-      "active"
-    );
-
+    hardButton.classList.add("active");
   }
 
 
   if (gameMode === "family") {
-
-    familyButton.classList.add(
-      "active"
-    );
-
+    familyButton.classList.add("active");
   }
 
 
   if (gameMode === "timer") {
-
-    timerModeButton.classList.add(
-      "active"
-    );
-
+    timerModeButton.classList.add("active");
   }
 
-
-  // Selector de familia
 
   familySelectorContainer.style.display =
     gameMode === "family"
@@ -412,39 +881,15 @@ function updateLevelButtons() {
       : "none";
 
 
-  // ------------------------------------------
-  // BARRA DE PROGRESO
-  // ------------------------------------------
-
   /*
-    EASY:
-    mostramos progreso real hasta terminar.
-
-    FAMILY:
-    mostramos progreso de la vuelta actual.
-
-    TIMER:
-    mostramos progreso porque recorre
-    la lista completa.
-
-    HARD:
-    no hay final de lista, así que ocultamos
-    la barra.
+    HARD es infinito/aleatorio,
+    por eso no mostramos progreso.
   */
 
-  if (gameMode === "hard") {
-
-    progressContainer.style.display =
-      "none";
-
-  }
-
-  else {
-
-    progressContainer.style.display =
-      "block";
-
-  }
+  progressContainer.style.display =
+    gameMode === "hard"
+      ? "none"
+      : "block";
 
 }
 
@@ -456,20 +901,16 @@ function updateLevelButtons() {
 function resetBoard() {
 
   stopTimer();
-
   stopAutoNext();
 
 
   wordsQueue = [];
 
   currentWord = "";
-
   lastWord = "";
 
   wordCount = 0;
-
   totalTime = 0;
-
   totalInQueue = 0;
 
 
@@ -503,6 +944,7 @@ function resetBoard() {
   playButton.textContent =
     "▶ PLAY";
 
+
   playButton.style.display =
     "flex";
 
@@ -529,7 +971,7 @@ function resetBoard() {
 
 
 // ======================================================
-// RESETEAR PROGRESO
+// PROGRESO INICIAL
 // ======================================================
 
 function resetProgressDisplay() {
@@ -545,22 +987,30 @@ function resetProgressDisplay() {
 
   }
 
-  else if (gameMode === "family") {
+
+  else if (
+    gameMode === "family"
+  ) {
 
     const familyWords =
       getFamilyWords();
+
 
     progressText.textContent =
       `0 / ${familyWords.length}`;
 
   }
 
-  else if (gameMode === "timer") {
+
+  else if (
+    gameMode === "timer"
+  ) {
 
     progressText.textContent =
       `0 / ${words.length}`;
 
   }
+
 
   else {
 
@@ -573,32 +1023,7 @@ function resetProgressDisplay() {
 
 
 // ======================================================
-// OBTENER PALABRAS DE LA FAMILIA ACTUAL
-// ======================================================
-
-function getFamilyWords() {
-
-  const prefix =
-    familySelect.value;
-
-
-  if (!prefix) {
-
-    return [];
-
-  }
-
-
-  return words.filter(
-    word =>
-      word.startsWith(prefix)
-  );
-
-}
-
-
-// ======================================================
-// MEZCLAR ARRAY
+// MEZCLAR
 // ======================================================
 
 function shuffle(array) {
@@ -611,7 +1036,8 @@ function shuffle(array) {
 
     const j =
       Math.floor(
-        Math.random() * (i + 1)
+        Math.random() *
+        (i + 1)
       );
 
 
@@ -640,31 +1066,20 @@ function refillQueue() {
   let source = [];
 
 
-  // EASY
+  if (
+    gameMode === "easy" ||
+    gameMode === "timer"
+  ) {
 
-  if (gameMode === "easy") {
-
-    source = [
-      ...words
-    ];
-
-  }
-
-
-  // TIMER
-
-  else if (gameMode === "timer") {
-
-    source = [
-      ...words
-    ];
+    source =
+      [...words];
 
   }
 
 
-  // FAMILY
-
-  else if (gameMode === "family") {
+  else if (
+    gameMode === "family"
+  ) {
 
     source =
       getFamilyWords();
@@ -673,34 +1088,30 @@ function refillQueue() {
 
 
   wordsQueue =
-    shuffle([
-      ...source
-    ]);
+    shuffle(
+      [...source]
+    );
 
 }
 
 
 // ======================================================
-// OBTENER SIGUIENTE FIGURA
+// SIGUIENTE FIGURA
 // ======================================================
 
 function getNextWord() {
 
-  // ------------------------------------------
+  // ------------------------------
   // HARD
-  // ------------------------------------------
+  // ------------------------------
 
-  /*
-    Aleatorio.
+  if (
+    gameMode === "hard"
+  ) {
 
-    Conservamos tu comportamiento actual:
-    intenta no repetir inmediatamente
-    la misma figura.
-  */
-
-  if (gameMode === "hard") {
-
-    if (words.length === 0) {
+    if (
+      words.length === 0
+    ) {
 
       return null;
 
@@ -711,6 +1122,11 @@ function getNextWord() {
 
     let attempts = 0;
 
+
+    /*
+      Aleatorio pero evitando repetir
+      inmediatamente la anterior.
+    */
 
     do {
 
@@ -743,15 +1159,14 @@ function getNextWord() {
   }
 
 
-  // ------------------------------------------
+  // ------------------------------
   // EASY
-  // ------------------------------------------
+  // ------------------------------
 
   /*
-    Cuando se agota la cola:
-    TERMINA.
+    EASY termina al agotarse.
 
-    No vuelve a empezar.
+    No vuelve a rellenar.
   */
 
   if (
@@ -764,14 +1179,9 @@ function getNextWord() {
   }
 
 
-  // ------------------------------------------
+  // ------------------------------
   // TIMER
-  // ------------------------------------------
-
-  /*
-    Timer también termina cuando ha
-    recorrido toda la lista.
-  */
+  // ------------------------------
 
   if (
     gameMode === "timer" &&
@@ -783,15 +1193,13 @@ function getNextWord() {
   }
 
 
-  // ------------------------------------------
+  // ------------------------------
   // FAMILY
-  // ------------------------------------------
+  // ------------------------------
 
   /*
-    Family se mantiene como estaba.
-
-    Cuando se acaba la familia,
-    vuelve a mezclarla.
+    Familia mantiene el comportamiento
+    de volver a mezclar al terminar.
   */
 
   if (
@@ -827,65 +1235,45 @@ function getNextWord() {
 
 
 // ======================================================
-// FORMATO VISUAL DE LA FIGURA
+// FORMATO VISUAL
 // ======================================================
 
 function formatWordDisplay(word) {
 
   /*
-    Ejemplo:
+    CASO:
 
-    JHERSY (Giro Follow en 5)
+    JHERSY (Diagonal)
 
-    Separamos:
+    Se muestra:
 
     JHERSY
-    Giro Follow en 5
+    Diagonal
   */
 
-  const match =
+  const parenthesisMatch =
     word.match(
-      /^(.*?)\s*(\([^)]+\))?$/
+      /^(.*?)\s*\((.*)\)\s*$/
     );
 
 
-  const main =
-    match[1].trim();
+  if (parenthesisMatch) {
+
+    const main =
+      parenthesisMatch[1].trim();
 
 
-  let explanation =
-    match[2] || "";
+    const explanation =
+      parenthesisMatch[2].trim();
 
-
-  // Quitar paréntesis visualmente
-
-  if (explanation) {
-
-    explanation =
-      explanation.substring(
-        1,
-        explanation.length - 1
-      );
-
-  }
-
-
-  /*
-    Si hay explicación:
-
-    nombre/prefijo pequeño rojo
-    explicación grande blanca
-  */
-
-  if (explanation) {
 
     return `
       <span class="main-text">
-        ${main}
+        ${escapeHTML(main)}
       </span>
 
       <span class="parenthesis">
-        ${explanation}
+        ${escapeHTML(explanation)}
       </span>
     `;
 
@@ -893,15 +1281,166 @@ function formatWordDisplay(word) {
 
 
   /*
-    Si no existe explicación,
-    mostramos la figura como texto principal.
+    CASO:
+
+    JHERSY - Intro
+
+    Se muestra:
+
+    JHERSY
+    Intro
+  */
+
+  const dashMatch =
+    word.match(
+      /^(.+?)\s+-\s+(.+)$/
+    );
+
+
+  if (dashMatch) {
+
+    const main =
+      dashMatch[1].trim();
+
+
+    const explanation =
+      dashMatch[2].trim();
+
+
+    return `
+      <span class="main-text">
+        ${escapeHTML(main)}
+      </span>
+
+      <span class="parenthesis">
+        ${escapeHTML(explanation)}
+      </span>
+    `;
+
+  }
+
+
+  /*
+    CASO:
+
+    JHERSY Intro
+    JHERSY pasos
+
+    Si sabemos que JHERSY es una familia,
+    también lo separamos.
+  */
+
+  const family =
+    findFamilyForWord(word);
+
+
+  if (family) {
+
+    const rest =
+      word
+        .substring(
+          family.length
+        )
+        .trim();
+
+
+    if (rest) {
+
+      return `
+        <span class="main-text">
+          ${escapeHTML(family)}
+        </span>
+
+        <span class="parenthesis">
+          ${escapeHTML(rest)}
+        </span>
+      `;
+
+    }
+
+  }
+
+
+  /*
+    Una figura sin familia:
+
+    TITANIC
+    SUAVE
+    ENGAÑO
+    etc.
+
+    Se muestra grande.
   */
 
   return `
     <span class="parenthesis">
-      ${main}
+      ${escapeHTML(word)}
     </span>
   `;
+
+}
+
+
+// ======================================================
+// ENCONTRAR FAMILIA DE UNA FIGURA
+// ======================================================
+
+function findFamilyForWord(word) {
+
+  /*
+    Ordenamos de mayor a menor longitud.
+
+    Esto evita problemas si algún día
+    tenemos familias parecidas.
+  */
+
+  const sortedFamilies =
+    [...detectedFamilies]
+      .sort(
+        (a, b) =>
+          b.length -
+          a.length
+      );
+
+
+  for (
+    const family of sortedFamilies
+  ) {
+
+    if (
+      belongsToFamily(
+        word,
+        family
+      )
+    ) {
+
+      return family;
+
+    }
+
+  }
+
+
+  return null;
+
+}
+
+
+// ======================================================
+// ESCAPAR HTML
+// ======================================================
+
+function escapeHTML(text) {
+
+  const div =
+    document.createElement("div");
+
+
+  div.textContent =
+    text;
+
+
+  return div.innerHTML;
 
 }
 
@@ -940,8 +1479,6 @@ function startTimer() {
         );
 
 
-        // VERDE
-
         if (
           timeInSeconds < 2
         ) {
@@ -952,8 +1489,6 @@ function startTimer() {
 
         }
 
-
-        // AMARILLO
 
         else if (
           timeInSeconds < 4
@@ -966,8 +1501,6 @@ function startTimer() {
         }
 
 
-        // ROJO
-
         else if (
           timeInSeconds < 8
         ) {
@@ -978,8 +1511,6 @@ function startTimer() {
 
         }
 
-
-        // ROJO PARPADEANDO
 
         else {
 
@@ -1020,23 +1551,52 @@ function stopTimer() {
 
 
 // ======================================================
+// TIMER AUTOMÁTICO
+// ======================================================
+
+function startAutoNext() {
+
+  stopAutoNext();
+
+
+  autoNextInterval =
+    setInterval(
+      () => {
+
+        if (
+          !nextButton.disabled &&
+          playButton.style.display === "none"
+        ) {
+
+          nextButton.click();
+
+        }
+
+      },
+
+      4000
+    );
+
+}
+
+
+function stopAutoNext() {
+
+  clearInterval(
+    autoNextInterval
+  );
+
+}
+
+
+// ======================================================
 // ACTUALIZAR PROGRESO
 // ======================================================
 
-function updateProgressDisplay(
-  current
-) {
+function updateProgressDisplay(current) {
 
   if (
-    gameMode === "hard"
-  ) {
-
-    return;
-
-  }
-
-
-  if (
+    gameMode === "hard" ||
     totalInQueue <= 0
   ) {
 
@@ -1044,11 +1604,6 @@ function updateProgressDisplay(
 
   }
 
-
-  /*
-    Evitamos superar visualmente
-    el total.
-  */
 
   const visibleCurrent =
     Math.min(
@@ -1090,20 +1645,13 @@ function saveHighScore(
 
   let scores =
     JSON.parse(
-      localStorage.getItem(
-        key
-      )
+      localStorage.getItem(key)
     ) || [];
 
 
   scores.push({
-
-    averageTime:
-      averageTime,
-
-    wordCount:
-      numberOfWords
-
+    averageTime: averageTime,
+    wordCount: numberOfWords
   });
 
 
@@ -1115,16 +1663,10 @@ function saveHighScore(
 
 
   localStorage.setItem(
-
     key,
-
     JSON.stringify(
-      scores.slice(
-        0,
-        10
-      )
+      scores.slice(0, 10)
     )
-
   );
 
 }
@@ -1143,7 +1685,7 @@ playButton.addEventListener(
     ) {
 
       alert(
-        "No hay figuras cargadas todavía."
+        "No hay figuras cargadas."
       );
 
       return;
@@ -1151,10 +1693,7 @@ playButton.addEventListener(
     }
 
 
-    // Limpiar estado anterior
-
     stopTimer();
-
     stopAutoNext();
 
 
@@ -1163,24 +1702,19 @@ playButton.addEventListener(
     lastWord = "";
 
     wordCount = 0;
-
     totalTime = 0;
 
     resultElement.textContent =
       "";
 
-
     counterElement.textContent =
       "0";
-
 
     timerElement.textContent =
       "⏱ 0.0 s";
 
 
-    // ------------------------------------------
-    // CREAR COLA
-    // ------------------------------------------
+    // Crear cola
 
     if (
       gameMode !== "hard"
@@ -1191,10 +1725,7 @@ playButton.addEventListener(
     }
 
 
-    /*
-      Guardamos el total de la partida
-      para la barra de progreso.
-    */
+    // Total
 
     if (
       gameMode === "hard"
@@ -1212,9 +1743,7 @@ playButton.addEventListener(
     }
 
 
-    // ------------------------------------------
-    // PRIMERA FIGURA
-    // ------------------------------------------
+    // Primera palabra
 
     currentWord =
       getNextWord();
@@ -1237,14 +1766,6 @@ playButton.addEventListener(
       );
 
 
-    /*
-      Al aparecer la primera figura,
-      mostramos 1 / total.
-
-      Esto representa la figura que
-      estás viendo en pantalla.
-    */
-
     if (
       gameMode !== "hard"
     ) {
@@ -1253,10 +1774,6 @@ playButton.addEventListener(
 
     }
 
-
-    // ------------------------------------------
-    // BOTONES
-    // ------------------------------------------
 
     playButton.style.display =
       "none";
@@ -1276,18 +1793,12 @@ playButton.addEventListener(
       "flex";
 
 
-    // ------------------------------------------
-    // TIEMPO
-    // ------------------------------------------
-
     startTime =
       Date.now();
 
 
     startTimer();
 
-
-    // Timer automático
 
     if (
       gameMode === "timer"
@@ -1319,10 +1830,6 @@ nextButton.addEventListener(
     }
 
 
-    // ------------------------------------------
-    // GUARDAR TIEMPO DE FIGURA ACTUAL
-    // ------------------------------------------
-
     const endTime =
       Date.now();
 
@@ -1341,17 +1848,11 @@ nextButton.addEventListener(
       wordCount;
 
 
-    // ------------------------------------------
-    // PEDIR SIGUIENTE
-    // ------------------------------------------
-
     currentWord =
       getNextWord();
 
 
-    // ------------------------------------------
-    // LISTA COMPLETADA
-    // ------------------------------------------
+    // Lista completada
 
     if (
       currentWord === null
@@ -1363,10 +1864,6 @@ nextButton.addEventListener(
 
     }
 
-
-    // ------------------------------------------
-    // MOSTRAR SIGUIENTE
-    // ------------------------------------------
 
     wordElement.innerHTML =
       formatWordDisplay(
@@ -1389,11 +1886,6 @@ nextButton.addEventListener(
       Date.now();
 
 
-    /*
-      Reiniciamos el auto-next
-      en modo Timer.
-    */
-
     if (
       gameMode === "timer"
     ) {
@@ -1413,15 +1905,12 @@ nextButton.addEventListener(
 function completeList() {
 
   stopTimer();
-
   stopAutoNext();
 
 
   nextButton.disabled =
     true;
 
-
-  // Barra al 100 %
 
   if (
     gameMode !== "hard" &&
@@ -1431,15 +1920,12 @@ function completeList() {
     progressText.textContent =
       `${totalInQueue} / ${totalInQueue}`;
 
+
     progressFill.style.width =
       "100%";
 
   }
 
-
-  // ------------------------------------------
-  // PROMEDIO
-  // ------------------------------------------
 
   let averageTime = 0;
 
@@ -1461,14 +1947,10 @@ function completeList() {
   }
 
 
-  // ------------------------------------------
-  // PANTALLA FINAL
-  // ------------------------------------------
-
   wordElement.innerHTML = `
 
     <span class="main-text">
-      🏆 COMPLETADO
+      COMPLETADO
     </span>
 
     <span class="parenthesis">
@@ -1489,10 +1971,6 @@ function completeList() {
   timerElement.textContent =
     "✓ COMPLETADO";
 
-
-  // ------------------------------------------
-  // BOTONES
-  // ------------------------------------------
 
   playButton.textContent =
     "↻ JUGAR OTRA VEZ";
@@ -1521,7 +1999,6 @@ finishButton.addEventListener(
   () => {
 
     stopTimer();
-
     stopAutoNext();
 
 
@@ -1579,42 +2056,32 @@ finishButton.addEventListener(
 
 
 // ======================================================
-// SWIPE IZQUIERDA / DERECHA
+// SWIPE
 // ======================================================
 
 let touchStartX = 0;
 
 
 document.addEventListener(
-
   "touchstart",
 
   event => {
 
     touchStartX =
-      event
-        .changedTouches[0]
-        .screenX;
+      event.changedTouches[0].screenX;
 
   },
 
   {
     passive: true
   }
-
 );
 
 
 document.addEventListener(
-
   "touchend",
 
   event => {
-
-    /*
-      No hacemos nada si
-      no hay partida.
-    */
 
     if (
       playButton.style.display !==
@@ -1627,20 +2094,13 @@ document.addEventListener(
 
 
     const touchEndX =
-      event
-        .changedTouches[0]
-        .screenX;
+      event.changedTouches[0].screenX;
 
 
     const distance =
       touchEndX -
       touchStartX;
 
-
-    /*
-      Swipe en cualquiera
-      de los dos sentidos.
-    */
 
     if (
       Math.abs(distance) > 50 &&
@@ -1649,8 +2109,6 @@ document.addEventListener(
 
       nextButton.click();
 
-
-      // Pequeña vibración
 
       if (
         window.navigator.vibrate
@@ -1669,47 +2127,11 @@ document.addEventListener(
   {
     passive: true
   }
-
 );
 
 
 // ======================================================
-// GESTOR DE FIGURAS
-// ======================================================
-
-const managerModal =
-  document.getElementById(
-    "manager-modal"
-  );
-
-const openManagerBtn =
-  document.getElementById(
-    "open-manager-btn"
-  );
-
-const closeManagerBtn =
-  document.getElementById(
-    "close-manager-btn"
-  );
-
-const addWordBtn =
-  document.getElementById(
-    "add-word-btn"
-  );
-
-const newWordInput =
-  document.getElementById(
-    "new-word-input"
-  );
-
-const customWordsList =
-  document.getElementById(
-    "custom-words-list"
-  );
-
-
-// ======================================================
-// ABRIR GESTOR
+// GESTOR - ABRIR
 // ======================================================
 
 if (openManagerBtn) {
@@ -1731,7 +2153,7 @@ if (openManagerBtn) {
 
 
 // ======================================================
-// CERRAR GESTOR
+// GESTOR - CERRAR
 // ======================================================
 
 if (closeManagerBtn) {
@@ -1748,8 +2170,6 @@ if (closeManagerBtn) {
 
 }
 
-
-// Cerrar tocando fuera
 
 window.addEventListener(
   "click",
@@ -1806,6 +2226,18 @@ if (addWordBtn) {
 
       updateWordsList();
 
+
+      /*
+        IMPORTANTE:
+
+        Si la nueva figura introduce una
+        familia nueva, aparecerá automáticamente.
+      */
+
+      detectFamilies();
+
+      populateFamilySelector();
+
       renderCustomWords();
 
       resetProgressDisplay();
@@ -1816,7 +2248,7 @@ if (addWordBtn) {
 }
 
 
-// Permitir añadir con ENTER
+// ENTER PARA AÑADIR
 
 if (newWordInput) {
 
@@ -1839,12 +2271,10 @@ if (newWordInput) {
 
 
 // ======================================================
-// BORRAR FIGURA PERSONALIZADA
+// BORRAR PERSONALIZADA
 // ======================================================
 
-function deleteCustomWord(
-  index
-) {
+function deleteCustomWord(index) {
 
   customWords.splice(
     index,
@@ -1856,6 +2286,10 @@ function deleteCustomWord(
 
   updateWordsList();
 
+  detectFamilies();
+
+  populateFamilySelector();
+
   renderCustomWords();
 
   resetProgressDisplay();
@@ -1863,40 +2297,34 @@ function deleteCustomWord(
 }
 
 
-// Necesario para onclick
-
 window.deleteCustomWord =
   deleteCustomWord;
 
 
 // ======================================================
-// GUARDAR FIGURAS PERSONALIZADAS
+// GUARDAR PERSONALIZADAS
 // ======================================================
 
 function saveCustomWords() {
 
   localStorage.setItem(
-
     "sbg_custom_words",
 
     JSON.stringify(
       customWords
     )
-
   );
 
 }
 
 
 // ======================================================
-// MOSTRAR FIGURAS PERSONALIZADAS
+// MOSTRAR PERSONALIZADAS
 // ======================================================
 
 function renderCustomWords() {
 
-  if (
-    !customWordsList
-  ) {
+  if (!customWordsList) {
 
     return;
 
@@ -1907,25 +2335,31 @@ function renderCustomWords() {
     "";
 
 
-  // Ninguna figura
-
   if (
     customWords.length === 0
   ) {
 
-    customWordsList.innerHTML = `
+    const li =
+      document.createElement("li");
 
-      <li style="
-        color:#aaa;
-        justify-content:center;
-        background:transparent;
-      ">
 
-        No has añadido figuras personalizadas.
+    li.style.color =
+      "#aaa";
 
-      </li>
+    li.style.justifyContent =
+      "center";
 
-    `;
+    li.style.background =
+      "transparent";
+
+
+    li.textContent =
+      "No has añadido figuras personalizadas.";
+
+
+    customWordsList.appendChild(
+      li
+    );
 
 
     return;
@@ -1933,31 +2367,53 @@ function renderCustomWords() {
   }
 
 
-  // Mostrar figuras
-
   customWords.forEach(
     (word, index) => {
 
       const li =
-        document.createElement(
-          "li"
-        );
+        document.createElement("li");
 
 
-      li.innerHTML = `
+      const span =
+        document.createElement("span");
 
-        <span>
-          ${word}
-        </span>
 
-        <button
-          class="delete-word-btn"
-          onclick="deleteCustomWord(${index})"
-        >
-          ❌
-        </button>
+      span.textContent =
+        word;
 
-      `;
+
+      const deleteButton =
+        document.createElement("button");
+
+
+      deleteButton.className =
+        "delete-word-btn";
+
+
+      deleteButton.textContent =
+        "❌";
+
+
+      deleteButton.addEventListener(
+        "click",
+        () => {
+
+          deleteCustomWord(
+            index
+          );
+
+        }
+      );
+
+
+      li.appendChild(
+        span
+      );
+
+
+      li.appendChild(
+        deleteButton
+      );
 
 
       customWordsList.appendChild(
