@@ -1,96 +1,906 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Resultados</title>
-  <link rel="stylesheet" href="styles.css" />
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
+  <title>Resultados - Bachata Trainer</title>
+
+  <meta
+    name="theme-color"
+    content="#0a0808"
+  >
+
   <style>
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html {
+      background: #0a0808;
+    }
+
     body {
-      padding: 20px;
-      background-color: #f4f4f4;
-      font-family: Arial, sans-serif;
+      margin: 0;
+      min-height: 100dvh;
+
+      padding:
+        calc(25px + env(safe-area-inset-top))
+        16px
+        calc(30px + env(safe-area-inset-bottom));
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background:
+        radial-gradient(
+          circle at top,
+          #251519 0%,
+          #121011 42%,
+          #080708 100%
+        );
+
+      color: white;
+    }
+
+
+    /* ============================= */
+    /* CONTENEDOR */
+    /* ============================= */
+
+    .page {
+      width: 100%;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+
+    /* ============================= */
+    /* CABECERA */
+    /* ============================= */
+
+    .header {
       text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .trophy {
+      font-size: 42px;
+      margin-bottom: 8px;
     }
 
     h1 {
-      font-size: 32px;
-      color: #333;
-      margin-bottom: 30px;
+      margin: 0;
+
+      font-size:
+        clamp(27px, 7vw, 38px);
+
+      line-height: 1.1;
+
+      color: #ffffff;
+    }
+
+    .subtitle {
+      margin-top: 9px;
+
+      font-size: 14px;
+
+      color: #b8b2b4;
+    }
+
+
+    /* ============================= */
+    /* BLOQUE DE CADA MODO */
+    /* ============================= */
+
+    .score-section {
+      margin-bottom: 18px;
+
+      padding: 18px;
+
+      border-radius: 20px;
+
+      background:
+        linear-gradient(
+          145deg,
+          #272326,
+          #1d1a1c
+        );
+
+      border:
+        1px solid rgba(255,255,255,0.09);
+
+      box-shadow:
+        0 8px 25px rgba(0,0,0,0.25);
+    }
+
+
+    /* ============================= */
+    /* TÍTULO DEL MODO */
+    /* ============================= */
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      margin-bottom: 14px;
+    }
+
+    .mode-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 40px;
+      height: 40px;
+
+      flex-shrink: 0;
+
+      border-radius: 50%;
+
+      background: #ff3b5c;
+
+      color: white;
+
+      font-size: 17px;
+      font-weight: 800;
+
+      box-shadow:
+        0 4px 12px rgba(255,59,92,0.25);
     }
 
     h2 {
-      font-size: 24px;
-      color: #555;
-      margin-top: 30px;
+      margin: 0;
+
+      color: #ffffff;
+
+      font-size: 19px;
+      font-weight: 700;
     }
 
-    ol {
-      padding-left: 0;
-      list-style-position: inside;
+
+    /* ============================= */
+    /* LISTA */
+    /* ============================= */
+
+    .score-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
 
-    li {
-      margin-bottom: 6px;
-      font-size: 18px;
-      color: #222;
+
+    /* ============================= */
+    /* FILA DE PUNTUACIÓN */
+    /* ============================= */
+
+    .score-row {
+      display: grid;
+
+      grid-template-columns:
+        38px
+        1fr
+        auto;
+
+      align-items: center;
+
+      gap: 10px;
+
+      min-height: 62px;
+
+      padding: 10px 13px;
+
+      border-radius: 13px;
+
+      background: #343033;
+
+      border:
+        1px solid rgba(255,255,255,0.07);
     }
 
-    button {
-      margin-top: 40px;
-      font-size: 18px;
-      padding: 10px 20px;
-      cursor: pointer;
-      background-color: #28a745;
-      border: none;
+
+    /* ============================= */
+    /* POSICIÓN */
+    /* ============================= */
+
+    .position {
+      font-size: 17px;
+      font-weight: 800;
+
+      text-align: center;
+
+      color: #c9c5c7;
+    }
+
+    .position.medal {
+      font-size: 23px;
+    }
+
+
+    /* ============================= */
+    /* TIEMPO */
+    /* ============================= */
+
+    .score-main {
+      min-width: 0;
+    }
+
+    .average {
+      display: block;
+
+      color: #ffffff;
+
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .average-label {
+      display: block;
+
+      margin-top: 2px;
+
+      color: #aaa4a7;
+
+      font-size: 11px;
+      font-weight: 600;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.5px;
+    }
+
+
+    /* ============================= */
+    /* FIGURAS */
+    /* ============================= */
+
+    .words {
+      text-align: right;
+    }
+
+    .words-number {
+      display: block;
+
+      color: #ffffff;
+
+      font-size: 17px;
+      font-weight: 700;
+    }
+
+    .words-label {
+      display: block;
+
+      margin-top: 2px;
+
+      color: #aaa4a7;
+
+      font-size: 10px;
+
+      text-transform: uppercase;
+
+      letter-spacing: 0.4px;
+    }
+
+
+    /* ============================= */
+    /* TOP 3 */
+    /* ============================= */
+
+    .score-row.top-score {
+      background:
+        linear-gradient(
+          135deg,
+          #40383b,
+          #302b2d
+        );
+
+      border-color:
+        rgba(255,255,255,0.12);
+    }
+
+
+    /* ============================= */
+    /* SIN RESULTADOS */
+    /* ============================= */
+
+    .empty {
+      margin: 4px 0 0;
+
+      padding: 16px;
+
+      border-radius: 12px;
+
+      text-align: center;
+
+      background: #302c2e;
+
+      color: #bdb7ba;
+
+      font-size: 14px;
+    }
+
+
+    /* ============================= */
+    /* BOTÓN VOLVER */
+    /* ============================= */
+
+    .back-container {
+      margin-top: 28px;
+
+      text-align: center;
+    }
+
+    .back-button {
+      width: 100%;
+      max-width: 320px;
+
+      min-height: 52px;
+
+      border: 0;
+      border-radius: 15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #ff3b5c,
+          #e82e4d
+        );
+
       color: white;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
 
-    button:hover {
-      background-color: #218838;
-    }
-
-    p {
-      color: #777;
       font-size: 16px;
+      font-weight: 800;
+
+      cursor: pointer;
+
+      box-shadow:
+        0 7px 20px rgba(255,59,92,0.22);
     }
+
+    .back-button:active {
+      transform: scale(0.98);
+    }
+
+
+    /* ============================= */
+    /* MÓVILES PEQUEÑOS */
+    /* ============================= */
+
+    @media (max-width: 420px) {
+
+      body {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .score-section {
+        padding: 14px;
+      }
+
+      .score-row {
+        grid-template-columns:
+          34px
+          1fr
+          auto;
+
+        padding:
+          10px 10px;
+      }
+
+      .average {
+        font-size: 18px;
+      }
+
+      .words-number {
+        font-size: 16px;
+      }
+
+    }
+
   </style>
+
 </head>
+
+
 <body>
-  <h1>🏆 Top 10 Puntajes Más Altos</h1>
-  <div id="results-container"></div>
-  <a href="index.html"><button>Volver</button></a>
+
+  <main class="page">
+
+
+    <!-- CABECERA -->
+
+    <header class="header">
+
+      <div class="trophy">
+        🏆
+      </div>
+
+      <h1>
+        Top 10
+      </h1>
+
+      <div class="subtitle">
+        Mejores tiempos por modo
+      </div>
+
+    </header>
+
+
+    <!-- RESULTADOS -->
+
+    <div id="results-container"></div>
+
+
+    <!-- VOLVER -->
+
+    <div class="back-container">
+
+      <button
+        class="back-button"
+        onclick="window.location.href='index.html'"
+      >
+        ← VOLVER AL JUEGO
+      </button>
+
+    </div>
+
+
+  </main>
+
 
   <script>
-    const resultsContainer = document.getElementById("results-container");
 
-    const easyScores = JSON.parse(localStorage.getItem("easyHighScores")) || [];
-    const hardScores = JSON.parse(localStorage.getItem("hardHighScores")) || [];
-    const customScores = JSON.parse(localStorage.getItem("customHighScores")) || [];
-    const familyScores = JSON.parse(localStorage.getItem("familyHighScores")) || [];
+    const resultsContainer =
+      document.getElementById(
+        "results-container"
+      );
 
-    let scoreHTML = "";
 
-    function renderScores(scores, title, emoji) {
-      if (scores.length > 0) {
-        scoreHTML += `<h2>${emoji} ${title}</h2><ol>`;
-        scores.forEach(score => {
-          scoreHTML += `<li>Promedio: <strong>${score.averageTime.toFixed(2)}s</strong> | Palabras: <strong>${score.wordCount}</strong></li>`;
-        });
-        scoreHTML += "</ol>";
-      } else {
-        scoreHTML += `<h2>${emoji} ${title}</h2><p>No hay puntajes guardados aún.</p>`;
+    // ==========================================
+    // CARGAR RESULTADOS
+    // ==========================================
+
+    function loadScores(key) {
+
+      try {
+
+        return (
+          JSON.parse(
+            localStorage.getItem(key)
+          ) || []
+        );
+
       }
+
+      catch (error) {
+
+        return [];
+
+      }
+
     }
 
-    renderScores(easyScores, "Nivel Fácil (E)", "🔵");
-    renderScores(hardScores, "Nivel Difícil (H)", "🔴");
-    renderScores(customScores, "Nivel Personalizado (C)", "🟢");
-    renderScores(familyScores, "Nivel Familiar (F)", "🟣");
 
-    resultsContainer.innerHTML = scoreHTML;
+    const easyScores =
+      loadScores(
+        "easyHighScores"
+      );
+
+
+    const hardScores =
+      loadScores(
+        "hardHighScores"
+      );
+
+
+    const familyScores =
+      loadScores(
+        "familyHighScores"
+      );
+
+
+    const timerScores =
+      loadScores(
+        "timerHighScores"
+      );
+
+
+    // ==========================================
+    // CREAR SECCIÓN
+    // ==========================================
+
+    function renderScores(
+      scores,
+      title,
+      letter
+    ) {
+
+      const section =
+        document.createElement(
+          "section"
+        );
+
+
+      section.className =
+        "score-section";
+
+
+      // CABECERA
+
+      const header =
+        document.createElement(
+          "div"
+        );
+
+
+      header.className =
+        "section-header";
+
+
+      const badge =
+        document.createElement(
+          "div"
+        );
+
+
+      badge.className =
+        "mode-badge";
+
+
+      badge.textContent =
+        letter;
+
+
+      const heading =
+        document.createElement(
+          "h2"
+        );
+
+
+      heading.textContent =
+        title;
+
+
+      header.appendChild(
+        badge
+      );
+
+
+      header.appendChild(
+        heading
+      );
+
+
+      section.appendChild(
+        header
+      );
+
+
+      // ========================================
+      // SIN PUNTUACIONES
+      // ========================================
+
+      if (
+        scores.length === 0
+      ) {
+
+        const empty =
+          document.createElement(
+            "div"
+          );
+
+
+        empty.className =
+          "empty";
+
+
+        empty.textContent =
+          "Todavía no hay resultados guardados.";
+
+
+        section.appendChild(
+          empty
+        );
+
+
+        resultsContainer.appendChild(
+          section
+        );
+
+
+        return;
+
+      }
+
+
+      // ========================================
+      // LISTA
+      // ========================================
+
+      const list =
+        document.createElement(
+          "div"
+        );
+
+
+      list.className =
+        "score-list";
+
+
+      scores.forEach(
+        (score, index) => {
+
+          const row =
+            document.createElement(
+              "div"
+            );
+
+
+          row.className =
+            "score-row";
+
+
+          if (
+            index < 3
+          ) {
+
+            row.classList.add(
+              "top-score"
+            );
+
+          }
+
+
+          // --------------------------
+          // POSICIÓN
+          // --------------------------
+
+          const position =
+            document.createElement(
+              "div"
+            );
+
+
+          position.className =
+            "position";
+
+
+          if (
+            index === 0
+          ) {
+
+            position.textContent =
+              "🥇";
+
+            position.classList.add(
+              "medal"
+            );
+
+          }
+
+          else if (
+            index === 1
+          ) {
+
+            position.textContent =
+              "🥈";
+
+            position.classList.add(
+              "medal"
+            );
+
+          }
+
+          else if (
+            index === 2
+          ) {
+
+            position.textContent =
+              "🥉";
+
+            position.classList.add(
+              "medal"
+            );
+
+          }
+
+          else {
+
+            position.textContent =
+              `${index + 1}.`;
+
+          }
+
+
+          // --------------------------
+          // PROMEDIO
+          // --------------------------
+
+          const scoreMain =
+            document.createElement(
+              "div"
+            );
+
+
+          scoreMain.className =
+            "score-main";
+
+
+          const average =
+            document.createElement(
+              "span"
+            );
+
+
+          average.className =
+            "average";
+
+
+          average.textContent =
+            `${Number(score.averageTime).toFixed(2)} s`;
+
+
+          const averageLabel =
+            document.createElement(
+              "span"
+            );
+
+
+          averageLabel.className =
+            "average-label";
+
+
+          averageLabel.textContent =
+            "Promedio";
+
+
+          scoreMain.appendChild(
+            average
+          );
+
+
+          scoreMain.appendChild(
+            averageLabel
+          );
+
+
+          // --------------------------
+          // FIGURAS
+          // --------------------------
+
+          const words =
+            document.createElement(
+              "div"
+            );
+
+
+          words.className =
+            "words";
+
+
+          const wordsNumber =
+            document.createElement(
+              "span"
+            );
+
+
+          wordsNumber.className =
+            "words-number";
+
+
+          wordsNumber.textContent =
+            score.wordCount;
+
+
+          const wordsLabel =
+            document.createElement(
+              "span"
+            );
+
+
+          wordsLabel.className =
+            "words-label";
+
+
+          wordsLabel.textContent =
+            score.wordCount === 1
+              ? "Figura"
+              : "Figuras";
+
+
+          words.appendChild(
+            wordsNumber
+          );
+
+
+          words.appendChild(
+            wordsLabel
+          );
+
+
+          // --------------------------
+          // MONTAR FILA
+          // --------------------------
+
+          row.appendChild(
+            position
+          );
+
+
+          row.appendChild(
+            scoreMain
+          );
+
+
+          row.appendChild(
+            words
+          );
+
+
+          list.appendChild(
+            row
+          );
+
+        }
+      );
+
+
+      section.appendChild(
+        list
+      );
+
+
+      resultsContainer.appendChild(
+        section
+      );
+
+    }
+
+
+    // ==========================================
+    // MOSTRAR MODOS
+    // ==========================================
+
+    renderScores(
+      easyScores,
+      "Easy",
+      "E"
+    );
+
+
+    renderScores(
+      hardScores,
+      "Hard",
+      "H"
+    );
+
+
+    renderScores(
+      familyScores,
+      "Familia",
+      "F"
+    );
+
+
+    renderScores(
+      timerScores,
+      "Timer",
+      "T"
+    );
+
   </script>
+
 </body>
+
 </html>
