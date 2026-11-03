@@ -1,143 +1,1193 @@
-// ======================================================
-// DATOS
-// ======================================================
+
+"use strict";
+
+// Bachata Trainer: modos E, H, F, T y Repaso.
+const STORAGE = {
+  custom: "sbg_custom_words",
+  reviews: "sbg_review_words",
+  timer: "sbg_timer_seconds"
+};
 
 let baseWords = [];
 let customWords = [];
 let words = [];
-
-// Familias detectadas automáticamente
 let detectedFamilies = [];
-
-
-// ======================================================
-// VARIABLES DE JUEGO
-// ======================================================
-
+let reviewWords = [];
+let timerSeconds = 4;
+let gameMode = "easy";
+let reviewMode = false;
+let playing = false;
 let wordsQueue = [];
-
 let currentWord = "";
 let lastWord = "";
-
 let startTime = 0;
 let totalTime = 0;
 let wordCount = 0;
-
-let timerInterval;
-let autoNextInterval;
-
-let gameMode = "easy";
-
 let totalInQueue = 0;
+let timerInterval = null;
+let autoNextTimeout = null;
+let touchStartX = null;
+let reviewSessionWords = [];
 
+const $ = id => document.getElementById(id);
+
+const ui = {
+  word: $("word"),
+  play: $("play"),
+  next: $("next"),
+  finish: $("finish"),
+  result: $("result"),
+  counter: $("counter"),
+  timer: $("timer"),
+  easy: $("easy"),
+  hard: $("hard"),
+  family: $("family"),
+  timerMode: $("timer-mode"),
+  familySelect: $("family-selector"),
+  familyContainer: $("family-selector-container"),
+  progressContainer: $("progress-container"),
+  progressText: $("progress-text"),
+  progressFill: $("progress-fill"),
+  timerContainer: $("timer-selector-container"),
+  timerOptions: [...document.querySelectorAll(".timer-option")],
+  mark: $("review-mark-button"),
+  reviewCount: $("review-count"),
+  openReview: $("open-review-btn"),
+  reviewModal: $("review-modal"),
+  closeReview: $("close-review-btn"),
+  reviewList: $("review-words-list"),
+  startReview: $("start-review-btn"),
+  reviewIndicator: $("review-mode-indicator"),
+  managerModal: $("manager-modal"),
+  openManager: $("open-manager-btn"),
+  closeManager: $("close-manager-btn"),
+  addWord: $("add-word-btn"),
+  newWord: $("new-word-input"),
+  customList: $("custom-words-list")
+};
 
 // ======================================================
-// ELEMENTOS
+// ALMACENAMIENTO
 // ======================================================
 
-const wordElement = document.getElementById("word");
+function loadArray(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "[]");
+    return Array.isArray(value)
+      ? value.filter(x => typeof x === "string")
+      : [];
+  } catch (error) {
+    console.warn("No se pudo leer", key, error);
+    return [];
+  }
+}
 
-const playButton = document.getElementById("play");
-const nextButton = document.getElementById("next");
-const finishButton = document.getElementById("finish");
+function saveArray(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error("No se pudo guardar", key, error);
+  }
+}
 
-const resultElement = document.getElementById("result");
-const counterElement = document.getElementById("counter");
-const timerElement = document.getElementById("timer");
-
-const easyButton = document.getElementById("easy");
-const hardButton = document.getElementById("hard");
-const familyButton = document.getElementById("family");
-const timerModeButton = document.getElementById("timer-mode");
-
-const familySelect = document.getElementById("family-selector");
-
-const familySelectorContainer =
-  document.getElementById("family-selector-container");
-
-const progressContainer =
-  document.getElementById("progress-container");
-
-const progressText =
-  document.getElementById("progress-text");
-
-const progressFill =
-  document.getElementById("progress-fill");
-
+function normalize(value) {
+  return String(value).trim().toLocaleLowerCase("es");
+}
 
 // ======================================================
-// GESTOR
+// FIGURAS Y FAMILIAS
 // ======================================================
 
-const managerModal =
-  document.getElementById("manager-modal");
+function updateWordsList() {
+  words = [...new Set(
+    [...baseWords, ...customWords]
+      .filter(x => typeof x === "string")
+      .map(x => x.trim())
+      .filter(Boolean)
+  )];
+}
 
-const openManagerBtn =
-  document.getElementById("open-manager-btn");
+function explicitFamily(word) {
+  const clean = word.trim();
+  const parentheses = clean.match(/^(.+?)\s*\(.+\)\s*$/);
+  const dash = clean.match(/^(.+?)\s+-\s+.+$/);
+  const family = (parentheses || dash)?.[1]?.trim();
 
-const closeManagerBtn =
-  document.getElementById("close-manager-btn");
+  return family && family.length <= 35 ? family : null;
+}
 
-const addWordBtn =
-  document.getElementById("add-word-btn");
+function belongsToFamily(word, family) {
+  const a = normalize(word);
+  const b = normalize(family);
 
-const newWordInput =
-  document.getElementById("new-word-input");
+  if (!b || !a.startsWith(b)) return false;
+  if (a.length === b.length) return true;
 
-const customWordsList =
-  document.getElementById("custom-words-list");
+  return /[\s(:\-]/.test(a.charAt(b.length));
+}
 
+function detectFamilies() {
+  const map = new Map();
+
+  words.forEach(word => {
+    const family = explicitFamily(word);
+
+    if (family && !map.has(normalize(family))) {
+      map.set(normalize(family), family);
+    }
+  });
+
+  detectedFamilies = [...map.values()].sort((a, b) =>
+    a.localeCompare(b, "es", { sensitivity: "base" })
+  );
+}
+
+function findFamilyForWord(word) {
+  return [...detectedFamilies]
+    .sort((a, b) => b.length - a.length)
+    .find(family => belongsToFamily(word, family)) || null;
+}
+
+function populateFamilySelector() {
+  const previous = normalize(ui.familySelect.value);
+
+  ui.familySelect.replaceChildren();
+
+  detectedFamilies.forEach(family => {
+    const option = document.createElement("option");
+
+    option.value = family;
+
+    option.textContent =
+      `${family} (${words.filter(w =>
+        belongsToFamily(w, family)
+      ).length})`;
+
+    ui.familySelect.appendChild(option);
+  });
+
+  const existing = detectedFamilies.find(
+    f => normalize(f) === previous
+  );
+
+  if (existing) {
+    ui.familySelect.value = existing;
+  }
+}
+
+function getFamilyWords() {
+  const family = ui.familySelect.value;
+
+  return family
+    ? words.filter(w => belongsToFamily(w, family))
+    : [];
+}
+
+// ======================================================
+// FORMATO VISUAL DE LAS FICHAS
+// ======================================================
+
+function escapeHTML(text) {
+  const div = document.createElement("div");
+  div.textContent = String(text);
+  return div.innerHTML;
+}
+
+function formatWordDisplay(word) {
+  const clean = String(word).trim();
+
+  let main = "";
+  let detail = "";
+
+  const parentheses = clean.match(/^(.*?)\s*\((.*)\)\s*$/);
+  const dash = clean.match(/^(.+?)\s+-\s+(.+)$/);
+
+  if (parentheses) {
+    main = parentheses[1].trim();
+    detail = parentheses[2].trim();
+
+  } else if (dash) {
+    main = dash[1].trim();
+    detail = dash[2].trim();
+
+  } else {
+    const family = findFamilyForWord(clean);
+
+    if (family && clean.length > family.length) {
+      main = clean.slice(0, family.length);
+      detail = clean
+        .slice(family.length)
+        .trim()
+        .replace(/^[:\-]\s*/, "");
+    }
+  }
+
+  if (main && detail) {
+    return (
+      `<span class="main-text">${escapeHTML(main)}</span>` +
+      `<span class="parenthesis">${escapeHTML(detail)}</span>`
+    );
+  }
+
+  return `<span class="parenthesis">${escapeHTML(clean)}</span>`;
+}
+
+// ======================================================
+// MEZCLAR FIGURAS
+// ======================================================
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  return array;
+}
+
+// ======================================================
+// CRONÓMETRO
+// ======================================================
+
+function stopTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+
+  ui.timer.classList.remove(
+    "timer-green",
+    "timer-yellow",
+    "timer-red",
+    "timer-blink"
+  );
+}
+
+function stopAutoNext() {
+  clearTimeout(autoNextTimeout);
+  autoNextTimeout = null;
+}
+
+function startTimer() {
+  stopTimer();
+
+  startTime = Date.now();
+  updateTimer();
+
+  timerInterval = setInterval(updateTimer, 100);
+}
+
+function updateTimer() {
+  if (!playing) return;
+
+  const elapsed = (Date.now() - startTime) / 1000;
+
+  ui.timer.textContent = `⏱ ${elapsed.toFixed(1)} s`;
+
+  ui.timer.classList.remove(
+    "timer-green",
+    "timer-yellow",
+    "timer-red",
+    "timer-blink"
+  );
+
+  if (elapsed < 2) {
+    ui.timer.classList.add("timer-green");
+
+  } else if (elapsed < 4) {
+    ui.timer.classList.add("timer-yellow");
+
+  } else if (elapsed < 8) {
+    ui.timer.classList.add("timer-red");
+
+  } else {
+    ui.timer.classList.add("timer-red", "timer-blink");
+  }
+}
+
+// ======================================================
+// TIMER AUTOMÁTICO: 4, 6 U 8 SEGUNDOS
+// ======================================================
+
+function scheduleAutoNext() {
+  stopAutoNext();
+
+  if (playing && gameMode === "timer" && !reviewMode) {
+    autoNextTimeout = setTimeout(() => {
+      if (playing) {
+        advanceWord();
+      }
+    }, timerSeconds * 1000);
+  }
+}
+
+function updateTimerOptions() {
+  ui.timerOptions.forEach(button => {
+    const selected =
+      Number(button.dataset.seconds) === timerSeconds;
+
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-pressed", String(selected));
+  });
+}
+
+// ======================================================
+// MODOS Y PROGRESO
+// ======================================================
+
+function updateLevelButtons() {
+  [
+    [ui.easy, "easy"],
+    [ui.hard, "hard"],
+    [ui.family, "family"],
+    [ui.timerMode, "timer"]
+  ].forEach(([button, mode]) => {
+    button.classList.toggle(
+      "active",
+      !reviewMode && gameMode === mode
+    );
+  });
+
+  ui.familyContainer.style.display =
+    !reviewMode && gameMode === "family"
+      ? "block"
+      : "none";
+
+  ui.timerContainer.style.display =
+    !reviewMode && gameMode === "timer"
+      ? "block"
+      : "none";
+
+  ui.progressContainer.style.display =
+    !reviewMode && gameMode === "hard"
+      ? "none"
+      : "block";
+
+  ui.reviewIndicator.style.display =
+    reviewMode ? "block" : "none";
+
+  ui.timerOptions.forEach(button => {
+    button.disabled = playing;
+  });
+
+  ui.familySelect.disabled = playing;
+
+  updateTimerOptions();
+}
+
+function resetProgressDisplay() {
+  ui.progressFill.style.width = "0%";
+
+  const total = reviewMode
+    ? reviewWords.length
+    : gameMode === "family"
+      ? getFamilyWords().length
+      : gameMode === "hard"
+        ? 0
+        : words.length;
+
+  ui.progressText.textContent = `0 / ${total}`;
+}
+
+function updateProgressDisplay(current) {
+  if (
+    totalInQueue <= 0 ||
+    (!reviewMode && gameMode === "hard")
+  ) {
+    return;
+  }
+
+  let position = current;
+
+  if (!reviewMode && gameMode === "family") {
+    position = ((current - 1) % totalInQueue) + 1;
+  }
+
+  position = Math.min(position, totalInQueue);
+
+  ui.progressText.textContent =
+    `${position} / ${totalInQueue}`;
+
+  ui.progressFill.style.width =
+    `${(position / totalInQueue) * 100}%`;
+}
+
+// ======================================================
+// MIS REPASOS: CONTADOR Y MARCADOR
+// ======================================================
+
+function updateReviewCount() {
+  const count = reviewWords.length;
+
+  ui.reviewCount.textContent = String(count);
+  ui.reviewCount.style.display = count ? "flex" : "none";
+
+  ui.startReview.disabled = count === 0 || playing;
+}
+
+function updateMarkButton() {
+  const visible = playing && Boolean(currentWord);
+
+  ui.mark.style.display = visible ? "flex" : "none";
+
+  if (!visible) return;
+
+  const marked = reviewWords.includes(currentWord);
+
+  ui.mark.classList.toggle("marked", marked);
+
+  ui.mark.setAttribute("aria-pressed", String(marked));
+
+  ui.mark.setAttribute(
+    "aria-label",
+    marked
+      ? "Quitar figura de Mis repasos"
+      : "Marcar figura para repasar"
+  );
+
+  ui.mark.title = marked
+    ? "Quitar de Mis repasos"
+    : "Guardar para repasar";
+}
+
+function saveReviews() {
+  saveArray(STORAGE.reviews, reviewWords);
+
+  updateReviewCount();
+  updateMarkButton();
+  renderReviewWords();
+}
+
+function toggleCurrentReview() {
+  if (!playing || !currentWord) return;
+
+  const index = reviewWords.indexOf(currentWord);
+
+  if (index >= 0) {
+    reviewWords.splice(index, 1);
+  } else {
+    reviewWords.push(currentWord);
+  }
+
+  saveReviews();
+
+  // No modifica el cronómetro ni el cambio automático.
+}
+
+// ======================================================
+// MIS REPASOS: LISTA DE FIGURAS
+// ======================================================
+
+function renderReviewWords() {
+  ui.reviewList.replaceChildren();
+
+  if (!reviewWords.length) {
+    const li = document.createElement("li");
+
+    li.className = "review-empty";
+
+    li.textContent =
+      "No tienes figuras pendientes. " +
+      "Marca alguna durante el juego para verla aquí.";
+
+    ui.reviewList.appendChild(li);
+    return;
+  }
+
+  reviewWords.forEach(word => {
+    const li = document.createElement("li");
+    li.className = "review-word-item";
+
+    const name = document.createElement("span");
+    name.textContent = word;
+
+    const remove = document.createElement("button");
+
+    remove.type = "button";
+    remove.className = "review-remove-btn";
+    remove.textContent = "×";
+
+    remove.setAttribute(
+      "aria-label",
+      `Quitar ${word} de Mis repasos`
+    );
+
+    remove.addEventListener("click", () => {
+      reviewWords = reviewWords.filter(w => w !== word);
+      saveReviews();
+    });
+
+    li.append(name, remove);
+    ui.reviewList.appendChild(li);
+  });
+}
+
+// ======================================================
+// REINICIAR PANTALLA
+// ======================================================
+
+function resetBoard() {
+  playing = false;
+
+  stopTimer();
+  stopAutoNext();
+
+  wordsQueue = [];
+  currentWord = "";
+  lastWord = "";
+
+  wordCount = 0;
+  totalTime = 0;
+  totalInQueue = 0;
+  reviewSessionWords = [];
+
+  ui.word.innerHTML =
+    '<span class="main-text">' +
+    'Presiona Play para comenzar' +
+    '</span>';
+
+  ui.counter.textContent = "0";
+  ui.timer.textContent = "⏱ 0.0 s";
+  ui.result.textContent = "";
+
+  ui.play.textContent = "▶ PLAY";
+  ui.play.style.display = "flex";
+
+  ui.next.style.display = "none";
+  ui.next.disabled = false;
+
+  ui.finish.style.display = "none";
+  ui.finish.disabled = false;
+
+  updateLevelButtons();
+  resetProgressDisplay();
+  updateMarkButton();
+  updateReviewCount();
+}
+
+// ======================================================
+// COLA DE FIGURAS
+// ======================================================
+
+function refillQueue() {
+  if (reviewMode) {
+    wordsQueue = shuffle([...reviewSessionWords]);
+
+  } else if (gameMode === "family") {
+    wordsQueue = shuffle([...getFamilyWords()]);
+
+  } else {
+    wordsQueue = shuffle([...words]);
+  }
+}
+
+function getNextWord() {
+  // HARD: aleatorio sin repetición consecutiva.
+  if (!reviewMode && gameMode === "hard") {
+    if (!words.length) return null;
+
+    if (words.length === 1) {
+      return words[0];
+    }
+
+    const candidates = words.filter(w => w !== lastWord);
+
+    const next =
+      candidates[Math.floor(Math.random() * candidates.length)];
+
+    lastWord = next;
+
+    return next;
+  }
+
+  // FAMILIA: al terminar una vuelta, vuelve a mezclar.
+  if (
+    !wordsQueue.length &&
+    !reviewMode &&
+    gameMode === "family"
+  ) {
+    refillQueue();
+
+    // Evita repetir entre vueltas.
+    if (
+      wordsQueue.length > 1 &&
+      wordsQueue[0] === lastWord
+    ) {
+      const swapIndex =
+        wordsQueue.findIndex(w => w !== lastWord);
+
+      if (swapIndex > 0) {
+        [
+          wordsQueue[0],
+          wordsQueue[swapIndex]
+        ] = [
+          wordsQueue[swapIndex],
+          wordsQueue[0]
+        ];
+      }
+    }
+  }
+
+  const next = wordsQueue.shift() || null;
+
+  if (next) {
+    lastWord = next;
+  }
+
+  return next;
+}
+
+// ======================================================
+// MOSTRAR FIGURA
+// ======================================================
+
+function showCurrentWord() {
+  ui.word.innerHTML = formatWordDisplay(currentWord);
+
+  updateMarkButton();
+
+  if (reviewMode) {
+    // Al volver a aparecer en Repaso, deja de estar pendiente.
+    if (reviewWords.includes(currentWord)) {
+      reviewWords = reviewWords.filter(
+        w => w !== currentWord
+      );
+
+      saveReviews();
+    }
+  }
+
+  if (reviewMode || gameMode !== "hard") {
+    updateProgressDisplay(wordCount + 1);
+  }
+}
+
+// ======================================================
+// EMPEZAR PARTIDA
+// ======================================================
+
+function startGame() {
+  if (playing) return;
+
+  if (reviewMode && !reviewSessionWords.length) {
+    reviewSessionWords = [...reviewWords];
+  }
+
+  if (!reviewMode && !words.length) {
+    alert(
+      "No hay figuras cargadas. Comprueba words.json."
+    );
+    return;
+  }
+
+  if (reviewMode && !reviewSessionWords.length) {
+    alert("No hay figuras pendientes de repaso.");
+    return;
+  }
+
+  wordsQueue = [];
+  currentWord = "";
+  lastWord = "";
+
+  wordCount = 0;
+  totalTime = 0;
+
+  ui.result.textContent = "";
+  ui.counter.textContent = "0";
+  ui.timer.textContent = "⏱ 0.0 s";
+
+  if (!reviewMode && gameMode === "hard") {
+    totalInQueue = 0;
+
+  } else {
+    refillQueue();
+    totalInQueue = wordsQueue.length;
+  }
+
+  currentWord = getNextWord();
+
+  if (!currentWord) {
+    alert(
+      "No hay figuras disponibles para este modo."
+    );
+    return;
+  }
+
+  playing = true;
+
+  ui.play.style.display = "none";
+
+  ui.next.style.display = "flex";
+  ui.finish.style.display = "flex";
+
+  ui.next.disabled = false;
+  ui.finish.disabled = false;
+
+  updateLevelButtons();
+  updateReviewCount();
+  showCurrentWord();
+
+  startTimer();
+  scheduleAutoNext();
+}
+
+// ======================================================
+// SIGUIENTE FIGURA
+// ======================================================
+
+function advanceWord() {
+  if (!playing) return;
+
+  stopAutoNext();
+
+  totalTime += (Date.now() - startTime) / 1000;
+
+  wordCount++;
+  ui.counter.textContent = String(wordCount);
+
+  currentWord = getNextWord();
+
+  if (!currentWord) {
+    completeList();
+    return;
+  }
+
+  showCurrentWord();
+  startTimer();
+  scheduleAutoNext();
+}
+
+// ======================================================
+// GUARDAR PUNTUACIONES
+// ======================================================
+
+function saveHighScore() {
+  if (reviewMode || wordCount <= 0) return;
+
+  const key = `${gameMode}HighScores`;
+
+  let scores = [];
+
+  try {
+    const stored = JSON.parse(
+      localStorage.getItem(key) || "[]"
+    );
+
+    if (Array.isArray(stored)) {
+      scores = stored;
+    }
+
+  } catch (error) {
+    console.warn(
+      "Error leyendo puntuaciones",
+      error
+    );
+  }
+
+  scores.push({
+    averageTime: totalTime / wordCount,
+    wordCount
+  });
+
+  scores = scores
+    .filter(s => Number.isFinite(Number(s.averageTime)))
+    .sort(
+      (a, b) =>
+        Number(a.averageTime) - Number(b.averageTime)
+    )
+    .slice(0, 10);
+
+  try {
+    localStorage.setItem(key, JSON.stringify(scores));
+
+  } catch (error) {
+    console.error(
+      "No se pudieron guardar puntuaciones",
+      error
+    );
+  }
+}
+
+// ======================================================
+// TERMINAR PARTIDA
+// ======================================================
+
+function endGame(completed) {
+  if (!playing) return;
+
+  playing = false;
+
+  stopTimer();
+  stopAutoNext();
+
+  saveHighScore();
+
+  const average = wordCount
+    ? (totalTime / wordCount).toFixed(2)
+    : null;
+
+  ui.result.textContent = average
+    ? `Promedio: ${average} s por figura`
+    : "";
+
+  if (completed) {
+    ui.word.innerHTML =
+      `<span class="main-text">COMPLETADO</span>` +
+      `<span class="parenthesis">${wordCount} figuras</span>`;
+
+    ui.timer.textContent = "✓ COMPLETADO";
+
+    if (
+      totalInQueue &&
+      (reviewMode || gameMode !== "hard")
+    ) {
+      ui.progressText.textContent =
+        `${totalInQueue} / ${totalInQueue}`;
+
+      ui.progressFill.style.width = "100%";
+    }
+
+  } else {
+    ui.word.innerHTML =
+      '<span class="main-text">' +
+      'Presiona Play para comenzar' +
+      '</span>';
+
+    ui.timer.textContent = "⏱ 0.0 s";
+  }
+
+  ui.play.textContent = completed
+    ? "↻ JUGAR OTRA VEZ"
+    : "▶ PLAY";
+
+  ui.play.style.display = "flex";
+  ui.next.style.display = "none";
+  ui.finish.style.display = "none";
+
+  currentWord = "";
+
+  updateMarkButton();
+  updateLevelButtons();
+  updateReviewCount();
+
+  if (reviewMode) {
+    // Una nueva partida de repaso solo incluye
+    // las figuras que siguen pendientes.
+    reviewSessionWords = [];
+
+    if (completed) {
+      reviewMode = false;
+      updateLevelButtons();
+    }
+  }
+}
+
+function completeList() {
+  endGame(true);
+}
+
+// ======================================================
+// GESTOR DE FIGURAS PERSONALIZADAS
+// ======================================================
+
+function renderCustomWords() {
+  ui.customList.replaceChildren();
+
+  if (!customWords.length) {
+    const li = document.createElement("li");
+
+    li.textContent =
+      "No has añadido figuras personalizadas.";
+
+    li.style.color = "#aaa";
+
+    ui.customList.appendChild(li);
+    return;
+  }
+
+  customWords.forEach((word, index) => {
+    const li = document.createElement("li");
+
+    const span = document.createElement("span");
+    span.textContent = word;
+
+    const button = document.createElement("button");
+
+    button.type = "button";
+    button.className = "delete-word-btn";
+    button.textContent = "❌";
+
+    button.setAttribute(
+      "aria-label",
+      `Eliminar ${word}`
+    );
+
+    button.addEventListener("click", () => {
+      customWords.splice(index, 1);
+
+      saveArray(STORAGE.custom, customWords);
+
+      updateWordsList();
+      detectFamilies();
+      populateFamilySelector();
+      renderCustomWords();
+
+      if (!playing) {
+        resetProgressDisplay();
+      }
+    });
+
+    li.append(span, button);
+    ui.customList.appendChild(li);
+  });
+}
+
+// ======================================================
+// EVENTOS DE LOS MODOS E, H, F Y T
+// ======================================================
+
+[
+  [ui.easy, "easy"],
+  [ui.hard, "hard"],
+  [ui.family, "family"],
+  [ui.timerMode, "timer"]
+].forEach(([button, mode]) => {
+  button.addEventListener("click", () => {
+    if (playing) return;
+
+    reviewMode = false;
+    gameMode = mode;
+
+    resetBoard();
+  });
+});
+
+ui.familySelect.addEventListener("change", () => {
+  if (!playing && !reviewMode) {
+    resetBoard();
+  }
+});
+
+// ======================================================
+// SELECCIÓN DEL TIMER
+// ======================================================
+
+ui.timerOptions.forEach(button => {
+  button.addEventListener("click", () => {
+    if (playing) return;
+
+    const seconds = Number(button.dataset.seconds);
+
+    if (![4, 6, 8].includes(seconds)) return;
+
+    timerSeconds = seconds;
+
+    try {
+      localStorage.setItem(
+        STORAGE.timer,
+        String(seconds)
+      );
+
+    } catch (error) {
+      console.warn(
+        "No se pudo guardar el intervalo",
+        error
+      );
+    }
+
+    updateTimerOptions();
+  });
+});
+
+// ======================================================
+// EVENTOS DE JUEGO
+// ======================================================
+
+ui.play.addEventListener("click", startGame);
+
+ui.next.addEventListener("click", advanceWord);
+
+ui.finish.addEventListener("click", () => {
+  endGame(false);
+});
+
+ui.mark.addEventListener(
+  "click",
+  toggleCurrentReview
+);
+
+// ======================================================
+// EVENTOS DE MIS REPASOS
+// ======================================================
+
+ui.openReview.addEventListener("click", () => {
+  renderReviewWords();
+  updateReviewCount();
+
+  ui.reviewModal.style.display = "flex";
+});
+
+ui.closeReview.addEventListener("click", () => {
+  ui.reviewModal.style.display = "none";
+});
+
+ui.startReview.addEventListener("click", () => {
+  if (playing || !reviewWords.length) return;
+
+  ui.reviewModal.style.display = "none";
+
+  reviewMode = true;
+  reviewSessionWords = [...reviewWords];
+
+  resetBoard();
+
+  reviewSessionWords = [...reviewWords];
+
+  startGame();
+});
+
+// ======================================================
+// EVENTOS DEL GESTOR
+// ======================================================
+
+ui.openManager.addEventListener("click", () => {
+  renderCustomWords();
+
+  ui.managerModal.style.display = "flex";
+});
+
+ui.closeManager.addEventListener("click", () => {
+  ui.managerModal.style.display = "none";
+});
+
+window.addEventListener("click", event => {
+  if (event.target === ui.managerModal) {
+    ui.managerModal.style.display = "none";
+  }
+
+  if (event.target === ui.reviewModal) {
+    ui.reviewModal.style.display = "none";
+  }
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+    ui.managerModal.style.display = "none";
+    ui.reviewModal.style.display = "none";
+  }
+});
+
+// ======================================================
+// AÑADIR FIGURA PERSONALIZADA
+// ======================================================
+
+ui.addWord.addEventListener("click", () => {
+  const word = ui.newWord.value.trim();
+
+  if (!word) return;
+
+  if (!customWords.includes(word)) {
+    customWords.push(word);
+  }
+
+  saveArray(STORAGE.custom, customWords);
+
+  ui.newWord.value = "";
+
+  updateWordsList();
+  detectFamilies();
+  populateFamilySelector();
+  renderCustomWords();
+
+  if (!playing) {
+    resetProgressDisplay();
+  }
+});
+
+ui.newWord.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
+    ui.addWord.click();
+  }
+});
+
+// ======================================================
+// DESLIZAR PARA CAMBIAR DE FIGURA
+// ======================================================
+
+// No interfiere con botones ni modales.
+
+ui.word.addEventListener(
+  "touchstart",
+  event => {
+    touchStartX =
+      event.changedTouches[0].screenX;
+  },
+  { passive: true }
+);
+
+ui.word.addEventListener(
+  "touchend",
+  event => {
+    if (!playing || touchStartX === null) return;
+
+    const delta =
+      event.changedTouches[0].screenX - touchStartX;
+
+    touchStartX = null;
+
+    if (Math.abs(delta) > 50) {
+      advanceWord();
+
+      if (navigator.vibrate) {
+        navigator.vibrate(10);
+      }
+    }
+  },
+  { passive: true }
+);
 
 // ======================================================
 // INICIALIZACIÓN
 // ======================================================
 
 window.addEventListener("load", async () => {
+  // Cargar figuras personalizadas.
+  customWords = loadArray(STORAGE.custom);
 
-  gameMode = "easy";
+  // Cargar figuras pendientes de repaso.
+  reviewWords = [
+    ...new Set(loadArray(STORAGE.reviews))
+  ];
 
+  // Recuperar intervalo de Timer.
+  const savedSeconds = Number(
+    localStorage.getItem(STORAGE.timer)
+  );
 
-  // -----------------------------
-  // CARGAR PERSONALIZADAS
-  // -----------------------------
+  timerSeconds = [4, 6, 8].includes(savedSeconds)
+    ? savedSeconds
+    : 4;
 
-  const savedCustom =
-    localStorage.getItem("sbg_custom_words");
-
-  if (savedCustom) {
-
-    try {
-
-      customWords =
-        JSON.parse(savedCustom);
-
-    } catch (error) {
-
-      customWords = [];
-
-    }
-
-  }
-
-
-  // -----------------------------
-  // CARGAR WORDS.JSON
-  // -----------------------------
-
+  // Cargar figuras de words.json.
   try {
-
-    const response =
-      await fetch("words.json");
+    const response = await fetch("words.json");
 
     if (!response.ok) {
-      throw new Error("No se pudo cargar words.json");
+      throw new Error(`HTTP ${response.status}`);
     }
 
-    baseWords =
-      await response.json();
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      throw new Error(
+        "words.json debe contener una lista"
+      );
+    }
+
+    baseWords = data.filter(
+      item => typeof item === "string"
+    );
 
   } catch (error) {
-
     console.error(
       "Error cargando words.json:",
       error
@@ -145,2282 +1195,19 @@ window.addEventListener("load", async () => {
 
     baseWords = [];
 
+    ui.result.textContent =
+      "No se pudo cargar words.json. " +
+      "Comprueba la conexión.";
   }
 
-
-  // Combinar palabras
-
+  // Preparar juego.
   updateWordsList();
-
-
-  // Detectar familias
-
   detectFamilies();
-
-
-  // Crear selector
-
   populateFamilySelector();
-
-
-  // Gestor
-
   renderCustomWords();
-
-
-  // Pantalla inicial
-
-  updateLevelButtons();
 
   resetBoard();
 
+  updateReviewCount();
+  renderReviewWords();
 });
-
-
-// ======================================================
-// COMBINAR BASE + PERSONALIZADAS
-// ======================================================
-
-function updateWordsList() {
-
-  /*
-    Elimina duplicados EXACTOS.
-
-    Por ejemplo, si:
-    YAKO (Sensual + MAMBO)
-
-    aparece dos veces, solo se utilizará una.
-  */
-
-  words = [
-    ...new Set([
-      ...baseWords,
-      ...customWords
-    ])
-  ];
-
-}
-
-
-// ======================================================
-// DETECTAR FAMILIAS AUTOMÁTICAMENTE
-// ======================================================
-
-function detectFamilies() {
-
-  const familiesMap = new Map();
-
-
-  words.forEach(word => {
-
-    const family =
-      extractFamily(word);
-
-    if (!family) return;
-
-
-    /*
-      Usamos minúsculas internamente para que:
-
-      JHERSY
-      Jhersy
-      jhersy
-
-      sean la misma familia.
-    */
-
-    const normalized =
-      family.toLowerCase();
-
-
-    /*
-      Conservamos la primera forma encontrada
-      para mostrarla en el selector.
-    */
-
-    if (!familiesMap.has(normalized)) {
-
-      familiesMap.set(
-        normalized,
-        family
-      );
-
-    }
-
-  });
-
-
-  detectedFamilies =
-    Array.from(
-      familiesMap.values()
-    );
-
-
-  // Orden alfabético
-
-  detectedFamilies.sort(
-    (a, b) =>
-      a.localeCompare(
-        b,
-        "es",
-        {
-          sensitivity: "base"
-        }
-      )
-  );
-
-}
-
-
-// ======================================================
-// EXTRAER FAMILIA DE UNA FIGURA
-// ======================================================
-
-function extractFamily(word) {
-
-  if (
-    typeof word !== "string"
-  ) {
-    return null;
-  }
-
-
-  const clean =
-    word.trim();
-
-
-  if (!clean) {
-    return null;
-  }
-
-
-  /*
-    CASO 1
-    ------
-
-    Nombre seguido de paréntesis.
-
-    Ejemplos:
-
-    JHERSY (Diagonal)
-    CyC (Chaca Chaca)
-    GABO (J&J Exorcista)
-    ARGENI (Preparar FOLLOW...)
-
-    Resultado:
-
-    JHERSY
-    CyC
-    GABO
-    ARGENI
-  */
-
-  const parenthesisMatch =
-    clean.match(
-      /^(.+?)\s*\(/
-    );
-
-
-  if (parenthesisMatch) {
-
-    const possibleFamily =
-      parenthesisMatch[1].trim();
-
-
-    /*
-      Evitamos considerar como familia
-      textos excesivamente largos.
-    */
-
-    if (
-      possibleFamily.length <= 25
-    ) {
-
-      return possibleFamily;
-
-    }
-
-  }
-
-
-  /*
-    CASO 2
-    ------
-
-    Nombre seguido de " - "
-
-    Ejemplos:
-
-    JHERSY - Intro
-    YAKO - Dominicana
-    MARIO - Intro
-
-    Resultado:
-
-    JHERSY
-    YAKO
-    MARIO
-  */
-
-  const dashMatch =
-    clean.match(
-      /^(.+?)\s+-\s+/
-    );
-
-
-  if (dashMatch) {
-
-    const possibleFamily =
-      dashMatch[1].trim();
-
-
-    if (
-      possibleFamily.length <= 25
-    ) {
-
-      return possibleFamily;
-
-    }
-
-  }
-
-
-  /*
-    CASO 3
-    ------
-
-    Figuras conocidas por otras palabras
-    de la misma familia.
-
-    Por ejemplo, si existe:
-
-    JHERSY (Diagonal)
-
-    entonces:
-
-    JHERSY Intro
-    JHERSY pasos
-
-    también deben pertenecer a JHERSY.
-
-    Para eso comprobamos familias que ya
-    podemos identificar claramente.
-  */
-
-  const knownFamilies =
-    getClearlyDetectedFamilies();
-
-
-  for (
-    const family of knownFamilies
-  ) {
-
-    if (
-      belongsToFamily(
-        clean,
-        family
-      )
-    ) {
-
-      return family;
-
-    }
-
-  }
-
-
-  /*
-    Si no podemos saber con seguridad
-    que el inicio es una familia,
-    NO inventamos una.
-
-    Así:
-
-    Daniel y Alma
-    MARCO ESPEJO
-    SALIDA después media DIAGONAL
-    TITANIC
-    SUAVE
-
-    continúan siendo figuras normales.
-  */
-
-  return null;
-
-}
-
-
-// ======================================================
-// OBTENER FAMILIAS CLARAMENTE IDENTIFICABLES
-// ======================================================
-
-function getClearlyDetectedFamilies() {
-
-  const map =
-    new Map();
-
-
-  words.forEach(word => {
-
-    if (
-      typeof word !== "string"
-    ) {
-      return;
-    }
-
-
-    const clean =
-      word.trim();
-
-
-    // -------------------------
-    // POR PARÉNTESIS
-    // -------------------------
-
-    const parenthesisMatch =
-      clean.match(
-        /^(.+?)\s*\(/
-      );
-
-
-    if (parenthesisMatch) {
-
-      const family =
-        parenthesisMatch[1].trim();
-
-
-      if (
-        family.length <= 25
-      ) {
-
-        const normalized =
-          family.toLowerCase();
-
-
-        if (
-          !map.has(normalized)
-        ) {
-
-          map.set(
-            normalized,
-            family
-          );
-
-        }
-
-      }
-
-    }
-
-
-    // -------------------------
-    // POR GUION
-    // -------------------------
-
-    const dashMatch =
-      clean.match(
-        /^(.+?)\s+-\s+/
-      );
-
-
-    if (dashMatch) {
-
-      const family =
-        dashMatch[1].trim();
-
-
-      if (
-        family.length <= 25
-      ) {
-
-        const normalized =
-          family.toLowerCase();
-
-
-        if (
-          !map.has(normalized)
-        ) {
-
-          map.set(
-            normalized,
-            family
-          );
-
-        }
-
-      }
-
-    }
-
-  });
-
-
-  return Array.from(
-    map.values()
-  );
-
-}
-
-
-// ======================================================
-// COMPROBAR SI UNA FIGURA PERTENECE A UNA FAMILIA
-// ======================================================
-
-function belongsToFamily(
-  word,
-  family
-) {
-
-  if (
-    !word ||
-    !family
-  ) {
-    return false;
-  }
-
-
-  const normalizedWord =
-    word
-      .trim()
-      .toLowerCase();
-
-
-  const normalizedFamily =
-    family
-      .trim()
-      .toLowerCase();
-
-
-  /*
-    Tiene que comenzar exactamente
-    por el nombre de la familia.
-  */
-
-  if (
-    !normalizedWord.startsWith(
-      normalizedFamily
-    )
-  ) {
-
-    return false;
-
-  }
-
-
-  /*
-    Si fueran exactamente iguales:
-    también pertenece.
-  */
-
-  if (
-    normalizedWord ===
-    normalizedFamily
-  ) {
-
-    return true;
-
-  }
-
-
-  /*
-    Miramos qué viene justo después
-    del nombre.
-
-    Aceptamos:
-
-    espacio
-    (
-    -
-    :
-  */
-
-  const nextCharacter =
-    normalizedWord.charAt(
-      normalizedFamily.length
-    );
-
-
-  return (
-    nextCharacter === " " ||
-    nextCharacter === "(" ||
-    nextCharacter === "-" ||
-    nextCharacter === ":"
-  );
-
-}
-
-
-// ======================================================
-// CREAR SELECTOR DE FAMILIAS
-// ======================================================
-
-function populateFamilySelector() {
-
-  const previousSelection =
-    familySelect.value;
-
-
-  familySelect.innerHTML =
-    "";
-
-
-  detectedFamilies.forEach(
-    family => {
-
-      const option =
-        document.createElement(
-          "option"
-        );
-
-
-      option.value =
-        family;
-
-
-      /*
-        Añadimos el número de figuras
-        de esa familia.
-
-        Ejemplo:
-
-        JHERSY (42)
-        CyC (12)
-      */
-
-      const count =
-        words.filter(
-          word =>
-            belongsToFamily(
-              word,
-              family
-            )
-        ).length;
-
-
-      option.textContent =
-        `${family} (${count})`;
-
-
-      familySelect.appendChild(
-        option
-      );
-
-    }
-  );
-
-
-  /*
-    Intentamos mantener la selección
-    anterior si sigue existiendo.
-  */
-
-  if (
-    previousSelection &&
-    detectedFamilies.some(
-      family =>
-        family.toLowerCase() ===
-        previousSelection.toLowerCase()
-    )
-  ) {
-
-    familySelect.value =
-      detectedFamilies.find(
-        family =>
-          family.toLowerCase() ===
-          previousSelection.toLowerCase()
-      );
-
-  }
-
-}
-
-
-// ======================================================
-// OBTENER FIGURAS DE LA FAMILIA SELECCIONADA
-// ======================================================
-
-function getFamilyWords() {
-
-  const selectedFamily =
-    familySelect.value;
-
-
-  if (!selectedFamily) {
-
-    return [];
-
-  }
-
-
-  return words.filter(
-    word =>
-      belongsToFamily(
-        word,
-        selectedFamily
-      )
-  );
-
-}
-
-
-// ======================================================
-// CAMBIO DE MODO
-// ======================================================
-
-[
-  easyButton,
-  hardButton,
-  familyButton,
-  timerModeButton
-
-].forEach(
-  (button, index) => {
-
-    button.addEventListener(
-      "click",
-      () => {
-
-        /*
-          No cambiamos de modo
-          durante una partida.
-        */
-
-        if (
-          playButton.style.display ===
-          "none"
-        ) {
-
-          return;
-
-        }
-
-
-        gameMode = [
-          "easy",
-          "hard",
-          "family",
-          "timer"
-        ][index];
-
-
-        updateLevelButtons();
-
-        resetBoard();
-
-      }
-    );
-
-  }
-);
-
-
-// ======================================================
-// CAMBIO DE FAMILIA
-// ======================================================
-
-familySelect.addEventListener(
-  "change",
-  () => {
-
-    if (
-      gameMode === "family" &&
-      playButton.style.display !== "none"
-    ) {
-
-      resetBoard();
-
-    }
-
-  }
-);
-
-
-// ======================================================
-// BOTONES DE NIVEL
-// ======================================================
-
-function updateLevelButtons() {
-
-  [
-    easyButton,
-    hardButton,
-    familyButton,
-    timerModeButton
-
-  ].forEach(
-    button =>
-      button.classList.remove(
-        "active"
-      )
-  );
-
-
-  if (gameMode === "easy") {
-    easyButton.classList.add("active");
-  }
-
-
-  if (gameMode === "hard") {
-    hardButton.classList.add("active");
-  }
-
-
-  if (gameMode === "family") {
-    familyButton.classList.add("active");
-  }
-
-
-  if (gameMode === "timer") {
-    timerModeButton.classList.add("active");
-  }
-
-
-  familySelectorContainer.style.display =
-    gameMode === "family"
-      ? "block"
-      : "none";
-
-
-  /*
-    HARD es infinito/aleatorio,
-    por eso no mostramos progreso.
-  */
-
-  progressContainer.style.display =
-    gameMode === "hard"
-      ? "none"
-      : "block";
-
-}
-
-
-// ======================================================
-// RESETEAR PANTALLA
-// ======================================================
-
-function resetBoard() {
-
-  stopTimer();
-  stopAutoNext();
-
-
-  wordsQueue = [];
-
-  currentWord = "";
-  lastWord = "";
-
-  wordCount = 0;
-  totalTime = 0;
-  totalInQueue = 0;
-
-
-  wordElement.innerHTML = `
-    <span class="main-text">
-      Presiona Play para comenzar
-    </span>
-  `;
-
-
-  counterElement.textContent =
-    "0";
-
-
-  timerElement.textContent =
-    "⏱ 0.0 s";
-
-
-  timerElement.classList.remove(
-    "timer-green",
-    "timer-yellow",
-    "timer-red",
-    "timer-blink"
-  );
-
-
-  resultElement.textContent =
-    "";
-
-
-  playButton.textContent =
-    "▶ PLAY";
-
-
-  playButton.style.display =
-    "flex";
-
-
-  nextButton.style.display =
-    "none";
-
-  nextButton.disabled =
-    false;
-
-
-  finishButton.style.display =
-    "none";
-
-  finishButton.disabled =
-    false;
-
-
-  updateLevelButtons();
-
-  resetProgressDisplay();
-
-}
-
-
-// ======================================================
-// PROGRESO INICIAL
-// ======================================================
-
-function resetProgressDisplay() {
-
-  progressFill.style.width =
-    "0%";
-
-
-  if (gameMode === "easy") {
-
-    progressText.textContent =
-      `0 / ${words.length}`;
-
-  }
-
-
-  else if (
-    gameMode === "family"
-  ) {
-
-    const familyWords =
-      getFamilyWords();
-
-
-    progressText.textContent =
-      `0 / ${familyWords.length}`;
-
-  }
-
-
-  else if (
-    gameMode === "timer"
-  ) {
-
-    progressText.textContent =
-      `0 / ${words.length}`;
-
-  }
-
-
-  else {
-
-    progressText.textContent =
-      "0 / 0";
-
-  }
-
-}
-
-
-// ======================================================
-// MEZCLAR
-// ======================================================
-
-function shuffle(array) {
-
-  for (
-    let i = array.length - 1;
-    i > 0;
-    i--
-  ) {
-
-    const j =
-      Math.floor(
-        Math.random() *
-        (i + 1)
-      );
-
-
-    [
-      array[i],
-      array[j]
-    ] = [
-      array[j],
-      array[i]
-    ];
-
-  }
-
-
-  return array;
-
-}
-
-
-// ======================================================
-// RELLENAR COLA
-// ======================================================
-
-function refillQueue() {
-
-  let source = [];
-
-
-  if (
-    gameMode === "easy" ||
-    gameMode === "timer"
-  ) {
-
-    source =
-      [...words];
-
-  }
-
-
-  else if (
-    gameMode === "family"
-  ) {
-
-    source =
-      getFamilyWords();
-
-  }
-
-
-  wordsQueue =
-    shuffle(
-      [...source]
-    );
-
-}
-
-
-// ======================================================
-// SIGUIENTE FIGURA
-// ======================================================
-
-function getNextWord() {
-
-  // ------------------------------
-  // HARD
-  // ------------------------------
-
-  if (
-    gameMode === "hard"
-  ) {
-
-    if (
-      words.length === 0
-    ) {
-
-      return null;
-
-    }
-
-
-    let newWord;
-
-    let attempts = 0;
-
-
-    /*
-      Aleatorio pero evitando repetir
-      inmediatamente la anterior.
-    */
-
-    do {
-
-      newWord =
-        words[
-          Math.floor(
-            Math.random() *
-            words.length
-          )
-        ];
-
-
-      attempts++;
-
-    }
-
-    while (
-      newWord === lastWord &&
-      words.length > 1 &&
-      attempts < 10
-    );
-
-
-    lastWord =
-      newWord;
-
-
-    return newWord;
-
-  }
-
-
-  // ------------------------------
-  // EASY
-  // ------------------------------
-
-  /*
-    EASY termina al agotarse.
-
-    No vuelve a rellenar.
-  */
-
-  if (
-    gameMode === "easy" &&
-    wordsQueue.length === 0
-  ) {
-
-    return null;
-
-  }
-
-
-  // ------------------------------
-  // TIMER
-  // ------------------------------
-
-  if (
-    gameMode === "timer" &&
-    wordsQueue.length === 0
-  ) {
-
-    return null;
-
-  }
-
-
-  // ------------------------------
-  // FAMILY
-  // ------------------------------
-
-  /*
-    Familia mantiene el comportamiento
-    de volver a mezclar al terminar.
-  */
-
-  if (
-    gameMode === "family" &&
-    wordsQueue.length === 0
-  ) {
-
-    refillQueue();
-
-
-    if (
-      wordsQueue.length === 0
-    ) {
-
-      return null;
-
-    }
-
-  }
-
-
-  const word =
-    wordsQueue.shift();
-
-
-  lastWord =
-    word;
-
-
-  return word;
-
-}
-
-
-// ======================================================
-// FORMATO VISUAL
-// ======================================================
-
-function formatWordDisplay(word) {
-
-  /*
-    CASO:
-
-    JHERSY (Diagonal)
-
-    Se muestra:
-
-    JHERSY
-    Diagonal
-  */
-
-  const parenthesisMatch =
-    word.match(
-      /^(.*?)\s*\((.*)\)\s*$/
-    );
-
-
-  if (parenthesisMatch) {
-
-    const main =
-      parenthesisMatch[1].trim();
-
-
-    const explanation =
-      parenthesisMatch[2].trim();
-
-
-    return `
-      <span class="main-text">
-        ${escapeHTML(main)}
-      </span>
-
-      <span class="parenthesis">
-        ${escapeHTML(explanation)}
-      </span>
-    `;
-
-  }
-
-
-  /*
-    CASO:
-
-    JHERSY - Intro
-
-    Se muestra:
-
-    JHERSY
-    Intro
-  */
-
-  const dashMatch =
-    word.match(
-      /^(.+?)\s+-\s+(.+)$/
-    );
-
-
-  if (dashMatch) {
-
-    const main =
-      dashMatch[1].trim();
-
-
-    const explanation =
-      dashMatch[2].trim();
-
-
-    return `
-      <span class="main-text">
-        ${escapeHTML(main)}
-      </span>
-
-      <span class="parenthesis">
-        ${escapeHTML(explanation)}
-      </span>
-    `;
-
-  }
-
-
-  /*
-    CASO:
-
-    JHERSY Intro
-    JHERSY pasos
-
-    Si sabemos que JHERSY es una familia,
-    también lo separamos.
-  */
-
-  const family =
-    findFamilyForWord(word);
-
-
-  if (family) {
-
-    const rest =
-      word
-        .substring(
-          family.length
-        )
-        .trim();
-
-
-    if (rest) {
-
-      return `
-        <span class="main-text">
-          ${escapeHTML(family)}
-        </span>
-
-        <span class="parenthesis">
-          ${escapeHTML(rest)}
-        </span>
-      `;
-
-    }
-
-  }
-
-
-  /*
-    Una figura sin familia:
-
-    TITANIC
-    SUAVE
-    ENGAÑO
-    etc.
-
-    Se muestra grande.
-  */
-
-  return `
-    <span class="parenthesis">
-      ${escapeHTML(word)}
-    </span>
-  `;
-
-}
-
-
-// ======================================================
-// ENCONTRAR FAMILIA DE UNA FIGURA
-// ======================================================
-
-function findFamilyForWord(word) {
-
-  /*
-    Ordenamos de mayor a menor longitud.
-
-    Esto evita problemas si algún día
-    tenemos familias parecidas.
-  */
-
-  const sortedFamilies =
-    [...detectedFamilies]
-      .sort(
-        (a, b) =>
-          b.length -
-          a.length
-      );
-
-
-  for (
-    const family of sortedFamilies
-  ) {
-
-    if (
-      belongsToFamily(
-        word,
-        family
-      )
-    ) {
-
-      return family;
-
-    }
-
-  }
-
-
-  return null;
-
-}
-
-
-// ======================================================
-// ESCAPAR HTML
-// ======================================================
-
-function escapeHTML(text) {
-
-  const div =
-    document.createElement("div");
-
-
-  div.textContent =
-    text;
-
-
-  return div.innerHTML;
-
-}
-
-
-// ======================================================
-// CRONÓMETRO
-// ======================================================
-
-function startTimer() {
-
-  clearInterval(
-    timerInterval
-  );
-
-
-  timerInterval =
-    setInterval(
-      () => {
-
-        const timeInSeconds =
-          (
-            Date.now() -
-            startTime
-          ) / 1000;
-
-
-        timerElement.textContent =
-          `⏱ ${timeInSeconds.toFixed(1)} s`;
-
-
-        timerElement.classList.remove(
-          "timer-green",
-          "timer-yellow",
-          "timer-red",
-          "timer-blink"
-        );
-
-
-        if (
-          timeInSeconds < 2
-        ) {
-
-          timerElement.classList.add(
-            "timer-green"
-          );
-
-        }
-
-
-        else if (
-          timeInSeconds < 4
-        ) {
-
-          timerElement.classList.add(
-            "timer-yellow"
-          );
-
-        }
-
-
-        else if (
-          timeInSeconds < 8
-        ) {
-
-          timerElement.classList.add(
-            "timer-red"
-          );
-
-        }
-
-
-        else {
-
-          timerElement.classList.add(
-            "timer-red",
-            "timer-blink"
-          );
-
-        }
-
-      },
-
-      100
-    );
-
-}
-
-
-// ======================================================
-// PARAR CRONÓMETRO
-// ======================================================
-
-function stopTimer() {
-
-  clearInterval(
-    timerInterval
-  );
-
-
-  timerElement.classList.remove(
-    "timer-green",
-    "timer-yellow",
-    "timer-red",
-    "timer-blink"
-  );
-
-}
-
-
-// ======================================================
-// TIMER AUTOMÁTICO
-// ======================================================
-
-function startAutoNext() {
-
-  stopAutoNext();
-
-
-  autoNextInterval =
-    setInterval(
-      () => {
-
-        if (
-          !nextButton.disabled &&
-          playButton.style.display === "none"
-        ) {
-
-          nextButton.click();
-
-        }
-
-      },
-
-      4000
-    );
-
-}
-
-
-function stopAutoNext() {
-
-  clearInterval(
-    autoNextInterval
-  );
-
-}
-
-
-// ======================================================
-// ACTUALIZAR PROGRESO
-// ======================================================
-
-function updateProgressDisplay(current) {
-
-  if (
-    gameMode === "hard" ||
-    totalInQueue <= 0
-  ) {
-
-    return;
-
-  }
-
-
-  const visibleCurrent =
-    Math.min(
-      current,
-      totalInQueue
-    );
-
-
-  progressText.textContent =
-    `${visibleCurrent} / ${totalInQueue}`;
-
-
-  const percentage =
-    (
-      visibleCurrent /
-      totalInQueue
-    ) * 100;
-
-
-  progressFill.style.width =
-    `${percentage}%`;
-
-}
-
-
-// ======================================================
-// GUARDAR PUNTUACIÓN
-// ======================================================
-
-function saveHighScore(
-  averageTime,
-  numberOfWords
-) {
-
-  const key =
-    gameMode +
-    "HighScores";
-
-
-  let scores =
-    JSON.parse(
-      localStorage.getItem(key)
-    ) || [];
-
-
-  scores.push({
-    averageTime: averageTime,
-    wordCount: numberOfWords
-  });
-
-
-  scores.sort(
-    (a, b) =>
-      a.averageTime -
-      b.averageTime
-  );
-
-
-  localStorage.setItem(
-    key,
-    JSON.stringify(
-      scores.slice(0, 10)
-    )
-  );
-
-}
-
-
-// ======================================================
-// PLAY
-// ======================================================
-
-playButton.addEventListener(
-  "click",
-  () => {
-
-    if (
-      words.length === 0
-    ) {
-
-      alert(
-        "No hay figuras cargadas."
-      );
-
-      return;
-
-    }
-
-
-    stopTimer();
-    stopAutoNext();
-
-
-    wordsQueue = [];
-
-    lastWord = "";
-
-    wordCount = 0;
-    totalTime = 0;
-
-    resultElement.textContent =
-      "";
-
-    counterElement.textContent =
-      "0";
-
-    timerElement.textContent =
-      "⏱ 0.0 s";
-
-
-    // Crear cola
-
-    if (
-      gameMode !== "hard"
-    ) {
-
-      refillQueue();
-
-    }
-
-
-    // Total
-
-    if (
-      gameMode === "hard"
-    ) {
-
-      totalInQueue = 0;
-
-    }
-
-    else {
-
-      totalInQueue =
-        wordsQueue.length;
-
-    }
-
-
-    // Primera palabra
-
-    currentWord =
-      getNextWord();
-
-
-    if (!currentWord) {
-
-      alert(
-        "No hay figuras disponibles para este modo."
-      );
-
-      return;
-
-    }
-
-
-    wordElement.innerHTML =
-      formatWordDisplay(
-        currentWord
-      );
-
-
-    if (
-      gameMode !== "hard"
-    ) {
-
-      updateProgressDisplay(1);
-
-    }
-
-
-    playButton.style.display =
-      "none";
-
-
-    nextButton.disabled =
-      false;
-
-    nextButton.style.display =
-      "flex";
-
-
-    finishButton.disabled =
-      false;
-
-    finishButton.style.display =
-      "flex";
-
-
-    startTime =
-      Date.now();
-
-
-    startTimer();
-
-
-    if (
-      gameMode === "timer"
-    ) {
-
-      startAutoNext();
-
-    }
-
-  }
-);
-
-
-// ======================================================
-// SIGUIENTE
-// ======================================================
-
-nextButton.addEventListener(
-  "click",
-  () => {
-
-    if (
-      playButton.style.display !==
-      "none"
-    ) {
-
-      return;
-
-    }
-
-
-    const endTime =
-      Date.now();
-
-
-    totalTime +=
-      (
-        endTime -
-        startTime
-      ) / 1000;
-
-
-    wordCount++;
-
-
-    counterElement.textContent =
-      wordCount;
-
-
-    currentWord =
-      getNextWord();
-
-
-    // Lista completada
-
-    if (
-      currentWord === null
-    ) {
-
-      completeList();
-
-      return;
-
-    }
-
-
-    wordElement.innerHTML =
-      formatWordDisplay(
-        currentWord
-      );
-
-
-    if (
-      gameMode !== "hard"
-    ) {
-
-      updateProgressDisplay(
-        wordCount + 1
-      );
-
-    }
-
-
-    startTime =
-      Date.now();
-
-
-    if (
-      gameMode === "timer"
-    ) {
-
-      startAutoNext();
-
-    }
-
-  }
-);
-
-
-// ======================================================
-// LISTA COMPLETADA
-// ======================================================
-
-function completeList() {
-
-  stopTimer();
-  stopAutoNext();
-
-
-  nextButton.disabled =
-    true;
-
-
-  if (
-    gameMode !== "hard" &&
-    totalInQueue > 0
-  ) {
-
-    progressText.textContent =
-      `${totalInQueue} / ${totalInQueue}`;
-
-
-    progressFill.style.width =
-      "100%";
-
-  }
-
-
-  let averageTime = 0;
-
-
-  if (
-    wordCount > 0
-  ) {
-
-    averageTime =
-      totalTime /
-      wordCount;
-
-
-    saveHighScore(
-      averageTime,
-      wordCount
-    );
-
-  }
-
-
-  wordElement.innerHTML = `
-
-    <span class="main-text">
-      COMPLETADO
-    </span>
-
-    <span class="parenthesis">
-      ${wordCount} figuras
-    </span>
-
-  `;
-
-
-  resultElement.textContent =
-    wordCount > 0
-
-      ? `Promedio: ${averageTime.toFixed(2)} s por figura`
-
-      : "";
-
-
-  timerElement.textContent =
-    "✓ COMPLETADO";
-
-
-  playButton.textContent =
-    "↻ JUGAR OTRA VEZ";
-
-
-  playButton.style.display =
-    "flex";
-
-
-  nextButton.style.display =
-    "none";
-
-
-  finishButton.style.display =
-    "none";
-
-}
-
-
-// ======================================================
-// FINALIZAR MANUALMENTE
-// ======================================================
-
-finishButton.addEventListener(
-  "click",
-  () => {
-
-    stopTimer();
-    stopAutoNext();
-
-
-    if (
-      wordCount > 0
-    ) {
-
-      const averageTime =
-        totalTime /
-        wordCount;
-
-
-      resultElement.textContent =
-        `Promedio: ${averageTime.toFixed(2)} s por figura`;
-
-
-      saveHighScore(
-        averageTime,
-        wordCount
-      );
-
-    }
-
-
-    playButton.textContent =
-      "▶ PLAY";
-
-
-    playButton.style.display =
-      "flex";
-
-
-    nextButton.style.display =
-      "none";
-
-
-    finishButton.style.display =
-      "none";
-
-
-    wordElement.innerHTML = `
-
-      <span class="main-text">
-        Presiona Play para comenzar
-      </span>
-
-    `;
-
-
-    timerElement.textContent =
-      "⏱ 0.0 s";
-
-  }
-);
-
-
-// ======================================================
-// SWIPE
-// ======================================================
-
-let touchStartX = 0;
-
-
-document.addEventListener(
-  "touchstart",
-
-  event => {
-
-    touchStartX =
-      event.changedTouches[0].screenX;
-
-  },
-
-  {
-    passive: true
-  }
-);
-
-
-document.addEventListener(
-  "touchend",
-
-  event => {
-
-    if (
-      playButton.style.display !==
-      "none"
-    ) {
-
-      return;
-
-    }
-
-
-    const touchEndX =
-      event.changedTouches[0].screenX;
-
-
-    const distance =
-      touchEndX -
-      touchStartX;
-
-
-    if (
-      Math.abs(distance) > 50 &&
-      !nextButton.disabled
-    ) {
-
-      nextButton.click();
-
-
-      if (
-        window.navigator.vibrate
-      ) {
-
-        window.navigator.vibrate(
-          10
-        );
-
-      }
-
-    }
-
-  },
-
-  {
-    passive: true
-  }
-);
-
-
-// ======================================================
-// GESTOR - ABRIR
-// ======================================================
-
-if (openManagerBtn) {
-
-  openManagerBtn.addEventListener(
-    "click",
-    () => {
-
-      managerModal.style.display =
-        "flex";
-
-
-      renderCustomWords();
-
-    }
-  );
-
-}
-
-
-// ======================================================
-// GESTOR - CERRAR
-// ======================================================
-
-if (closeManagerBtn) {
-
-  closeManagerBtn.addEventListener(
-    "click",
-    () => {
-
-      managerModal.style.display =
-        "none";
-
-    }
-  );
-
-}
-
-
-window.addEventListener(
-  "click",
-  event => {
-
-    if (
-      event.target ===
-      managerModal
-    ) {
-
-      managerModal.style.display =
-        "none";
-
-    }
-
-  }
-);
-
-
-// ======================================================
-// AÑADIR FIGURA PERSONALIZADA
-// ======================================================
-
-if (addWordBtn) {
-
-  addWordBtn.addEventListener(
-    "click",
-    () => {
-
-      const newWord =
-        newWordInput
-          .value
-          .trim();
-
-
-      if (!newWord) {
-
-        return;
-
-      }
-
-
-      customWords.push(
-        newWord
-      );
-
-
-      saveCustomWords();
-
-
-      newWordInput.value =
-        "";
-
-
-      updateWordsList();
-
-
-      /*
-        IMPORTANTE:
-
-        Si la nueva figura introduce una
-        familia nueva, aparecerá automáticamente.
-      */
-
-      detectFamilies();
-
-      populateFamilySelector();
-
-      renderCustomWords();
-
-      resetProgressDisplay();
-
-    }
-  );
-
-}
-
-
-// ENTER PARA AÑADIR
-
-if (newWordInput) {
-
-  newWordInput.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.key === "Enter"
-      ) {
-
-        addWordBtn.click();
-
-      }
-
-    }
-  );
-
-}
-
-
-// ======================================================
-// BORRAR PERSONALIZADA
-// ======================================================
-
-function deleteCustomWord(index) {
-
-  customWords.splice(
-    index,
-    1
-  );
-
-
-  saveCustomWords();
-
-  updateWordsList();
-
-  detectFamilies();
-
-  populateFamilySelector();
-
-  renderCustomWords();
-
-  resetProgressDisplay();
-
-}
-
-
-window.deleteCustomWord =
-  deleteCustomWord;
-
-
-// ======================================================
-// GUARDAR PERSONALIZADAS
-// ======================================================
-
-function saveCustomWords() {
-
-  localStorage.setItem(
-    "sbg_custom_words",
-
-    JSON.stringify(
-      customWords
-    )
-  );
-
-}
-
-
-// ======================================================
-// MOSTRAR PERSONALIZADAS
-// ======================================================
-
-function renderCustomWords() {
-
-  if (!customWordsList) {
-
-    return;
-
-  }
-
-
-  customWordsList.innerHTML =
-    "";
-
-
-  if (
-    customWords.length === 0
-  ) {
-
-    const li =
-      document.createElement("li");
-
-
-    li.style.color =
-      "#aaa";
-
-    li.style.justifyContent =
-      "center";
-
-    li.style.background =
-      "transparent";
-
-
-    li.textContent =
-      "No has añadido figuras personalizadas.";
-
-
-    customWordsList.appendChild(
-      li
-    );
-
-
-    return;
-
-  }
-
-
-  customWords.forEach(
-    (word, index) => {
-
-      const li =
-        document.createElement("li");
-
-
-      const span =
-        document.createElement("span");
-
-
-      span.textContent =
-        word;
-
-
-      const deleteButton =
-        document.createElement("button");
-
-
-      deleteButton.className =
-        "delete-word-btn";
-
-
-      deleteButton.textContent =
-        "❌";
-
-
-      deleteButton.addEventListener(
-        "click",
-        () => {
-
-          deleteCustomWord(
-            index
-          );
-
-        }
-      );
-
-
-      li.appendChild(
-        span
-      );
-
-
-      li.appendChild(
-        deleteButton
-      );
-
-
-      customWordsList.appendChild(
-        li
-      );
-
-    }
-  );
-
-}
