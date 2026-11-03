@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -15,6 +16,311 @@
     <link rel="manifest" href="manifest.json">
 
     <meta name="theme-color" content="#0a0808">
+
+    <!-- ESTILOS DE LAS NUEVAS FUNCIONES -->
+    <style>
+
+        /* Selector de tiempo del modo T */
+
+        #timer-selector-container {
+            display: none;
+            margin-bottom: 18px;
+            text-align: center;
+        }
+
+        .timer-selector-label {
+            display: block;
+            margin-bottom: 9px;
+            color: #bcb3b7;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .timer-options {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .timer-option {
+            min-width: 68px;
+            min-height: 38px;
+            padding: 8px 14px;
+            border: 1px solid #514047;
+            border-radius: 10px;
+            background: #292226;
+            color: #ded6da;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .timer-option.active {
+            background: #fa3059;
+            border-color: #fa3059;
+            color: white;
+        }
+
+
+        /* Marcador de la ficha */
+
+        .card {
+            position: relative;
+        }
+
+        #review-mark-button {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            z-index: 2;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            width: 38px;
+            height: 38px;
+
+            padding: 0;
+
+            border: 1px solid #514047;
+            border-radius: 50%;
+
+            background: #292226;
+            color: #d0c6cb;
+
+            cursor: pointer;
+
+            transition:
+                background 0.2s ease,
+                border-color 0.2s ease,
+                color 0.2s ease;
+        }
+
+        #review-mark-button svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        #review-mark-button.marked {
+            background: #492632;
+            border-color: #fa3059;
+            color: #ff5275;
+        }
+
+        #review-mark-button.marked svg {
+            fill: currentColor;
+        }
+
+        #review-mark-button:active {
+            transform: scale(0.95);
+        }
+
+
+        /* Acceso a Mis repasos */
+
+        #review-access {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #open-review-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            width: 38px;
+            height: 38px;
+
+            padding: 0;
+
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+
+            background: #292226;
+            color: #f1e9ed;
+
+            cursor: pointer;
+        }
+
+        #open-review-btn svg {
+            width: 19px;
+            height: 19px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        #review-count {
+            position: absolute;
+            top: -5px;
+            right: -6px;
+
+            display: none;
+            align-items: center;
+            justify-content: center;
+
+            min-width: 19px;
+            height: 19px;
+
+            padding: 0 4px;
+
+            border-radius: 20px;
+
+            background: #fa3059;
+            color: white;
+
+            font-size: 10px;
+            font-weight: 800;
+
+            pointer-events: none;
+        }
+
+
+        /* Cabecera adaptable a móvil */
+
+        .header-container {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+
+        /* Modal de repasos */
+
+        #review-modal .modal-content {
+            width: min(92vw, 480px);
+            max-height: 85dvh;
+            overflow-y: auto;
+        }
+
+        .review-description {
+            color: #c5bcc0;
+            font-size: 13px;
+            line-height: 1.5;
+            margin: 10px 0 16px;
+        }
+
+        #review-words-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 18px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .review-word-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+
+            padding: 11px 12px;
+
+            border: 1px solid rgba(255,255,255,0.09);
+            border-radius: 11px;
+
+            background: #30292d;
+            color: #fff;
+
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .review-word-item span {
+            overflow-wrap: anywhere;
+        }
+
+        .review-remove-btn {
+            flex-shrink: 0;
+
+            width: 30px;
+            height: 30px;
+
+            border: 1px solid #66404a;
+            border-radius: 8px;
+
+            background: #44252e;
+            color: #ff91a5;
+
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .review-empty {
+            padding: 20px 12px;
+
+            text-align: center;
+            color: #bfb4b9;
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        #start-review-btn {
+            width: 100%;
+            min-height: 48px;
+
+            border: none;
+            border-radius: 12px;
+
+            background: #fa3059;
+            color: white;
+
+            font-size: 15px;
+            font-weight: 800;
+
+            cursor: pointer;
+        }
+
+        #start-review-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+
+        /* Indicador del modo Repaso */
+
+        #review-mode-indicator {
+            display: none;
+
+            margin-bottom: 12px;
+
+            text-align: center;
+
+            color: #ff6483;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        @media (max-width: 420px) {
+
+            #review-mark-button {
+                width: 34px;
+                height: 34px;
+                top: 9px;
+                right: 9px;
+            }
+
+            .timer-option {
+                min-width: 60px;
+            }
+
+        }
+
+    </style>
+
 </head>
 
 <body>
@@ -22,9 +328,11 @@
     <!-- =========================
          CABECERA
     ========================== -->
+
     <div class="header-container">
 
         <!-- Resultados -->
+
         <div id="results-button">
             <button
                 onclick="window.location.href='resultados.html'"
@@ -36,6 +344,7 @@
 
 
         <!-- Gestor de figuras -->
+
         <div id="manager-button">
             <button
                 id="open-manager-btn"
@@ -46,7 +355,33 @@
         </div>
 
 
+        <!-- Mis repasos -->
+
+        <div id="review-access">
+
+            <button
+                id="open-review-btn"
+                type="button"
+                aria-label="Abrir Mis repasos"
+                title="Mis repasos"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4z"
+                    ></path>
+                </svg>
+            </button>
+
+            <span id="review-count">0</span>
+
+        </div>
+
+
         <!-- Modos de juego -->
+
         <div id="level-selection">
 
             <button
@@ -86,11 +421,13 @@
     <!-- =========================
          TARJETA PRINCIPAL
     ========================== -->
+
     <main class="game-container">
 
         <div class="card">
 
             <!-- Selector de familia -->
+
             <div
                 id="family-selector-container"
                 style="display: none;"
@@ -99,9 +436,66 @@
             </div>
 
 
+            <!-- Selector de tiempo del modo T -->
+
+            <div
+                id="timer-selector-container"
+                style="display: none;"
+            >
+
+                <span class="timer-selector-label">
+                    CAMBIO AUTOMÁTICO CADA
+                </span>
+
+                <div
+                    class="timer-options"
+                    role="group"
+                    aria-label="Intervalo del modo Timer"
+                >
+
+                    <button
+                        type="button"
+                        class="timer-option active"
+                        data-seconds="4"
+                        aria-pressed="true"
+                    >
+                        4 s
+                    </button>
+
+                    <button
+                        type="button"
+                        class="timer-option"
+                        data-seconds="6"
+                        aria-pressed="false"
+                    >
+                        6 s
+                    </button>
+
+                    <button
+                        type="button"
+                        class="timer-option"
+                        data-seconds="8"
+                        aria-pressed="false"
+                    >
+                        8 s
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- Indicador del modo Repaso -->
+
+            <div id="review-mode-indicator">
+                REPASANDO FIGURAS GUARDADAS
+            </div>
+
+
             <!-- =========================
                  FIGURA
             ========================== -->
+
             <div id="word">
 
                 <span class="main-text">
@@ -111,11 +505,30 @@
             </div>
 
 
+            <!-- Marcar ficha para repasar -->
+
+            <button
+                id="review-mark-button"
+                type="button"
+                aria-label="Marcar figura para repasar"
+                aria-pressed="false"
+                title="Guardar figura para repasar"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                >
+                    <path
+                        d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4z"
+                    ></path>
+                </svg>
+            </button>
+
+
             <!-- =========================
                  PROGRESO
-                 Se utilizará principalmente
-                 en el modo EASY
             ========================== -->
+
             <div
                 id="progress-container"
                 class="progress-container"
@@ -146,9 +559,11 @@
             <!-- =========================
                  INFORMACIÓN
             ========================== -->
+
             <div class="info-row">
 
                 <!-- Contador -->
+
                 <div class="counter-box">
 
                     <span class="info-label">
@@ -163,6 +578,7 @@
 
 
                 <!-- Cronómetro -->
+
                 <div
                     id="timer"
                     class="timer-pill"
@@ -176,6 +592,7 @@
             <!-- =========================
                  BOTONES DE JUEGO
             ========================== -->
+
             <div class="button-row">
 
                 <button
@@ -207,6 +624,7 @@
 
 
             <!-- Resultado -->
+
             <div id="result"></div>
 
         </div>
@@ -215,8 +633,64 @@
 
 
     <!-- =========================
+         MODAL MIS REPASOS
+    ========================== -->
+
+    <div
+        id="review-modal"
+        class="modal"
+        style="display: none;"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="review-modal-title"
+    >
+
+        <div class="modal-content">
+
+            <button
+                id="close-review-btn"
+                class="close-btn"
+                type="button"
+                aria-label="Cerrar Mis repasos"
+            >
+                &times;
+            </button>
+
+
+            <h2 id="review-modal-title">
+                Mis repasos
+            </h2>
+
+
+            <p class="review-description">
+                Aquí encontrarás las figuras que has marcado
+                durante el juego. Puedes revisarlas tranquilamente
+                y volver a practicarlas cuando quieras.
+            </p>
+
+
+            <ul id="review-words-list">
+                <!-- Figuras pendientes de repaso -->
+            </ul>
+
+
+            <button
+                id="start-review-btn"
+                type="button"
+                disabled
+            >
+                ▶ PRACTICAR PENDIENTES
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
          GESTOR DE FIGURAS
     ========================== -->
+
     <div
         id="manager-modal"
         class="modal"
@@ -259,7 +733,7 @@
 
 
             <ul id="custom-words-list">
-                <!-- Las figuras personalizadas aparecerán aquí -->
+                <!-- Figuras personalizadas -->
             </ul>
 
 
@@ -277,12 +751,14 @@
     <!-- =========================
          JAVASCRIPT
     ========================== -->
+
     <script src="script.js"></script>
 
 
     <!-- =========================
          SERVICE WORKER
     ========================== -->
+
     <script>
 
         if ("serviceWorker" in navigator) {
